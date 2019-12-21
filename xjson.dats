@@ -36,7 +36,7 @@ end
 macdef to_str(x) = $UN.castvwtp1{string}(,(x))
 
 fn mk_cmd(x: !Strptr1): Strptr1 =
-  string_append("export XATSHOME=", to_str(x), " && ./xjsonize -d ; exit")
+  string_append("export XATSHOME=", to_str(x), " && ./xjsonize -d")
 
 fn mk_cmd2(x: !Strptr1, y: string): Strptr1 =
   string_append("export XATSHOME=", to_str(x), " && ./xjsonize -d ", y)

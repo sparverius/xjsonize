@@ -97,7 +97,7 @@ case+ x0.node() of
     jsonize(opt) (* jsonize_option<sort1>("sort1opt", opt) *)
   )
 //
-)
+) : labjsonval
 end  // end of [jsonize_q1arg]
 
 
@@ -113,7 +113,7 @@ case+ x0.node() of
     jsonize(s1e),
     jsonize_option<token>("tokenopt", opt)
   )
-)
+) : labjsonval
 end // end of [jsonize_a1typ]
 
 
@@ -124,13 +124,13 @@ local
 
   fun
   jsonize_a1typlstopt
-  (opt: a1typlstopt): jsonval =
+  (opt: a1typlstopt): labjsonval =
   (
   case+ opt of
   | None() =>
     jsonify("None")
   | Some(a1ts) =>
-    labval("Some",
+    jsonify("Some",
       jsonize(a1ts) (* jsonize_list<a1typ>("a1typlst", a1ts) *)
     )
   )
@@ -167,7 +167,7 @@ case+ x0.node() of
     jsonize(opt1)
   )
 //
-) (* end of [jsonize_d1arg] *)
+) : labjsonval  (* end of [jsonize_d1arg] *)
 end
 end // end of [local]
 
@@ -198,7 +198,7 @@ x0.node() of
     jsonize(s1es) (* jsonize_list<s1exp>("s1explst", s1es) *)
   )
 //
-)
+) : labjsonval
 end (* end of [jsonize_f1arg] *)
 
 (* ****** ****** *)
@@ -219,7 +219,7 @@ x0.node() of
     jsonize(q1as) (* jsonize_list<q1arg>("q1arglst", q1as) *)
   )
 //
-)
+) : labjsonval
 end (* end of [jsonize_sq1arg] *)
 
 (* ****** ****** *)
@@ -240,7 +240,7 @@ x0.node() of
     jsonize(s1es) (* jsonize_list<s1exp>("s1explst", s1es) *)
   )
 //
-)
+) : labjsonval
 end (* end of [jsonize_ti1arg] *)
 
 (* ****** ****** *)
@@ -261,7 +261,7 @@ x0.node() of
     jsonize(q1as) (* jsonize_list<q1arg>("q1arglst", q1as) *)
   )
 //
-)
+) : labjsonval
 end (* end of [jsonize_tq1arg] *)
 
 
@@ -372,14 +372,14 @@ case+ x0.node() of
 //
 | D1Ecase(knd, d1e1, dcls) =>
   jsonify("D1Ecase",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(d1e1),
     jsonize(dcls) (* jsonize_list<d1clau>("d1claulst", dcls) *)
   )
 //
 | D1Elam(knd, farg, tres, arrw, body) =>
   jsonify("D1Elam",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(farg), (* jsonize_list<f1arg>("f1arglst", farg), *)
     jsonize(tres),
     jsonize(arrw),
@@ -387,7 +387,7 @@ case+ x0.node() of
   )
 | D1Efix(knd, fid, farg, tres, arrw, body) =>
   jsonify("D1Efix",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(fid),
     jsonize(farg), (* jsonize_list<f1arg>("f1arglst", farg), *)
     jsonize(tres),
@@ -421,7 +421,7 @@ case+ x0.node() of
 | D1Enone((*void*)) =>
   jsonize("D1Enone") // ")")
 //
-) (* jsonize_d1exp *)
+) : labjsonval  (* jsonize_d1exp *)
 }
 
 
@@ -442,13 +442,13 @@ case+ x0.node() of
 //
 | D1Cstatic(knd, d1c) =>
   jsonify("D1Cstatic",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(d1c)
   )
 //
 | D1Cextern(knd, d1c) =>
   jsonify("D1Cextern",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(d1c)
   )
 //
@@ -472,7 +472,7 @@ case+ x0.node() of
   jsonify("D1Cinclude",
     jsonize(tok),
     jsonize(src),
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(opt),  (* jsonize_option<filpath>("filpathopt", opt), *)
     body
   )
@@ -491,7 +491,7 @@ case+ x0.node() of
     (
     case+ body of
     | None _ => jnul()
-    | Some d => labval("Some", jsonize_list<d1ecl>("d1eclst", d))
+    | Some d => jsonify("Some", jsonize_list<d1ecl>("d1eclst", d))
     )
     *)
   }
@@ -501,9 +501,9 @@ case+ x0.node() of
   jsonify("D1Cstaload",
     jsonize(tok),
     jsonize(src),
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(opt), (* jsonize_option<filpath>("filpathopt", opt), *)
-    labval("flag", jsonize(flag)),
+    jsonify("flag", jsonize(flag)),
     body
   )
   ) where
@@ -521,7 +521,7 @@ case+ x0.node() of
     (
     case+ body of
     | None _ => jnul()
-    | Some d => labval("Some", jsonize_list<d1ecl>("d1eclst", d))
+    | Some d => jsonify("Some", jsonize_list<d1ecl>("d1eclst", d))
     )
     *)
 
@@ -545,7 +545,7 @@ case+ x0.node() of
 | D1Csortdef
   (knd, tok, def) =>
   jsonify("D1Csortdef",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(tok),
     jsonize(def)
   )
@@ -553,7 +553,7 @@ case+ x0.node() of
 | D1Csexpdef
   ( knd, sid, arg, res, def) =>
   jsonify("D1Csexpdef",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(sid),
     jsonize(arg), (* jsonize_list<s1marg>("s1marglst", arg), *)
     jsonize(res), (* jsonize_option<sort1>("sort1opt", res), *)
@@ -563,7 +563,7 @@ case+ x0.node() of
 | D1Cabstype
   (knd, sid, arg, res, def) =>
   jsonify("D1Cabstype",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(sid),
     jsonize(arg), (* jsonize_list<t1marg>("t1marglst", arg), *)
     jsonize(res), (* jsonize_option<sort1>("sort1opt", res), *)
@@ -618,7 +618,7 @@ case+ x0.node() of
 //
 | D1Csymload(knd, sym, dqid, tint) =>
   jsonify("D1Csymload",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(sym),
     jsonize(dqid),
     jsonize(tint) (* jsonize_option<t0int>("t0intopt", tint) *)
@@ -626,13 +626,13 @@ case+ x0.node() of
 //
 | D1Cdatasort(knd, d1tsts) =>
   jsonify("D1Cdatasort",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(d1tsts) (* jsonize_list<d1tsort>("d1tsortlst", d1tsts) *)
   )
 //
 | D1Cdatatype(knd, d1typs, wopt) =>
   jsonify("D1Cdatatype",
-    labval("knd", jsonize(knd)),
+    jsonify("knd", jsonize(knd)),
     jsonize(d1typs), (* jsonize_list<d1atype>("d1atypelst", d1typs), *)
     jsonize(wopt)
   )
@@ -659,7 +659,7 @@ case+ x0.node() of
     jsonize!(out, "jsonize_d1ecl: D1C...: not-yet-implemented")
 *)
 //
-)
+) : labjsonval
 end  (* end of [jsonize_d1ecl] *)
 
 
@@ -760,7 +760,7 @@ x0.node() of
 | D1Pnone((*void*)) =>
   jsonify("D1Pnone")
 //
-)
+) : labjsonval
 end  (* end of [jsonize_d1pat] *)
 
 end // end of [local]
@@ -779,7 +779,7 @@ case+ x0 of
   jsonify("F1UNARROWlist",
     jsonize(s1es) (* jsonize_list<s1exp>("s1explst", s1es) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_f1unarrow] *)
 
 
@@ -795,7 +795,7 @@ case+ x0 of
 
 | TEQD1EXPsome(tok, d1e) =>
   jsonify("TEQD1EXPsome", jsonize(tok), jsonize(d1e))
-)
+) : labjsonval
 end
 
 
@@ -810,7 +810,7 @@ case+ x0 of
   jsonify("WTHS1EXPnone")
 | WTHS1EXPsome(tok, s1e) =>
   jsonify("WTHS1EXPsome", jsonize(tok), jsonize(s1e))
-)
+) : labjsonval
 end
 
 
@@ -826,7 +826,7 @@ x0.node() of
   jsonify("D1GUAexp", jsonize(d1e))
 | D1GUAmat(d1e, d1p) =>
   jsonify("D1GUAexp", jsonize(d1e), jsonize(d1p))
-)
+) : labjsonval
 end (* end of [jsonize_d1gua] *)
 
 
@@ -842,7 +842,7 @@ x0.node() of
   jsonify("D1CLAUgpat", jsonize(d1gp))
 | D1CLAUclau(d1gp, d0e0) =>
   jsonify("D1CLAUclau", jsonize(d1gp), jsonize(d0e0))
-)
+) : labjsonval
 end (* end of [jsonize_d1clau] *)
 
 
@@ -861,7 +861,7 @@ x0.node() of
     jsonize(d1p),
     jsonize(d1gs) (* jsonize_list<d1gua>("d1gualst", d1gs) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_d1gpat] *)
 
 
@@ -878,7 +878,7 @@ case+ x0 of
   jsonify("ABSTDF1lteq", jsonize(s0e))
 | ABSTDF1eqeq(s0e) =>
   jsonify("ABSTDF1eqeq", jsonize(s0e))
-)
+) : labjsonval
 end (* end of [jsonize_abstdf1] *)
 
 
@@ -895,7 +895,7 @@ case+ x0 of
   jsonify("WD1CSsome",
     jsonize(d1cs) (* jsonize_list<d1ecl>("d1eclst", d1cs) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_wd1eclseq] *)
 
 
@@ -912,7 +912,7 @@ val res =
     jsonize(rcd.pat),
     jsonize(rcd.def), (* jsonize_option<d1exp>("d1expopt", rcd.def), *)
     jsonize(rcd.wtp)
-  )
+  ) : labjsonval
 end
 
 end // end of [jsonize_v1aldecl]
@@ -932,7 +932,7 @@ val res =
     jsonize(rcd.wth), (* jsonize_option<token>("tokenopt", rcd.wth), *)
     jsonize(rcd.res), (* jsonize_option<s1exp>("s1expopt", rcd.res), *)
     jsonize(rcd.ini)
-  )
+  ) : labjsonval
 end
 
 end // end of [jsonize_v1ardecl]
@@ -953,7 +953,7 @@ val res =
     jsonize(rcd.res),
     jsonize(rcd.def), (* jsonize_option<d1exp>("d1expopt", rcd.def), *)
     jsonize(rcd.wtp)
-  )
+  ) : labjsonval
 end
 end // end of [jsonize_f1undecl]
 
@@ -972,6 +972,6 @@ val res =
     jsonize(rcd.arg), (* jsonize_list<d1arg>("d1arglst", rcd.arg), *)
     jsonize(rcd.res),
     jsonize(rcd.def)
-  )
+  ) : labjsonval
 end
 end // end of [jsonize_d1cstdecl]

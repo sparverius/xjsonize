@@ -12,40 +12,40 @@
 
 implement
 jsonize_valkind
-  (vlk) = node("valkind", res) where
+  (vlk) = @("valkind", JSONstring(res)) where
 val res =
 (
 //
 case+ vlk of
-| VLKval() => jsonize("VLKval")
-| VLKvalp() => jsonize("VLKvalp")
-| VLKvaln() => jsonize("VLKvaln")
+| VLKval() => "VLKval"
+| VLKvalp() => "VLKvalp"
+| VLKvaln() => "VLKvaln"
 (*
-| VLKmcval() => jsonize("VLKprval")
+| VLKmcval() => "VLKprval"
 *)
-| VLKprval() => jsonize("VLKprval")
+| VLKprval() => "VLKprval"
 //
 ) (* end of [jsonize_valkind] *)
 end
 
 implement
 jsonize_funkind
-  (fnk) = node("funkind", res) where
+  (fnk) = @("funkind", JSONstring(res)) where
 val res =
 (
 //
 case+ fnk of
-| FNKfn0() => jsonize("FNKfn0")
-| FNKfnx() => jsonize("FNKfnx")
-| FNKfn1() => jsonize("FNKfn1")
-| FNKfun() => jsonize("FNKfun")
+| FNKfn0() => "FNKfn0"
+| FNKfnx() => "FNKfnx"
+| FNKfn1() => "FNKfn1"
+| FNKfun() => "FNKfun"
 //
-| FNKprfn0() => jsonize("FNKprfn0")
-| FNKprfn1() => jsonize("FNKprfn1")
-| FNKprfun() => jsonize("FNKprfun")
-| FNKpraxi() => jsonize("FNKpraxi")
+| FNKprfn0() => "FNKprfn0"
+| FNKprfn1() => "FNKprfn1"
+| FNKprfun() => "FNKprfun"
+| FNKpraxi() => "FNKpraxi"
 //
-| FNKcastfn() => jsonize("FNKcastfn")
+| FNKcastfn() => "FNKcastfn"
 //
 ) (* end of [jsonize_funkind] *)
 end
@@ -53,15 +53,15 @@ end
 
 implement
 jsonize_impkind
-  (knd) = node("impkind", res) where
+  (knd) = @("impkind", JSONstring(res)) where
 val res =
 (
 case+ knd of
-| IMPprf() => jsonize("IMPprf")
-| IMPval() => jsonize("IMPval")
-| IMPfun() => jsonize("IMPfun")
-| IMPtmp() => jsonize("IMPtmp")
-| IMPgen() => jsonize("IMPgen")
+| IMPprf() => "IMPprf"
+| IMPval() => "IMPval"
+| IMPfun() => "IMPfun"
+| IMPtmp() => "IMPtmp"
+| IMPgen() => "IMPgen"
 ) (* end of [jsonize_impkind] *)
 end
 
@@ -69,12 +69,12 @@ end
 implement
 jsonize_funclo2
   (fc2) = node("funclo2", res) where
+  (* @("funclo2", jsonval_labval1(res.0, res.1)) where *)
 val res =
 (
 case+ fc2 of
-| FC2fun() =>
-  jsonize("FC2fun")
+| FC2fun() => jsonify("FC2fun")
 | FC2clo(knd) =>
   jsonify("FC2clo", jsonize(knd))
-)
+) : labjsonval
 end

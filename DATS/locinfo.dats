@@ -9,6 +9,11 @@
 
 #staload _ = "./json.dats"
 
+implement jsonize_location(loc) = @("loc", jnul()) : labjsonval
+implement jsonize_loc_t(loc) = @("loc", jnul()) : labjsonval
+
+////
+
 
 implement labify_loc_t(loc) = @("loc", jsonize_loc_t(loc))
 

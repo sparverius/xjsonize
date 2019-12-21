@@ -76,12 +76,12 @@ x0.node() of
         val stm = xtv.stamp((*void*))
         val rst = $STM.jsonize_stamp(stm)
       }
-      )
+      ) : labjsonval
     | _ (* else *) =>
       jsonify("T2Pxtv", rst)
       where
       {
-        val rst = jsonize(t2p)
+        val rst = jsonize(t2p) : labjsonval
       }
 
   end
@@ -100,7 +100,8 @@ x0.node() of
   )
 //
 | T2Pfc2(fc2) =>
-  jsonify("T2pfc2", jstr("..."))
+  jsonify("T2pfc2", node("fc2", jsonize("...")))
+
 | T2Pfun(fc2, npf, arg, res) =>
   jsonify("T2Pfun",
     jsonize(fc2),
@@ -128,7 +129,7 @@ x0.node() of
   )
 | T2Ptyrec(knd1, npf2, lt2ps) =>
   jsonify("T2Ptyrec",
-    labval("knd", jsonize(knd1)),
+    jsonify("knd", jsonize(knd1)),
     jsonize(npf2),
     jsonize_list<labt2ype>("labt2ypelst", lt2ps)
   )
@@ -139,7 +140,7 @@ x0.node() of
   jsonify("T2Pnone1", jsonize(s2e))
 
 //
-)
+) : labjsonval
 end
 
 end
@@ -154,5 +155,5 @@ val res =
 case+ lt2p of
 | TLABELED(l0, t2p) =>
   jsonify("TLABELED", jsonize(l0), jsonize(t2p))
-) (* end of [jsonize_labt2ype] *)
+) : labjsonval  (* end of [jsonize_labt2ype] *)
 end

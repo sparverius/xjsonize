@@ -84,7 +84,7 @@ case+ x0.node() of
   jsonify("T0INTnone", jsonize(tok))
 | T0INTsome(tok) =>
   jsonify("T0INTsome", jsonize(tok))
-)
+) : labjsonval
 end
 
 
@@ -99,7 +99,7 @@ case+ x0.node() of
   jsonify("T0CHRnone", jsonize(tok))
 | T0CHRsome(tok) =>
   jsonify("T0CHRsome", jsonize(tok))
-)
+) : labjsonval
 end
 
 implement
@@ -113,7 +113,7 @@ case+ x0.node() of
   jsonify("T0FLTnone", jsonize(tok))
 | T0FLTsome(tok) =>
   jsonify("T0FLTsome", jsonize(tok))
-)
+) : labjsonval
 end
 
 implement
@@ -127,7 +127,7 @@ case+ x0.node() of
   jsonify("T0STRnone", jsonize(tok))
 | T0STRsome(tok) =>
   jsonify("T0STRsome", jsonize(tok))
-)
+) : labjsonval
 end
 
 implement
@@ -141,7 +141,7 @@ case+ x0.node() of
   jsonify("I0DNTnone", jsonize(tok))
 | I0DNTsome(tok) =>
   jsonify("I0DNTsome", jsonize(tok))
-)
+) : labjsonval
 end
 
 implement
@@ -156,7 +156,7 @@ l0.node() of
   jsonify("L0ABLsome", jsonize(lab))
 | L0ABLnone(tok) =>
   jsonify("L0ABLnone", jsonize(tok))
-)
+) : labjsonval
 end
 
 
@@ -177,7 +177,7 @@ x0.node() of
 | S0YMBbrack(tok1, tok2) =>
   jsonify("S0YMBbrack", jsonize(tok1), jsonize(tok2))
 //
-)
+) : labjsonval
 end (* end of [jsonize_s0ymb] *)
 
 
@@ -193,7 +193,7 @@ case+ x0 of
   jsonify("SQ0EIDnone", jsonize(sid))
 | SQ0EIDsome(tok, sid) =>
   jsonify("SQ0EIDsome", jsonize(tok), jsonize(sid))
-)
+) : labjsonval
 end
 
 implement
@@ -207,7 +207,7 @@ case+ x0 of
   jsonify("DQ0EIDnone", jsonize(sid))
 | DQ0EIDsome(tok, sid) =>
   jsonify("DQ0EIDsome", jsonize(tok), jsonize(sid))
-)
+) : labjsonval
 end
 
 
@@ -247,8 +247,8 @@ case+ x0.node() of
 | G0Enone(tok) =>
   jsonify("G0Enone", jsonize(tok))
 //
-) (* end of [jsonize_g0exp] *)
-end
+) : labjsonval
+end (* end of [jsonize_g0exp] *)
 
 end
 
@@ -287,8 +287,8 @@ x0.node() of
     jsonize(g0as), (* jsonize_list<g0eid>("i0dntlst", g0as), *)
     jsonize(tend)
   )
-) (* jsonize_g0marg *)
-end
+) : labjsonval
+end (* jsonize_g0marg *)
 end // end of [local]
 
 
@@ -331,8 +331,8 @@ case+ x0.node() of
 | S0Tnone(tok) =>
   jsonify("S0Tnone", jsonize(tok))
 //
-) (* end of [jsonize_sort0] *)
-end
+) : labjsonval
+end (* end of [jsonize_sort0] *)
 
 end // end of [local]
 
@@ -351,7 +351,7 @@ case+ x0.node() of
     jsonize(sid),
     jsonize(opt) (* jsonize_option<sort0>("sort0opt", opt) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s0rtcon] *)
 
 
@@ -374,7 +374,7 @@ case+ x0.node() of
     jsonize(tok),
     jsonize(s0cs) (* jsonize_list<s0rtcon>("s0rtconlst", s0cs) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_d0tsort] *)
 end
 
@@ -399,7 +399,7 @@ case+ x0.node() of
     jsonize(s0es), (* jsonize_list<s0exp>("s0explst", s0es), *)
     jsonize(tend)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s0rtdef] *)
 
 
@@ -418,7 +418,7 @@ x0.node() of
     jsonize(sid),
     jsonize(opt) (* jsonize_option<sort0>("sort0opt", opt) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s0arg] *)
 
 
@@ -440,7 +440,7 @@ x0.node() of
     jsonize(s0as), (* jsonize_list<s0arg>("s0arglst", s0as), *)
     jsonize(tend)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s0marg] *)
 
 
@@ -457,7 +457,7 @@ x0.node() of
     jsonize(tid),
     jsonize(opt) (* jsonize_option<token>("tokenopt", opt) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_t0arg] *)
 
 
@@ -477,7 +477,7 @@ x0.node() of
     jsonize(t0as), (* jsonize_list<t0arg>("t0arglst", t0as), *)
     jsonize(tend)
   )
-)
+) : labjsonval
 end (* end of [jsonize_t0marg] *)
 
 
@@ -495,7 +495,7 @@ case+ x0.node() of
     jsonize(ids), (* jsonize_list<i0dnt>("i0dntlst", ids), *)
     jsonize(opt) (* jsonize_option<sort0>("sort0opt", opt) *)
   )
-)
+) : labjsonval
 end
 
 
@@ -514,7 +514,7 @@ case+ x0.node() of
     jsonize(s0qs), (* jsonize_list<s0qua>("s0qualst", s0qs), *)
     jsonize(tend)
   )
-)
+) : labjsonval
 end
 
 
@@ -532,7 +532,7 @@ val res =
     jsonize(l0),
     jsonize(t0),
     jsonize_val<a>(x1)
-  )
+  ) : labjsonval
 end
 
 end // end of [jsonize_sl0abled]
@@ -647,7 +647,7 @@ case+ x0.node() of
 | S0Enone(tok) =>
   jsonify("S0Enone", jsonize(tok))
 //
-)
+) : labjsonval
 end (* end of [jsonize_s0exp] *)
 
 end // end of [local]
@@ -676,7 +676,7 @@ case+ x0 of
     jsonize(s0es), (* jsonize_list<s0exp>("s0explst", s0es), *)
     jsonize(tok2)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s0exp_RPAREN] *)
 
 end // end of [local]
@@ -705,7 +705,7 @@ case+ x0 of
     jsonize(ls0es), (* jsonize_list<labs0exp>("labs0explst", ls0es), *)
     jsonize(tok2)
   )
-)
+) : labjsonval
 end (* end of [jsonize_labs0exp_RBRACE] *)
 
 end // end of [local]
@@ -727,7 +727,7 @@ case+ x0 of
 | EFFS0EXPsome(s0f, s0e) =>
   jsonify("EFFS0EXPsome", jsonize(s0f), jsonize(s0e))
 *)
-)
+) : labjsonval
 end (* end of [jsonize_effs0expopt] *)
 
 
@@ -747,7 +747,7 @@ case+ x0.node() of
     jsonize(teq),
     jsonize(d0cs) (* jsonize_list<d0atcon>("d0atconlst", d0cs) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_d0atype] *)
 
 
@@ -777,9 +777,9 @@ case+ x0.node() of
       case+ argopt of
       | None() => jsonify("None")
       | Some(x) => jsonize(x)
-    )
+    )  : labjsonval
   end
-)
+) : labjsonval
 end (* end of [jsonize_d0atcon] *)
 
 end

@@ -125,7 +125,7 @@ case+ x0.node() of
 | G1Enone(loc) =>
   jsonify("G1Enone")
 //
-) (* end of [jsonize_g1exp] *)
+) : labjsonval  (* end of [jsonize_g1exp] *)
 end
 
 end // end of [local]
@@ -156,7 +156,7 @@ x0.node() of
   jsonify("G1MARGdarg",
     jsonize(g1as) (* jsonize_list<g1arg>("g1arglst", g1as) *)
   )
-) (* end of [jsonize_g1marg] *)
+) : labjsonval  (* end of [jsonize_g1marg] *)
 end
 
 end // end of [local]
@@ -222,7 +222,7 @@ case+ x0.node() of
 | S1Tnone((*void*)) =>
   jsonify("S1Tnone")
 //
-) (* end of [jsonize_sort1] *)
+) : labjsonval  (* end of [jsonize_sort1] *)
 end
 
 end // end of [local]
@@ -248,7 +248,7 @@ case+ x0.node() of
     jsonize(sid),
     jsonize(opt) (* jsonize_option<sort1>("sort1opt", opt) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_s1rtcon] *)
 
 
@@ -264,7 +264,7 @@ case+ x0.node() of
     jsonize(tid),
     jsonize(s1cs) (* jsonize_list<s1rtcon>("s1rtconlst", s1cs) *)
   )
-)
+) : labjsonval
 end (* end of [jsonize_d1tsort] *)
 
 
@@ -284,7 +284,7 @@ case+ x0.node() of
     jsonize(s1a0),
     jsonize(s1es) (* jsonize_list<s1exp>("s1explst", s1es) *)
   )
-) (* end of [jsonize_s1rtdef] *)
+) : labjsonval  (* end of [jsonize_s1rtdef] *)
 end
 
 implement
@@ -304,7 +304,7 @@ x0.node() of
     jsonize(tok),
     jsonize(opt) (* jsonize_option<sort1>("sort1opt", opt) *)
   )
-) (* jsonize_s1arg *)
+) : labjsonval  (* jsonize_s1arg *)
 end
 
 local
@@ -332,7 +332,7 @@ x0.node() of
   jsonify("S1MARGlist",
     jsonize(s1as) (* jsonize_list<s1arg>("s1arglst", s1as) *)
   )
-) (* jsonize_s1marg *)
+) : labjsonval  (* jsonize_s1marg *)
 end
 
 end // end of [local]
@@ -359,7 +359,7 @@ x0.node() of
     jsonize(tok),
     jsonize(opt) (* jsonize_option<token>("tokenopt", opt) *)
   )
-) (* jsonize_t1arg *)
+) : labjsonval  (* jsonize_t1arg *)
 end
 
 local
@@ -386,7 +386,7 @@ x0.node() of
   jsonify("T1MARGlist",
     jsonize(t1as) (* jsonize_list<t1arg>("t1arglst", t1as) *)
   )
-) (* jsonize_t1marg *)
+) : labjsonval  (* jsonize_t1marg *)
 end
 
 end // end of [local]
@@ -406,7 +406,7 @@ case+ x0.node() of
     jsonize(ids), (* jsonize_list<token>("tokenlst", ids), *)
     jsonize(opt) (* jsonize_option<sort1>("sort1opt", opt) *)
   )
-)
+) : labjsonval
 end
 
 implement
@@ -423,7 +423,7 @@ case+ x0.node() of
   jsonify("S1UNIsome",
     jsonize(s1qs) (* jsonize_list<s1qua>("s1qualst", s1qs) *)
   )
-)
+) : labjsonval
 end
 
 
@@ -553,7 +553,7 @@ case+ x0.node() of
 | S1Enone(loc) =>
   jsonify("S1Enone", jsonize(loc))
 //
-) (* jsonize_s0exp *)
+) : labjsonval  (* jsonize_s0exp *)
 end
 
 end // end of [local]
@@ -574,7 +574,7 @@ case+ x0 of
 | EFFS1EXPsome(s1f, s1e) =>
   jsonify("EFFS1EXPsome", jsonize(s1f), jsonize(s1e))
 *)
-) (* end of [jsonize_effs1expopt] *)
+) : labjsonval  (* end of [jsonize_effs1expopt] *)
 end
 
 
@@ -599,7 +599,7 @@ case+ x0.node() of
     jsonize(res), (* jsonize_option<sort1>("sort1opt", res), *)
     jsonize(d1cs) (* jsonize_list<d1atcon>("d1atconlst", d1cs) *)
   )
-) (* end of [jsonize_d1atype] *)
+) : labjsonval  (* end of [jsonize_d1atype] *)
 end
 
 implement
@@ -616,5 +616,5 @@ case+ x0.node() of
     jsonize(s1is), (* jsonize_list<s1exp>("s1explst", s1is), *)
     jsonize(argopt) (* jsonize_option<s1exp>("s1expopt", argopt) *)
   )
-) (* end of [jsonize_d1atcon] *)
+) : labjsonval  (* end of [jsonize_d1atcon] *)
 end

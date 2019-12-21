@@ -149,6 +149,7 @@ implement
 jsonize_d2con
   (x0) =
 (
+(*
   node2("d2con", jsonize(x0.loc()), rst) where
     val lst = $list{labjsonval}
     (
@@ -157,6 +158,8 @@ jsonize_d2con
     )
     val rst = JSONlablist(lst)
   end
+*)
+jsonify("d2con", jsonize(x0.sym()), jsonize(x0.stamp()))
 
 )
 
@@ -170,6 +173,7 @@ implement
 jsonize_d2cst
   (x0) =
 (
+(*
   node2("d2cst", jsonize(x0.loc()), rst) where
     val lst = $list{labjsonval}(
       $SYM_J.labify_symbol(x0.sym()),
@@ -177,6 +181,8 @@ jsonize_d2cst
     )
     val rst = JSONlablist(lst)
   end
+*)
+jsonify("d2cst", jsonize(x0.sym()), jsonize(x0.stamp()))
 )
 
 
@@ -188,6 +194,7 @@ jsonize_val<d2var> = jsonize_d2var
 implement
 jsonize_d2var
   (x0) =
+(*
   node2("d2var", jsonize(x0.loc()), rst) where
     val lst = $list{labjsonval}(
       $SYM_J.labify_symbol(x0.sym()),
@@ -195,6 +202,8 @@ jsonize_d2var
     )
     val rst = JSONlablist(lst)
   end
+*)
+jsonify("d2var", jsonize(x0.sym()), jsonize(x0.stamp()))
 
 
 (*
@@ -228,7 +237,7 @@ x0.node() of
   )
 | F2ARGsome_dyn(npf, d2ps) =>
   jsonify("F2ARGsome_dyn",
-    labval("npf", jsonize(npf)),
+    tagged("npf", npf), //jsonify("npf", jsonize(npf)),
     jsonize(d2ps) (* jsonize_list<d2pat>("d2patlst", d2ps) *)
   )
 | F2ARGsome_sta(s2vs, s2ps) =>
@@ -236,7 +245,7 @@ x0.node() of
     jsonize(s2vs), (* jsonize_list<s2var>("s2varlst", s2vs), *)
     jsonize(s2ps)  (* jsonize_list<s2exp>("s2explst", s2ps) *)
   )
-)
+) : labjsonval
 end
 
 
@@ -298,14 +307,14 @@ case x0.node() of
 | D2Pdapp(d2f0, npf0, d2ps) =>
   jsonify("D2Pdapp",
     jsonize(d2f0),
-    labval("npf", jsonize(npf0)),
+    tagged("npf", npf0), //jsonify("npf", jsonize(npf0)),
     jsonize(d2ps) (* jsonize_list<d2pat>("d2patlst", d2ps) *)
   )
 //
 | D2Ptuple(knd, npf, d2ps) =>
   jsonify("D2Ptuple",
     jsonize(knd),
-    labval("npf", jsonize(npf)),
+    tagged("npf", npf), //jsonify("npf", jsonize(npf)),
     jsonize(d2ps)  (* jsonize_list<d2pat>("d2patlst", d2ps) *)
   )
 //
@@ -320,7 +329,7 @@ case x0.node() of
 | D2Pnone1(d1psrc) =>
   jsonify("D2Pnone1", jsonize(d1psrc))
 //
-) (* end of [jsonize_d2pat] *)
+) : labjsonval  (* end of [jsonize_d2pat] *)
 end
 
 
@@ -401,7 +410,7 @@ case+ x0.node() of
 | D2Edapp(d2f0, npf0, d2as) =>
   jsonify("D2Edapp",
     jsonize(d2f0),
-    labval("npf", jsonize(npf0)),
+    tagged("npf", npf0), //jsonify("npf", jsonize(npf0)),
     jsonize(d2as)  (* jsonize_list<d2exp>("d2explst", d2as) *)
   )
 //
@@ -425,7 +434,7 @@ case+ x0.node() of
 | D2Etuple(knd, npf, d2es) =>
   jsonify("D2Etuple",
     jsonize(knd),
-    labval("npf", jsonize(npf)),
+    tagged("npf", npf), //jsonify("npf", jsonize(npf)),
     jsonize(d2es)  (* jsonize_list<d2exp>("d2explst", d2es) *)
   )
 //
@@ -444,7 +453,7 @@ case+ x0.node() of
     jsonify("D2Edtsel",
       jsonize(lab0),
       jsonize(dpis), (* jsonize_list<d2pitm>("d2pitmlst", dpis), *)
-      labval("npf", jsonize(npf2)),
+      tagged("npf", npf2), // ("npf", JSONint(npf2)), //jsonify("npf", jsonize(npf2)),
       jsonize(d2es)  (* jsonize_list<d2exp>("d2explst", d2es) *)
     )
   )
@@ -509,7 +518,7 @@ case+ x0.node() of
 | D2Enone1(d1esrc) =>
   jsonify("D2Enone1", jsonize(d1esrc))
 //
-)
+) : labjsonval
 end // end of where
 
 
@@ -548,21 +557,16 @@ val res =
 (
 case- x0.node() of
 //
-| D2Cstatic
-  (tok, d2c) =>
+| D2Cstatic(tok, d2c) =>
   jsonify("D2Cstatic", jsonize(d2c))
-| D2Cextern
-  (tok, d2c) =>
+| D2Cextern(tok, d2c) =>
   jsonify("D2Cextern", jsonize(tok), jsonize(d2c))
 //
-| D2Cinclude
-  ( tok
-  , src, knd
-  , fopt, body) =>
+| D2Cinclude(tok, src, knd, fopt, body) =>
   jsonify("D2Cinclude",
     jsonize(tok),
     jsonize(src),
-    labval("knd", jsonize(knd)),
+    tagged("knd", knd), (* jsonify("knd", jsonize(knd)), *)
     jsonize(fopt), (* jsonize_option<filpath>("filpathopt", fopt), *)
     body
   ) where
@@ -580,7 +584,7 @@ case- x0.node() of
       (
       case+ body of
       | None _ => jnul()
-      | Some d => labval("Some", jsonize_list<d2ecl>("d2eclst", d))
+      | Some d => jsonify("Some", jsonize_list<d2ecl>("d2eclst", d))
       )
       *)
 
@@ -590,9 +594,9 @@ case- x0.node() of
   jsonify("D2Cinclude",
     jsonize(tok),
     jsonize(src),
-    labval("knd", jsonize(knd)),
+    tagged("knd", knd), (* jsonify("knd", jsonize(knd)), *)
     jsonize(fopt), (* jsonize_option<filpath>("filpathopt", fopt), *)
-    labval("flag", jsonize(flag)),
+    tagged("flag", flag), (* jsonify("flag", jsonize(flag)), *)
     body
   ) where
   {
@@ -610,7 +614,7 @@ case- x0.node() of
       (
       case+ body of
       | None _ => jnul()
-      | Some d => labval("Some", jsonize_list<d2ecl>("d2eclst", d))
+      | Some d => jsonify("Some", jsonize_list<d2ecl>("d2eclst", d))
       )
       *)
   }
@@ -716,7 +720,7 @@ case- x0.node() of
 | D2Cnone1(d1csrc) =>
   jsonify("D2Csortdef", jsonize(d1csrc))
 //
-) (* end of [jsonize_d2ecl] *)
+) : labjsonval  (* end of [jsonize_d2ecl] *)
 end
 
 end // end of [local]
@@ -750,7 +754,7 @@ case+ x0 of
     jsonize(dpis) (* jsonize_list<d2pitm>("d2pitmlst", dpis) *)
   )
 //
-) (* end of [jsonize_d2itm] *)
+) : labjsonval  (* end of [jsonize_d2itm] *)
 end
 
 implement
@@ -764,10 +768,10 @@ case+ x0 of
   jsonify("D2PITMnone", jsonize(dqid))
 | D2PITMsome(pval, d2i0) =>
   jsonify("D2PITMsome",
-    labval("pval", jsonize(pval)),
+    jsonify("pval", jsonize(pval)),
     jsonize(d2i0)
   )
-) (* end of [jsonize_d2pitm] *)
+) : labjsonval  (* end of [jsonize_d2pitm] *)
 end
 
 
@@ -800,7 +804,7 @@ jsonize_tq2arg
     jsonize(x0.loc()),
     jsonize(x0.s2vs())  (* jsonize_list<s2var>("s2varlst", x0.s2vs()) *)
   )
-) (* end of [jsonize_tq2arg] *)
+) : labjsonval  (* end of [jsonize_tq2arg] *)
 
 end
 
@@ -843,7 +847,7 @@ case+ x0 of
     jsonize(d2cs), (* jsonize_list<d2cst>("d2cstlst", d2cs), *)
     jsonize(opt2)  (* jsonize_option<d2cst>("d2cstopt", opt2) *)
   )
-)
+) : labjsonval
 end // end of [jsonize_impld2cst]
 
 
@@ -870,7 +874,7 @@ case+ x0 of
     jsonize(s2cs), (* jsonize_list<s2cst>("s2cstlst", s2cs), *)
     jsonize(opt2)  (* jsonize_option<s2cst>("s2cstopt", opt2) *)
   )
-)
+) : labjsonval
 end // end of [jsonize_impls2cst]
 
 end
@@ -888,7 +892,7 @@ x0.node() of
   jsonify("D2CLAUpat", jsonize(d2gp))
 | D2CLAUexp(d2gp, d0e0) =>
   jsonify("D2CLAUexp", jsonize(d2gp), jsonize(d0e0))
-)
+) : labjsonval
 end
 
 
@@ -904,7 +908,7 @@ x0.node() of
   jsonify("D2GUAexp", jsonize(d2e))
 | D2GUAmat(d2e, d2p) =>
   jsonify("D2GUAmat", jsonize(d2e), jsonize(d2p))
-)
+) : labjsonval
 end (* end of [jsonize_d2gua] *)
 
 
@@ -928,7 +932,7 @@ x0.node() of
     jsonize(d2p),
     jsonize(d2gs)  (* jsonize_list<d2gua>("d2gualst", d2gs) *)
   )
-)
+) : labjsonval
 end
 
 implement
@@ -944,7 +948,7 @@ in
     jsonize(rcd.pat),
     jsonize(rcd.def), (* jsonize_option<d2exp>("d2expopt", rcd.def), *)
     jsonize(rcd.wtp)  (* jsonize_option<s2exp>("s2expopt", rcd.wtp) *)
-  )
+  ) : labjsonval
   end
 end // end of [jsonize_v2aldecl]
 
@@ -963,7 +967,7 @@ in
     jsonize(rcd.wth), (* jsonize_option<d2var>("d2varopt", rcd.wth), *)
     jsonize(rcd.res), (* jsonize_option<s2exp>("s2expopt", rcd.res), *)
     jsonize(rcd.ini)  (* jsonize_option<d2exp>("d2expopt", rcd.ini) *)
-  )
+  ) : labjsonval
   end
 end // end of [jsonize_v2ardecl]
 
@@ -984,6 +988,6 @@ in
     jsonize(rcd.res),
     jsonize(rcd.def), (* jsonize_option<d2exp>("d2expopt", rcd.def), *)
     jsonize(rcd.wtp)  (* jsonize_option<s2exp>("s2expopt", rcd.wtp) *)
-  )
+  ) : labjsonval
   end
 end // end of [jsonize_f2undecl]

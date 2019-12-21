@@ -103,14 +103,14 @@ case+ s2t0 of
   jsonify("S2Tnone0")
 | S2Tnone1(s1tsrc) =>
   jsonify("S2Tnone1", jsonize(s1tsrc))
-) (* end of [jsonize_sort2] *)
+) : labjsonval  (* end of [jsonize_sort2] *)
 end
 
 
 implement
 labify_sort2
   (s2t0) =
-@("sort2", res) where
+@("sort2", jsonval_labval1(res.0, res.1)) where
 val res =
 (
 case+ s2t0 of
@@ -144,6 +144,7 @@ case+ s2t0 of
 | S2Tnone1(s1tsrc) =>
   jsonify("S2Tnone1", jsonize(s1tsrc))
 ) (* end of [labify_sort2] *)
+ : labjsonval
 end
 
 end // end of [local]
@@ -163,52 +164,61 @@ case+ s2tb of
 | T2BASdat(dat) =>
   jsonify("T2BASabs", jsonize(dat))
 | T2BASimp(knd, sym) =>
+  jsonify("T2BASimp", jsonize(knd), jsonize(sym))
+(*
+
 (*
   jsonify("T2BASimp", ("knd", "sym"),
     (
-      labval("knd", jsonize(knd)), // jsonize(knd),
+      jsonify("knd", jsonize(knd)), // jsonize(knd),
       jsonize(sym)
     )
   )
 *)
-  labval("T2BASabs",
+  jsonify("T2BASabs",
     JSONlablist($list{labjsonval}(
         ("knd", jsonize(knd)),
         labify(sym)
       )
     )
   )
-)
+*)
+) : labjsonval
 end
 
 implement
 jsonize_t2abs(x0) =
-(* labval("t2abs", jsonize(x0.sym())) *)
+(* jsonify("t2abs", jsonize(x0.sym())) *)
 node("t2abs", jsonize(x0.sym()))
 
 
 implement
 jsonize_t2dat(x0) =
-(* labval("t2dat", $SYM.jsonize_symbol(x0.sym())) *)
+(* jsonify("t2dat", $SYM.jsonize_symbol(x0.sym())) *)
 node("t2dat", $SYM.jsonize_symbol(x0.sym()))
 
 
 implement
 jsonize_s2cst
   (x0) =
-  (* labval("s2cst", rst) where *)
+  (* jsonify("s2cst", rst) where *)
+jsonify("s2cst", jsonize(x0.sym()), jsonize(x0.stamp()))
+(*
   node("s2cst", rst) where
     val lst = $list{labjsonval}(
       $SYM.labify_symbol(x0.sym()), $STM.labify_stamp(x0.stamp())
     )
     val rst = JSONlablist(lst)
   end
+*)
 // (* end of [jsonize_s2cst] *)
 
 
 implement
 jsonize_s2var
   (x0) =
+jsonify("s2var", jsonize(x0.sym()), jsonize(x0.stamp()))  : labjsonval
+(*
 node("s2var", rst) where
     val lst = $list{labjsonval}(
       labify_sort2(x0.sort()),
@@ -218,6 +228,7 @@ node("s2var", rst) where
     val rst = JSONlablist(lst)
     (* val jsrt = jsonize(x0.sort()) *)
   end
+*)
 
 
 
@@ -249,7 +260,7 @@ case+ s2tx of
 | S2TXTerr(loc0) => jsonify("S2TXTerr(...)")
 *)
 //
-) (* end of [jsonize_s2txt] *)
+) : labjsonval  (* end of [jsonize_s2txt] *)
 end
 
 end // end of [local]
@@ -277,7 +288,7 @@ case+ knd of
 | TYRECflt2(nam) =>
   jsonify("TYRECflt2", jsonize(nam))
 //
-) (* end of [jsonize_tyrec] *)
+) : labjsonval  (* end of [jsonize_tyrec] *)
 end
 
 
@@ -319,7 +330,7 @@ s2e0.node() of
   let
     val s2e = s2xtv_get_sexp(xtv)
   in
-    jsonify("S2Extv", jsonize(s2e))
+    jsonify("S2Extv", jsonize(s2e)) : labjsonval
   end
 //
 | S2Eapp(s2fn, s2es) =>
@@ -350,7 +361,7 @@ s2e0.node() of
 | S2Efun(fc2, npf, arg, res) =>
   jsonify("S2Efun",
     jsonize(fc2),
-    labval("npf", jsonize(npf)), //jsonize(npf),
+    jsonify("npf", jsonize(npf)), //jsonize(npf),
     jsonize(arg), (* jsonize_list<s2exp>("s2explst", arg), *)
     jsonize(res)
   )
@@ -395,7 +406,7 @@ s2e0.node() of
 | S2Etyrec(knd, npf, ls2es) =>
   jsonify("S2Etyrec",
     jsonize(knd),
-    labval("npf", jsonize(npf)),
+    jsonify("npf", jsonize(npf)),
     jsonize(ls2es) (* jsonize_list<labs2exp>("labs2explst", ls2es) *)
   )
 //
@@ -409,7 +420,7 @@ s2e0.node() of
   jsonify("S2Enone")
 | S2Enone1(s1esrc) =>
   jsonify("S2Enone1", jsonize(s1esrc))
-) (* end of [jsonize_s2exp] *)
+) : labjsonval  (* end of [jsonize_s2exp] *)
 end
 
 end // end of [local]
@@ -427,7 +438,7 @@ case+ ls2e of
     jsonize(l0),
     jsonize(s2e)
   )
-) (* end of [jsonize_labs2exp] *)
+) : labjsonval  (* end of [jsonize_labs2exp] *)
 end
 
 
@@ -451,7 +462,7 @@ case+ x0 of
 //
 | S2ITMfmodenv(fmod) =>
   jsonify("S2ITMcst", jsonize("..."))
-)
+) : labjsonval
 end
 
 end
@@ -472,7 +483,7 @@ case+ x0 of
   jsonify("ABSTDF2lteq", jsonize(s2e))
 | ABSTDF2eqeq(s2e) =>
   jsonify("ABSTDF2eqeq", jsonize(s2e))
-)
+) : labjsonval
 end
 
 implement
@@ -490,5 +501,5 @@ case+ x0 of
 | EFFS2EXPsome(s2f, s2e) =>
   jsonify("EFFS2EXPsome", ("s2f", "s2e"), (jsonize(s2f), jsonize(s2e)))
 *)
-) (* end of [jsonize_effs2expopt] *)
+) : labjsonval  (* end of [jsonize_effs2expopt] *)
 end

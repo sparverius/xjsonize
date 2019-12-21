@@ -11,9 +11,11 @@
 
 
 implement
-jsonize_stamp(x0) =
-node("stamp", jsonize(tostring_uint(stamp2uint(x0))))
+jsonize_stamp(x0) = @("stamp", JSONstring(tostring_uint(stamp2uint(x0))))
+(* node("stamp", jsonize(tostring_uint(stamp2uint(x0)))) *)
 
 
+(*
 implement
 labify_stamp(x0) = ("stamp", jsonize(tostring_uint(stamp2uint(x0))))
+*)

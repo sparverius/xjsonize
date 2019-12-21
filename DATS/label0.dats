@@ -24,8 +24,8 @@ val res =
       | ~None_vt() => jsonize("None")
       | ~Some_vt(sym) =>
         jsonify("LABsym", jsonize(sym))
-    )
+    ) : labjsonval
   | ~Some_vt(int) =>
     jsonify("LABint", jsonize(int))
-)
+): labjsonval
 end

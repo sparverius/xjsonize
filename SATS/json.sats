@@ -2,14 +2,14 @@ datatype
 jsonval =
 //
   | JSONnul of ()
-  | JSONint of (int)
-  | JSONbool of (bool)
-  | JSONfloat of (double)
-  | JSONstring of (string)
+  | JSONint of int
+  | JSONbool of bool
+  | JSONfloat of double
+  | JSONstring of string
 //
-  | JSONlist of (jsonvalist)
+  | JSONlist of jsonvalist
   | JSONlablist of labjsonvalist
-  | JSONoption of (jsonvalopt)
+  | JSONoption of jsonvalopt
 //
   (* | JSONintinf of (intinf) *)
 //
@@ -22,7 +22,8 @@ where
   and
   jsonvalopt = Option (jsonval)
 
-typedef jsonize_type(a:t@ype) = a -> jsonval
+(* typedef jsonize_type(a:t@ype) = a -> jsonval *)
+typedef jsonize_type(a:t@ype) = a -> labjsonval
 typedef labify_type(a:t@ype) = a -> (string, jsonval)
 
 (* ****** ****** *)
@@ -264,27 +265,37 @@ jsonize_option_fun
 symintr jsonize
 symintr labify
 
+(*
 fun{a:t@ype} jsonize_val: (a) -> jsonval
 
 fun{a:t@ype} jsonize_list: (string, List(a)) -> jsonval
 
 fun{a:t@ype} jsonize_option: (string, Option(a)) -> jsonval
 fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> jsonval
+*)
+
+fun{a:t@ype} jsonize_val: (a) -> labjsonval
+
+fun{a:t@ype} jsonize_list: (string, List(a)) -> labjsonval
+
+fun{a:t@ype} jsonize_option: (string, Option(a)) -> labjsonval
+fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> labjsonval
+
 
 fun
-jsonize_int(x:int): jsonval
+jsonize_int(x:int): labjsonval
 
 fun
-jsonize_char(x:char): jsonval
+jsonize_char(x:char): labjsonval
 
 fun
-jsonize_string(x:string): jsonval
+jsonize_string(x:string): labjsonval
 
 fun
-jsonize_bool(x:bool): jsonval
+jsonize_bool(x:bool): labjsonval
 
 fun
-jsonize_double(x:double): jsonval
+jsonize_double(x:double): labjsonval
 
 (* fun
 jsonize_float(x:float): jsonval = JSONstring(tostring_val<float>(x)) *)
@@ -328,10 +339,11 @@ listj2(x: jsonval, y: jsonval): jsonval
 
 fun
 labval2(x: jsonval, y: jsonval): jsonval
+
 fun
-node(x: string, y: jsonval): jsonval
+node(x: string, y: labjsonval): labjsonval
 fun
-node2(x: string, y: jsonval, z: jsonval): jsonval
+node2(x: string, y: labjsonval, z: labjsonval): labjsonval
 
 
 fun
@@ -341,8 +353,61 @@ fprintf {ts:types} (
   args: ts
 ): void = "mac#fprintf"
 
-typedef jv = jsonval
+(*
+typedef jv = //jsonval
+labjsonval
+*)
 
+fun
+jsonify0 (guard_name: string): labjsonval
+fun
+jsonify1 (guard_name: string, arg_json: labjsonval): labjsonval
+fun
+jsonify2 (string, labjsonval, labjsonval): labjsonval
+fun
+jsonify3 (string, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify4 (string, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify5 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify6 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify7 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify8 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify9 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+fun
+jsonify10 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+
+
+fun labjson_string(string, string): jsonval
+(*
+fun labjson_string2(string, string, string): jsonval
+fun labjson_string3(string, string, string, string): jsonval
+*)
+
+overload labjson with labjson_string
+
+fun to_jsonval_labjsonval(labjsonval): jsonval
+fun to_jsonval_jsonval(jsonval): jsonval
+
+overload to_jsonval with to_jsonval_labjsonval
+overload to_jsonval with to_jsonval_jsonval
+
+(*
+overload labjson with labjson_string2
+overload labjson with labjson_string3
+*)
+
+fun tagged_int(xs: string, ys: int) : labjsonval
+fun tagged_string(xs: string, ys: string) : labjsonval
+
+overload tagged with tagged_int
+overload tagged with tagged_string
+
+(*
 fun
 jsonify0 (guard_name: string): jsonval
 fun
@@ -365,6 +430,7 @@ fun
 jsonify9 (string, jv, jv, jv, jv, jv, jv, jv, jv, jv): jsonval
 fun
 jsonify10 (string, jv, jv, jv, jv, jv, jv, jv, jv, jv, jv): jsonval
+*)
 
 overload jsonify with jsonify0
 overload jsonify with jsonify1

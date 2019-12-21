@@ -257,8 +257,12 @@ jsonize_d2pat
 node2("d2pat", jsonize(x0.loc()), res) where
 val res =
 (
-case- x0.node() of
+case x0.node() of
 //
+| D2Pnil() =>
+  jsonify("D2Pnil")
+| D2Pany() =>
+  jsonify("D2Pany")
 | D2Pint(tok) =>
   jsonify("D2Pint", jsonize(tok))
 | D2Pbtf(tok) =>

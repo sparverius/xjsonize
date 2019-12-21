@@ -752,9 +752,7 @@ println!
 ("process_fpath: d0cs = ", d0cs)
 *)
 //
-val json =
-labval("jsonized(0)", jsonize_list<d0ecl>("d0eclst", d0cs))
-val () = println!(json)
+val () = println!("jsonized(0)", "\n", jsonize(d0cs))
 //
 val () = synread_main(d0cs)
 //
@@ -778,9 +776,8 @@ val () =
 println!
 ("process_fpath: d1cs = ", d1cs)
 *)
-val json =
-labval("jsonized(0->1)", jsonize_list<d1ecl>("d1eclst", d1cs))
-val () = println!(json)
+//
+val () = println!("jsonized(0->1)", "\n", jsonize(d1cs))
 //
 (*
 val () = t1xread_main(d1cs)
@@ -801,9 +798,7 @@ d2cs where
 }
 end // end of [val]
 //
-val json =
-labval("jsonized(1->2)", jsonize_list<d2ecl>("d2eclst", d2cs))
-val () = println!(json)
+val () = println!("jsonized(1->2)", "\n", jsonize(d2cs))
 //
 (*
 val () =
@@ -832,11 +827,7 @@ d3cs where
 }
 end // end of [val]
 //
-(*
-val json =
-labval("jsonized(2->3)", jsonize_list<d3ecl>("d3eclst", d3cs))
-val () = println!(json)
-*)
+val () = println!("jsonized(2->3)", "\n", jsonize(d3cs))
 //
 (*
 val () =
@@ -860,11 +851,7 @@ d3cs where
 }
 end // end of [val]
 //
-(*
-val json =
-labval("jsonized(3->3)", jsonize_list<d3ecl>("d3eclst", d3cs))
-val () = println!(json)
-*)
+val () = println!("jsonized(3->3)", "\n", jsonize(d3cs))
 //
 (*
 val () =
@@ -876,8 +863,7 @@ println!
 val
 d3cs = trans3t_program(d3cs)
 //
-val json = labval("jsonized(3->3t)", jsonize_list<d3ecl>("d3eclst", d3cs))
-val () = println!(json)
+val () = println!("jsonized(3->3t)", "\n", jsonize(d3cs))
 //
 (*
 val ((*void*)) =

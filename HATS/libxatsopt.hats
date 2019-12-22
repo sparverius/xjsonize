@@ -3,72 +3,72 @@
 (* ****** ****** *)
 //
 #staload
-"{$x}/SATS/label0.sats"
+"{$XANADU}/SATS/label0.sats"
 #staload
-"{$x}/SATS/stamp0.sats"
+"{$XANADU}/SATS/stamp0.sats"
 #staload
-"{$x}/SATS/symbol.sats"
+"{$XANADU}/SATS/symbol.sats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$x}/SATS/filsrch.sats"
+"{$XANADU}/SATS/filsrch.sats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$x}/SATS/lexing.sats"
+"{$XANADU}/SATS/lexing.sats"
 //
 #staload
-"{$x}/SATS/parsing.sats"
+"{$XANADU}/SATS/parsing.sats"
 //
 #staload
-"{$x}/SATS/staexp0.sats"
+"{$XANADU}/SATS/staexp0.sats"
 #staload
-"{$x}/SATS/dynexp0.sats"
+"{$XANADU}/SATS/dynexp0.sats"
 #staload
-"{$x}/SATS/synread.sats"
+"{$XANADU}/SATS/synread.sats"
 //
 #staload
-"{$x}/SATS/trans01.sats"
+"{$XANADU}/SATS/trans01.sats"
 #staload
-"{$x}/SATS/staexp1.sats"
+"{$XANADU}/SATS/staexp1.sats"
 #staload
-"{$x}/SATS/dynexp1.sats"
+"{$XANADU}/SATS/dynexp1.sats"
 #staload
-"{$x}/SATS/tread01.sats"
+"{$XANADU}/SATS/tread01.sats"
 //
 #staload
-"{$x}/SATS/trans12.sats"
+"{$XANADU}/SATS/trans12.sats"
 #staload
-"{$x}/SATS/tread12.sats"
+"{$XANADU}/SATS/tread12.sats"
 //
 #staload
-"{$x}/SATS/trans23.sats"
+"{$XANADU}/SATS/trans23.sats"
 #staload
-"{$x}/SATS/trans33.sats"
+"{$XANADU}/SATS/trans33.sats"
 //
 #staload
-"{$x}/SATS/tread33.sats"
+"{$XANADU}/SATS/tread33.sats"
 //
 #staload
-"{$x}/SATS/trans3t.sats"
+"{$XANADU}/SATS/trans3t.sats"
 //
 (* ****** ****** *)
 //
 #staload
 GLO =
-"{$x}/SATS/global.sats"
+"{$XANADU}/SATS/global.sats"
 //
 #staload
 ERR =
-"{$x}/SATS/xerrory.sats"
+"{$XANADU}/SATS/xerrory.sats"
 //
 (* ****** ****** *)
 //
 #staload
 FP0 =
-"{$x}/SATS/filpath.sats"
+"{$XANADU}/SATS/filpath.sats"
 //
   typedef
   fpath_t = $FP0.filpath
@@ -81,45 +81,45 @@ FP0 =
 (* ****** ****** *)
 //
 #staload S2E =
-"{$x}/SATS/staexp2.sats"
+"{$XANADU}/SATS/staexp2.sats"
 #staload D2E =
-"{$x}/SATS/dynexp2.sats"
+"{$XANADU}/SATS/dynexp2.sats"
 //
 (* ****** ****** *)
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp0_print.dats"
+"{$XANADU}/DATS/staexp0_print.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp0_print.dats"
+"{$XANADU}/DATS/dynexp0_print.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp1_print.dats"
+"{$XANADU}/DATS/staexp1_print.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp1_print.dats"
+"{$XANADU}/DATS/dynexp1_print.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp2_print.dats"
+"{$XANADU}/DATS/staexp2_print.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/statyp2_print.dats"
+"{$XANADU}/DATS/statyp2_print.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp2_print.dats"
+"{$XANADU}/DATS/dynexp2_print.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp3_print.dats"
+"{$XANADU}/DATS/dynexp3_print.dats"
 //
 (* ****** ****** *)
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/trans12_envmap.dats"
+"{$XANADU}/DATS/trans12_envmap.dats"
 //
 (* ****** ****** *)
 

@@ -8,6 +8,7 @@ CC=gcc
 SED=sed
 CP=cp
 RMF=rm -f
+MVF=mv -f
 
 XQ=$(shell cat .xq)
 
@@ -105,10 +106,9 @@ $(INCLUDE) $(CFLAGS) $(GCFLAG) $^ $(LIBGC) $(LIBRARY)
 libxjsonize: \
 $(OBJSATS) $(OBJDATS) \
 BUILD/libxjsonize_dats.o ; \
-($(AR) -r $@.a $^)
-# && $(CP) -f $@.a ./lib)
+($(AR) -r $@.a $^ && $(MVF) $@.a ./lib)
 BUILD/libxjsonize_dats.o: \
-DATS/xjsonize.dats; $(PATSCC) -DATS _LIBXJSONIZE_ -o $@ -c $<
+DATS/xjsonize.dats; $(PATSCC) -DATS _LIBXJSONIZE_ $(INCLUDE) -o $@ -c $<
 
 ######
 

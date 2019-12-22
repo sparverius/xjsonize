@@ -10,7 +10,8 @@ CP=cp
 RMF=rm -f
 MVF=mv -f
 
-XQ=$(shell cat .xq)
+XATSHOMEQ=./../xanadu/
+XATSQ=./../xanadu/srcgen/xats
 
 ######
 
@@ -85,12 +86,12 @@ $(patsubst %.dats, BUILD/%_dats.o, $(SRCDATS))
 INCLUDE:=
 INCLUDE+=-I"."
 INCLUDE+=-I"./BUILD/xats"
-LIBRARY:=-L$(XQ)/../../lib -lxatsopt
+LIBRARY:=-L$(XATSQ)/../../lib -lxatsopt
 
 ######
 #
-ifeq ($(XQ),)
-all: ; @printf "exiting... \$$XQ not defined\n"
+ifeq ($(XATSQ),)
+all: ; @printf "exiting... \$$XATSQ not defined\n"
 else
 all: \
 xjsonize
@@ -160,8 +161,8 @@ clean:: ; $(RMF) xjsonize_dats.c
 
 cleanall:: clean
 cleanall:: ; $(RMF) xjsonize
-cleanall:: ; (cd $(XQ) && make cleanall)
-cleanall:: ; $(RMF) $(XQ)/../../lib/libxatsopt.a
+# cleanall:: ; (cd $(XATSQ) && make cleanall)
+# cleanall:: ; $(RMF) $(XATSQ)/../../lib/libxatsopt.a
 
 ######
 

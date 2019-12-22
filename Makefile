@@ -99,7 +99,7 @@ endif
 xjsonize: \
 DATS/xjsonize.dats \
 $(OBJSATS) $(OBJDATS) ; \
-$(PATSCC) -cleanaft -o xjsonize \
+$(PATSCC) -cleanaft -o ./bin/xjsonize \
 $(INCLUDE) $(CFLAGS) $(GCFLAG) $^ $(LIBGC) $(LIBRARY)
 #
 ######

@@ -23,6 +23,7 @@ in
 implement{} jsonize_tokenopt(x) = jsonize_option<token>("tokenopt", x)
 implement{} jsonize_tokenlst(x) = jsonize_list<token>("tokenlst", x)
 
+
 end
 
 implement
@@ -33,46 +34,50 @@ val res =
 (
 case+ tnd of
 //
-| T_EOF() => jstr("EOF")
-| T_ERR() => jstr("ERR")
+| T_EOF() => jstr("T_EOF")
+| T_ERR() => jstr("T_ERR")
 //
-| T_EOL() => jstr("EOL")
+| T_EOL() => jstr("T_EOL")
 //
 | T_BLANK(x) =>
-  labjson("BLANK", x)
+  labjson("T_BLANK", x)
 //
 | T_CLNLT(x) =>
-  labjson("CLNLT", x)
+  labjson("T_CLNLT", x)
 | T_DOTLT(x) =>
-  labjson("DOTLT", x)
+  labjson("T_DOTLT", x)
 //
 | T_IDENT_alp(x) =>
-  labjson("IDENT_alp", x)
+  (* labjson("T_IDENT_alp", x) *)
+  (* jsonval_labval2("tag", JSONstring("T_IDENT_alp"), "data", JSONstring(x)) *)
+  mknode("T_IDENT_alp", x)
 | T_IDENT_sym(x) =>
-  labjson("IDENT_sym", x)
+  (* labjson("T_IDENT_sym", x) *)
+  mknode("T_IDENT_sym", x)
 //
 | T_IDENT_srp(x) =>
-  labjson("IDENT_srp", x)
+  labjson("T_IDENT_srp", x)
 | T_IDENT_dlr(x) =>
-  labjson("IDENT_dlr", x)
+  labjson("T_IDENT_dlr", x)
 //
 | T_IDENT_qual(x) =>
-  labjson("IDENT_qual", x)
+  labjson("T_IDENT_qual", x)
 //
 | T_INT1(rep) =>
-  labjson("INT1", rep)
+  (* labjson("T_INT1", rep) *)
+  mknode("T_INT1", rep)
 | T_INT2(base, rep) =>
-  to_jsonval (jsonify("INT3", jsonize(base), jsonize(rep)))
+  to_jsonval (jsonify("T_INT2", jsonize(base), jsonize(rep)))
 | T_INT3(base, rep, k0(*sfx*)) =>
-  to_jsonval(jsonify("INT3", jsonize(base), jsonize(rep), jsonize(k0)))
+  to_jsonval(jsonify("T_INT3", jsonize(base), jsonize(rep), jsonize(k0)))
 //
 | T_FLOAT1(rep) =>
-  to_jsonval(jsonify("FLOAT1", jsonize(rep)))
+  to_jsonval(jsonify("T_FLOAT1", jsonize(rep)))
 | T_FLOAT2(base, rep) =>
-  to_jsonval(jsonify("FLOAT2", jsonize(base), jsonize(rep)))
+  to_jsonval(jsonify("T_FLOAT2", jsonize(base), jsonize(rep)))
 
 | T_FLOAT3(base, rep, k0(*sfx*)) =>
-  to_jsonval(jsonify("FLOAT3",
+  to_jsonval(jsonify("T_FLOAT3",
     jsonize(base),
     jsonize(rep),
     jsonize(k0)
@@ -87,23 +92,23 @@ case+ tnd of
   end
 *)
 | T_CHAR_nil(rep) =>
-  to_jsonval(jsonify("CHAR_nil", jsonize(rep)))
+  to_jsonval(jsonify("T_CHAR_nil", jsonize(rep)))
 | T_CHAR_char(rep) =>
-  to_jsonval(jsonify("CHAR_char", jsonize(rep)))
+  to_jsonval(jsonify("T_CHAR_char", jsonize(rep)))
 | T_CHAR_slash(rep) =>
-  to_jsonval(jsonify("CHAR_slash", jsonize(rep)))
+  to_jsonval(jsonify("T_CHAR_slash", jsonize(rep)))
 //
 | T_STRING_closed(str) =>
-  to_jsonval(jsonify("STRING_closed", jsonize(str)))
+  to_jsonval(jsonify("T_STRING_closed", jsonize(str)))
 | T_STRING_unclsd(str) =>
-  to_jsonval(jsonify("STRING_unclsd", jsonize(str)))
+  to_jsonval(jsonify("T_STRING_unclsd", jsonize(str)))
 //
 (*
 | T_CDATA(cdata, asz) => jsonify(("CDATA(...)")
 *)
 //
 | T_SPECHAR(c) =>
-  to_jsonval(jsonify("SPECHAR", jsonize(int2char0(c))))
+  to_jsonval(jsonify("T_SPECHAR", jsonize(int2char0(c))))
 //
 | T_COMMENT_line(init, content) =>
   to_jsonval(jsonify("T_COMMENT_line", jsonize(init), jsonize(content)))
@@ -115,27 +120,41 @@ case+ tnd of
 | T_COMMENT_mlblock(level, content) =>
   to_jsonval(jsonify("T_COMMENT_mlblock", jsonize(level), jsonize(content)))
 //
-| T_AT() => jstr("AT")
+| T_AT() => // jstr("T_AT")
+  mknode("T_AT", "@")
 //
-| T_BAR() => jstr("BAR")
-| T_CLN() => jstr("CLN")
-| T_DOT() => jstr("DOT")
+| T_BAR() => // jstr("T_BAR")
+  mknode("T_BAR", "|")
+| T_CLN() => // jstr("T_CLN")
+  mknode("T_CLN", ":")
+| T_DOT() => // jstr("T_DOT")
+  mknode("T_DOT", ".")
 //
-| T_EQ() => jstr("EQ")
+| T_EQ() => // jstr("T_EQ")
+  mknode("T_EQ", "=")
 //
-| T_LT() => jstr("LT")
-| T_GT() => jstr("GT")
+| T_LT() => // jstr("T_LT")
+  mknode("T_LT", "<")
+| T_GT() => // jstr("T_GT")
+  mknode("T_GT", ">")
 //
-| T_DLR() => jstr("DLR")
-| T_SRP() => jstr("SRP")
+| T_DLR() => // jstr("T_DLR")
+  mknode("T_DLR", "$")
+| T_SRP() => // jstr("T_SRP")
+  mknode("T_SRP", "#")
 //
-| T_EQLT() => jstr("EQLT")
-| T_EQGT() => jstr("EQGT")
+| T_EQLT() => // jstr("T_EQLT")
+  mknode("T_EQLT", "=<")
+| T_EQGT() => // jstr("T_EQGT")
+  mknode("T_EQGT", "=>")
 //
-| T_LTGT() => jstr("LTGT")
-| T_GTLT() => jstr("GTLT")
+| T_LTGT() => // jstr("T_LTGT")
+  mknode("T_LTGT", "<>")
+| T_GTLT() => // jstr("T_GTLT")
+  mknode("T_GTLT", "><")
 //
-| T_MSLT() => jstr("MSLT")
+| T_MSLT() => // jstr("T_MSLT")
+  mknode("T_MSLT", "-<")
 (*
 | T_MSGT() => jstr("MSGT")
 | T_MSLTGT() => jstr("MSLTGT")
@@ -144,133 +163,157 @@ case+ tnd of
 (*
 | T_DOTLT() => jstr("DOTLT")
 *)
-| T_GTDOT() => jstr("GTDOT")
+| T_GTDOT() => // jstr("T_GTDOT")
+  mknode("T_GTDOT", ">.")
 //
-| T_COMMA() => jstr("COMMA")
-| T_SMCLN() => jstr("SMCLN")
+| T_COMMA() => // jstr("T_COMMA")
+  mknode("T_COMMA", ",")
+| T_SMCLN() => // jstr("T_SMCLN")
+  mknode("T_SMCLN", ";")
 //
-| T_BSLASH() => jstr("BSLASH")
+| T_BSLASH() => // jstr("T_BSLASH")
+  mknode("T_BSLASH", "\\")
 //
-| T_LPAREN() => jstr("LPAREN")
-| T_RPAREN() => jstr("RPAREN")
-| T_LBRACE() => jstr("LBRACE")
-| T_RBRACE() => jstr("RBRACE")
+| T_LPAREN() => // jstr("T_LPAREN")
+  mknode("T_LPAREN", "(")
+| T_RPAREN() => //jstr("T_RPAREN")
+  mknode("T_RPAREN", ")")
+| T_LBRACE() => // jstr("T_LBRACE")
+  mknode("T_LBRACE", "{")
+| T_RBRACE() => // jstr("T_RBRACE")
+  mknode("T_RBRACE", "{")
 //
-| T_LBRACK() => jstr("LBRACK")
-| T_RBRACK() => jstr("RBRACK")
+| T_LBRACK() => // jstr("T_LBRACK")
+  mknode("T_LBRACK", "[")
+| T_RBRACK() => // jstr("T_RBRACK")
+  mknode("T_RBRACK", "]")
 //
 | T_EXISTS(knd) =>
-  to_jsonval(jsonify("EXISTS", jsonize(knd)))
+  to_jsonval(jsonify("T_EXISTS", jsonize(knd)))
 //
 | T_TUPLE(knd) =>
-  to_jsonval(jsonify("TUPLE", jsonize(knd)))
+  to_jsonval(jsonify("T_TUPLE", jsonize(knd)))
 | T_RECORD(knd) =>
-  to_jsonval(jsonify("RECORD", jsonize(knd)))
+  to_jsonval(jsonify("T_RECORD", jsonize(knd)))
 (*
 | T_STRUCT() => jsonize("STRUCT")
 *)
 //
-| T_AS() => jstr("AS")
+| T_AS() => jstr("T_AS")
 //
-| T_OF() => jstr("OF")
+| T_OF() => jstr("T_OF")
 //
-| T_OP() => jstr("OP")
+| T_OP() => jstr("T_OP")
 //
-| T_OP_par() => jstr("OP_par")
+| T_OP_par() => jstr("T_OP_par")
 | T_OP_sym(id) =>
-  to_jsonval(jsonify("OP_sym", jsonize(id)))
+  to_jsonval(jsonify("T_OP_sym", jsonize(id)))
 //
-| T_IN() => jstr("IN")
+| T_IN() => jstr("T_IN")
 //
-| T_AND() => jstr("AND")
-| T_END() => jstr("END")
+| T_AND() => jstr("T_AND")
+| T_END() => jstr("T_END")
 //
-| T_IF() => jstr("IF")
-| T_SIF() => jstr("SIF")
-| T_THEN() => jstr("THEN")
-| T_ELSE() => jstr("ELSE")
+| T_IF() => jstr("T_IF")
+| T_SIF() => jstr("T_SIF")
+| T_THEN() => jstr("T_THEN")
+| T_ELSE() => jstr("T_ELSE")
 //
-| T_WHEN() => jstr("WHEN")
-| T_WITH() => jstr("WITH")
+| T_WHEN() => jstr("T_WHEN")
+| T_WITH() => jstr("T_WITH")
 //
 | T_CASE(k0) =>
-  to_jsonval(jsonify("CASE", jsonize(k0)))
+  to_jsonval(jsonify("T_CASE", jsonize(k0)))
 //
-| T_SCASE() => jstr("SCASE")
+| T_SCASE() => jstr("T_SCASE")
 //
-| T_ENDIF() => jstr("ENDIF")
-| T_ENDSIF() => jstr("ENDSIF")
-| T_ENDCASE() => jstr("ENDCASE")
-| T_ENDSCASE() => jstr("ENDSCASE")
+| T_ENDIF() => jstr("T_ENDIF")
+| T_ENDSIF() => jstr("T_ENDSIF")
+| T_ENDCASE() => jstr("T_ENDCASE")
+| T_ENDSCASE() => jstr("T_ENDSCASE")
 //
 | T_LAM(knd) =>
-  to_jsonval(jsonify("LAM", jsonize(knd)))
+  to_jsonval(jsonify("T_LAM", jsonize(knd)))
 | T_FIX(knd) =>
-  to_jsonval(jsonify("FIX", jsonize(knd)))
+  to_jsonval(jsonify("T_FIX", jsonize(knd)))
 //
-| T_LET() => jstr("LET")
-| T_WHERE() => jstr("WHERE")
-| T_LOCAL() => jstr("LOCAL")
+| T_LET() => jstr("T_LET")
+| T_WHERE() => jstr("T_WHERE")
+| T_LOCAL() => jstr("T_LOCAL")
 //
-| T_ENDLAM() => jstr("ENDLAM")
-| T_ENDLET() => jstr("ENDLET")
-| T_ENDWHERE() => jstr("ENDWHERE")
-| T_ENDLOCAL() => jstr("ENDLOCAL")
+| T_ENDLAM() => jstr("T_ENDLAM")
+| T_ENDLET() => jstr("T_ENDLET")
+| T_ENDWHERE() => jstr("T_ENDWHERE")
+| T_ENDLOCAL() => jstr("T_ENDLOCAL")
 //
 | T_VAL(vlk) =>
-  to_jsonval(jsonify("VAL", jsonize(vlk)))
-| T_VAR() => jstr("VAR")
+  (* to_jsonval(jsonify("T_VAL", jsonize(vlk))) *)
+  mknode("T_VAL", to_jsonval(jsonize(vlk)))
+
+| T_VAR() => jstr("T_VAR")
 //
 | T_FUN(fnk) =>
-  to_jsonval(jsonify("FUN", jsonize(fnk)))
+  (* to_jsonval(jsonify("T_FUN", jsonize(fnk))) *)
+  mknode("T_FUN", to_jsonval(jsonize(fnk)))
 //
 | T_IMPLMNT(knd) =>
-  to_jsonval(jsonify("IMPLMNT", jsonize(knd)))
+  (* to_jsonval(jsonify("T_IMPLMNT", jsonize(knd))) *)
+  mknode("T_IMPLMNT", to_jsonval(jsonize(knd)))
 //
 | T_ABSSORT() =>
-  jstr("ABSSORT")
+  jstr("T_ABSSORT")
 //
 | T_SORTDEF() =>
-  jstr("SORTDEF")
+  jstr("T_SORTDEF")
 //
 | T_SEXPDEF(srt) =>
-  to_jsonval(jsonify("SEXPDEF", jsonize(srt)))
+  to_jsonval(jsonify("T_SEXPDEF", jsonize(srt)))
 //
 | T_ABSTYPE(srt) =>
-  to_jsonval(jsonify("ABSTYPE", jsonize(srt)))
+  to_jsonval(jsonify("T_ABSTYPE", jsonize(srt)))
 //
 | T_ABSIMPL() =>
-  jstr("ABSIMPL")
+  jstr("T_ABSIMPL")
 | T_ABSOPEN() =>
-  jstr("ABSOPEN")
+  jstr("T_ABSOPEN")
 //
 | T_DATASORT() =>
-  jstr("DATASORT")
+  jstr("T_DATASORT")
 | T_DATATYPE(srt) =>
-  to_jsonval(jsonify("DATATYPE", jsonize(srt)))
+  (* to_jsonval(jsonify("T_DATATYPE", jsonize(srt))) *)
+  mknode("T_DATATYPE", res)
+  where
+  val res = (
+  case- srt of
+  | 0 => "datatype"
+  | 2 => "datavtype"
+  | 4 => "dataprop"
+  | 6 => "dataview"
+  ) : string
+  end
 //
 | T_WITHTYPE(srt) =>
-  to_jsonval(jsonify("WITHTYPE", jsonize(srt)))
+  to_jsonval(jsonify("T_WITHTYPE", jsonize(srt)))
 //
 | T_SRP_NONFIX() =>
-  jstr("#NONFIX")
+  jstr("T_SRP_NONFIX")
 | T_SRP_FIXITY(knd) =>
-  to_jsonval(jsonify("#FIXIXTY", jsonize(knd)))
+  to_jsonval(jsonify("T_SRP_FIXIXTY", jsonize(knd)))
 //
-| T_SRP_STACST() => jstr("#STACST")
+| T_SRP_STACST() => jstr("T_SRP_STACST")
 //
-| T_SRP_STATIC() => jstr("#STATIC")
-| T_SRP_EXTERN() => jstr("#EXTERN")
+| T_SRP_STATIC() => jstr("T_SRP_STATIC")
+| T_SRP_EXTERN() => jstr("T_SRP_EXTERN")
 //
-| T_SRP_DEFINE() => jstr("#DEFINE")
-| T_SRP_MACDEF() => jstr("#MACDEF")
+| T_SRP_DEFINE() => jstr("T_SRP_DEFINE")
+| T_SRP_MACDEF() => jstr("T_SRP_MACDEF")
 //
-| T_SRP_INCLUDE() => jstr("#INCLUDE")
+| T_SRP_INCLUDE() => jstr("T_SRP_INCLUDE")
 //
-| T_SRP_STALOAD() => jstr("#STALOAD")
-| T_SRP_DYNLOAD() => jstr("#DYNLOAD")
+| T_SRP_STALOAD() => jstr("T_SRP_STALOAD")
+| T_SRP_DYNLOAD() => jstr("T_SRP_DYNLOAD")
 //
-| T_SRP_SYMLOAD() => jstr("#SYMLOAD")
+| T_SRP_SYMLOAD() => jstr("T_SRP_SYMLOAD")
 //
 )
 (* : labjsonval *)

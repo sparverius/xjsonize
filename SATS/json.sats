@@ -264,6 +264,7 @@ jsonize_option_fun
 
 symintr jsonize
 symintr labify
+symintr labelize
 
 (*
 fun{a:t@ype} jsonize_val: (a) -> jsonval
@@ -443,3 +444,26 @@ overload jsonify with jsonify7
 overload jsonify with jsonify8
 overload jsonify with jsonify9
 overload jsonify with jsonify10
+
+fun mknode_jsonval(x: string, y: jsonval): jsonval
+fun mknode_string(x: string, y: string): jsonval
+fun mknode_labjsonval(x: string, y: labjsonval): jsonval
+overload mknode with mknode_jsonval
+overload mknode with mknode_string
+overload mknode with mknode_labjsonval
+
+
+
+fun
+jsonize_labjsonvalist(xs: List0(labjsonval)): jsonval
+
+overload labelize with jsonize_labjsonvalist
+
+fun
+jsonize_lablist(nm: string, xs: List0(labjsonval)): labjsonval
+
+overload jsonize with jsonize_lablist
+
+fun
+jsonize_named_labjsonvalist(nm: string, x: labjsonvalist): labjsonval
+overload jsonize with jsonize_named_labjsonvalist

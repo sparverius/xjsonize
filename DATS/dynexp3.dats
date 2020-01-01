@@ -384,6 +384,9 @@ x0.node() of
 | D3Enone2(d3esrc) =>
   jsonify("D3Enone2", jsonize(d3esrc))
 //
+| D3Epcon(d3e1, d3e2) =>
+  jsonify("D3Epcon", jsonize(d3e1), jsonize(d3e2))
+//
 ) : labjsonval
 end
 

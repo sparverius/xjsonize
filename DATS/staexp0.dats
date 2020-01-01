@@ -10,6 +10,7 @@
 #staload "./../SATS/label0.sats"
 #staload "./../SATS/lexing.sats"
 
+#staload "./json.dats"
 #staload _ = "./json.dats"
 #staload _ = "./lexing_token.dats"
 
@@ -63,7 +64,7 @@ implement jsonize_g0marglst(x) = jsonize_list<g0marg>("g0marglst", x)
 implement jsonize_t0marglst(x) = jsonize_list<t0marg>("t0marglst", x)
 
 
-implement jsonize_sort0lst(x) = jsonize_list<sort0>("s0rt0lst", x)
+implement jsonize_sort0lst(x) = jsonize_list<sort0>("sort0lst", x)
 implement jsonize_i0dntlst(x) = jsonize_list<i0dnt>("i0dntlst", x)
 
 implement jsonize_i0dntopt(x) = jsonize_option<i0dnt>("i0dntopt", x)
@@ -72,6 +73,8 @@ implement jsonize_t0intopt(x) = jsonize_option<t0int>("t0intopt", x)
 
 implement
 jsonize_val<token> = jsonize_token
+
+#include "./mac.dats"
 
 implement
 jsonize_t0int
@@ -133,15 +136,20 @@ end
 implement
 jsonize_i0dnt
   (x0) =
-node("i0dnt", res) where
+(* node("i0dnt", res) where *)
+@("i0dnt_node", res)
+where
 val res =
 (
 case+ x0.node() of
 | I0DNTnone(tok) =>
-  jsonify("I0DNTnone", jsonize(tok))
+  (* jsonify("I0DNTnone", jsonize(tok)) *)
+  mknode("I0DNTnone", to_jsonval(jsonize(tok)))
 | I0DNTsome(tok) =>
-  jsonify("I0DNTsome", jsonize(tok))
-) : labjsonval
+  (* jsonify("I0DNTsome", jsonize(tok)) *)
+  mknode("I0DNTnone", to_jsonval(jsonize(tok)))
+)
+ (* : labjsonval *)
 end
 
 implement
@@ -302,36 +310,54 @@ in (* in-of-local *)
 implement
 jsonize_sort0
   (x0) =
-node("sort0", res) where
+(* node("sort0", res) where *)
+("sort0", res) : labjsonval
+where
 val res =
 (
 case+ x0.node() of
 //
 | S0Tid(tid) =>
-  jsonify("S0Tid", jsonize(tid))
+  (* jsonify("S0Tid", jsonize(tid)) *)
+  mknode("S0Tid", to_jsonval(jsonize(tid)))
 //
 | S0Tint(int) =>
-  jsonify("S0Tint", jsonize(int))
+  (* jsonify("S0Tint", jsonize(int)) *)
+  mknode("S0Tid", to_jsonval(jsonize(int)))
 //
 | S0Tapps(s0ts) =>
-  jsonify("S0Tapps",
-    jsonize(s0ts) (* jsonize_list<sort0>("sort0lst", s0ts) *)
-  )
+  (* jsonify("S0Tapps", *)
+  (*   jsonize(s0ts) (* jsonize_list<sort0>("sort0lst", s0ts) *) *)
+  (* ) *)
+  mknode("S0Tapps", to_jsonval(jsonize(s0ts)))
 //
 | S0Tlist(t0, s0ts, t1) =>
+(*
   jsonify("S0Tlist",
     jsonize(t0),
     jsonize(s0ts), (* jsonize_list<sort0>("sort0lst", s0ts), *)
     jsonize(t1)
   )
+*)
+  jsonval_labval2("tag", JSONstring("S0Tlist"), "data", data) where
+    val data = l3(t0, s0ts, t1)
+  end
 //
 | S0Tqual(q0, s0t) =>
-  jsonify("S0Tqid", jsonize(q0), jsonize(s0t))
+  (* jsonify("S0Tqid", jsonize(q0), jsonize(s0t)) *)
+  jsonval_labval2("tag", JSONstring("S0Tqual"), "data", data) where
+    val data = l2(q0, s0t)
+  end
+
 //
 | S0Tnone(tok) =>
-  jsonify("S0Tnone", jsonize(tok))
+  (* jsonify("S0Tnone", jsonize(tok)) *)
+  jsonval_labval2("tag", JSONstring("S0Tnone"), "data", data) where
+    val data = to_jsonval(jsonize(tok))
+  end
+
 //
-) : labjsonval
+) //: labjsonval
 end (* end of [jsonize_sort0] *)
 
 end // end of [local]
@@ -445,8 +471,22 @@ end (* end of [jsonize_s0marg] *)
 
 
 implement
-jsonize_t0arg
-  (x0) =
+jsonize_t0arg(x0) =
+("t0arg", res) : labjsonval where
+val res =
+(
+case+ x0.node() of
+| T0ARGsome(tid, opt) =>
+  mknode("T0ARGsome", data)
+  where val data = l2(tid, opt) end
+(*
+  jsonval_labval2("tag", JSONstring("T0ARGsome"), "data", data) where
+    val data = l2(tid, opt)
+  end
+*)
+)
+end (* end of [jsonize_t0arg] *)
+(*
 node("t0arg", res) where
 val res =
 (
@@ -459,6 +499,7 @@ x0.node() of
   )
 ) : labjsonval
 end (* end of [jsonize_t0arg] *)
+*)
 
 
 implement
@@ -550,6 +591,64 @@ jsonize_val<sl0abled(a)> = jsonize_sl0abled
 
 in (* in-of-local *)
 
+fun name_s0exp(x: s0exp_node) : string =
+(
+case+ x of
+| S0Eid _ => "S0Eid"
+| S0Eop1 _ => "S0Eop1"
+| S0Eop2 _ => "S0Eop2"
+| S0Eint _ => "S0Eint"
+| S0Echr _ => "S0Echr"
+| S0Eflt _ => "S0Eflt"
+| S0Estr _ => "S0Estr"
+| S0Eapps _ => "S0Eapps"
+| S0Eimp _ => "S0Eimp"
+| S0Eparen _ => "S0Eparen"
+| S0Eforall _ => "S0Eforall"
+| S0Eexists _ => "S0Eexists"
+| S0Etuple _ => "S0Etuple"
+| S0Erecord _ => "S0Erecord"
+| S0Elam _ => "S0Elam"
+| S0Eanno _ => "S0Eanno"
+| S0Equal _ => "S0Equal"
+| S0Enone _ => "S0Enone"
+)
+
+
+
+implement
+jsonize_s0exp
+  (x0) =
+("s0exp", mknode(tag, data)) : labjsonval
+where
+val tag = name_s0exp(x0.node())
+val data =
+(
+case+ x0.node() of
+| S0Eid(sid) => jval(sid)
+| S0Eop1(opid) => jval(opid)
+| S0Eop2(tbeg, opid, tend) => l3(tbeg, opid, tend)
+| S0Eint(i0) => jval(i0)
+| S0Echr(c0) => jval(c0)
+| S0Eflt(f0) => jval(f0)
+| S0Estr(s0) => jval(s0)
+| S0Eapps(s0es) => jval(s0es)
+| S0Eimp(tbeg, s0es, tend) => l3(tbeg, s0es, tend)
+| S0Eparen(tbeg, s0es, tend) =>  l3(tbeg, s0es, tend)
+| S0Eforall(tbeg, s0qs, tend) => l3(tbeg, s0qs, tend)
+| S0Eexists(tbeg, s0qs, tend) => l3(tbeg, s0qs, tend)
+| S0Etuple(tbeg, topt, s0es, tend) => l4(tbeg, topt, s0es, tend)
+| S0Erecord(tbeg, topt, s0es, tend) => l4(tbeg, topt, s0es, tend)
+| S0Elam(tbeg, arg0, res1, tok1, s0e0, tend) =>
+  l6(tbeg, arg0, res1, tok1, s0e0, tend)
+| S0Eanno(s0e, ann) => l2(s0e, ann)
+| S0Equal(tok, s0e) => l2(tok, s0e)
+| S0Enone(tok) => jval(tok)
+)
+: jsonval
+end (* end of [jsonize_s0exp] *)
+
+(*
 implement
 jsonize_s0exp
   (x0) =
@@ -649,6 +748,7 @@ case+ x0.node() of
 //
 ) : labjsonval
 end (* end of [jsonize_s0exp] *)
+*)
 
 end // end of [local]
 
@@ -735,6 +835,20 @@ end (* end of [jsonize_effs0expopt] *)
 implement
 jsonize_d0atype
   (x0) =
+(* node("d0atype", res) where *)
+("d0atype", res) : labjsonval
+where
+val res =
+(
+case+ x0.node() of
+| D0ATYPE(tid, arg, res, teq, d0cs) =>
+  jsonval_labval2("tag", JSONstring("D0ATYPE"), "data", data) where
+  val data =
+  l5(tid, arg, res, teq, d0cs)
+  end
+) //: labjsonval
+end (* end of [jsonize_d0atype] *)
+(*
 node("d0atype", res) where
 val res =
 (
@@ -749,6 +863,7 @@ case+ x0.node() of
   )
 ) : labjsonval
 end (* end of [jsonize_d0atype] *)
+*)
 
 
 local

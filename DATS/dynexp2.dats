@@ -329,6 +329,11 @@ case x0.node() of
 | D2Pnone1(d1psrc) =>
   jsonify("D2Pnone1", jsonize(d1psrc))
 //
+| D2Pflat(d2p1) =>
+  jsonify("D2Pflat", jsonize(d2p1))
+| D2Pfree(d2p1) =>
+  jsonify("D2Pfree", jsonize(d2p1))
+//
 ) : labjsonval  (* end of [jsonize_d2pat] *)
 end
 

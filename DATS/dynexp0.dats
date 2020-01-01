@@ -10,9 +10,12 @@
 #staload "./../SATS/dynexp0.sats"
 #staload "./../SATS/staexp0.sats"
 
+#staload "./json.dats"
 #staload _ = "./json.dats"
 #staload _ = "./lexing_token.dats"
 #staload _ = "./staexp0.dats"
+
+
 
 
 implement
@@ -82,6 +85,31 @@ jsonize_val<d0cstdecl> = jsonize_d0cstdecl
 
 in
 
+  implement
+  jsonize_val<a0typ> = jsonize_a0typ
+
+  fun
+  jsonize_a0typlstopt
+  (opt: a0typlstopt): labjsonval = node("a0typlst_node", res) where
+  val res =
+  (
+  case+ opt of
+  | None() =>
+    jsonify("None")
+  | Some(a0ts) =>
+    jsonify("Some", jsonize(a0ts))
+    (* jsonify("Some", jsonize_list<a0typ>("a0typlst", a0ts)) *)
+  ) : labjsonval
+  end
+//
+  overload jsonize with jsonize_a0typlstopt of 100
+  (* implement jsonize_val<a0typlstopt> = jsonize_a0typlstopt *)
+//
+
+  (* implement *)
+  (* jsonize_val<s0qua> = jsonize_s0qua *)
+
+
 implement jsonize_a0typlst(x) = jsonize_list<a0typ>("a0typlst", x)
 implement jsonize_d0patlst(x) = jsonize_list<d0pat>("d0patlst", x)
 implement jsonize_d0gualst(x) = jsonize_list<d0gua>("d0gualst", x)
@@ -117,6 +145,11 @@ implement jsonize_v0ardeclist(x) = jsonize_list<v0ardecl>("v0ardeclist", x)
 implement jsonize_d0expopt(x) = jsonize_option<d0exp>("d0expopt", x)
 
 
+  implement
+  jsonize_val<a0typlst> = jsonize_a0typlst
+
+
+#include "./mac.dats"
 
 end
 
@@ -125,7 +158,7 @@ end
 implement
 jsonize_q0arg
 (x0) =
-node("q0arg", res) where
+node("q0arg_node", res) where
 val res =
 (
 //
@@ -135,8 +168,8 @@ x0.node() of
 | Q0ARGnone(tok) =>
   jsonify("Q0ARGnone", "tok", jsonize(tok))
 *)
-| Q0ARGsome(sid, opt) =>
-  jsonify("Q0ARGsome", jsonize(sid), jsonize(opt))
+| Q0ARGsome(sid, opt) => j2("Q0ARGsome", sid, opt)
+  (* jsonify("Q0ARGsome", jsonize(sid), jsonize(opt)) *)
 (*
     jsonize(sid),
     jsonize(opt) //jsonize_option<sort0>("sort0opt", opt)
@@ -149,7 +182,7 @@ end
 implement
 jsonize_a0typ
   (x0) =
-node("a0typ", res) where
+node("a0typ_node", res) where
 val res =
 (
 //
@@ -158,8 +191,8 @@ case+ x0.node() of
 | A0TYPnone(tok) =>
   jsonify("A0TYPnone", tok)
 *)
-| A0TYPsome(s0e, opt) =>
-  jsonify("A0TYPsome", jsonize(s0e), jsonize(opt))
+| A0TYPsome(s0e, opt) => j2("A0TYPsome", s0e, opt)
+  (* jsonify("A0TYPsome", jsonize(s0e), jsonize(opt)) *)
 (*
     jsonize(s0e),
     jsonize_option<token>("tokenopt", opt)
@@ -169,38 +202,10 @@ case+ x0.node() of
 ) : labjsonval (* end of [jsonize_a0typ] *)
 end
 
-local
-//
-  implement
-  jsonize_val<a0typ> = jsonize_a0typ
-
-
-  fun
-  jsonize_a0typlstopt
-  (opt: a0typlstopt): labjsonval = node("a0typlst", res) where
-  val res =
-  (
-  case+ opt of
-  | None() =>
-    jsonify("None")
-  | Some(a0ts) =>
-    jsonify("Some", jsonize(a0ts))
-    (* jsonify("Some", jsonize_list<a0typ>("a0typlst", a0ts)) *)
-  ) : labjsonval
-  end
-//
-  overload jsonize with jsonize_a0typlstopt of 100
-//
-
-  implement
-  jsonize_val<s0qua> = jsonize_s0qua
-
-in (* in-of-local *)
-
 implement
 jsonize_d0arg
   (x0) =
-node("d0arg", res) where
+node("d0arg_node", res) where
 val res =
 (
 //
@@ -210,31 +215,56 @@ case+ x0.node() of
   jsonify("D0ARGnone", jsonize(tok))
 //
 | D0ARGsome_sta(tbeg, s0qs, tend) =>
+  j3("D0ARGsome_sta", tbeg, s0qs, tend)
+(*
   jsonify("D0ARGsome_sta",
     jsonize(tbeg),
     jsonize(s0qs), (* jsonize_list<s0qua>("s0qualst", s0qs), *)
     jsonize(tend)
   )
+*)
 //
 | D0ARGsome_dyn1(tok) =>
-  jsonify("D0ARGsome_dyn1", jsonize(tok))
+  (* jsonify("D0ARGsome_dyn1", jsonize(tok)) *)
+  j1("D0ARGsome_dyn1", tok)
 | D0ARGsome_dyn2(tbeg, arg0, opt1, tend) =>
+  j4("D0ARGsome_dyn", tbeg, arg0, opt1, tend)
+(*
   jsonify("D0ARGsome_dyn",
     jsonize(tbeg),
     jsonize(arg0), // jsonize_list<a0typ>("a0typlst", arg0),
     jsonize(opt1),
     jsonize(tend)
   )
+*)
 //
 ) : labjsonval  (* end of [jsonize_d0arg] *)
 end
-end // end of [local]
 
 
 implement
 jsonize_f0arg
   (x0) =
-node("f0arg", res) where
+("f0arg_node", res) : labjsonval
+where
+val res =
+(
+//
+case+
+x0.node() of
+| F0ARGnone(tok) =>
+  mknode("F0ARGnone", jsonize(tok))
+| F0ARGsome_dyn(d0p) =>
+  mknode("F0ARGsome_dyn", jsonize(d0p))
+| F0ARGsome_sta(tbeg, s0qs, tend) =>
+  mknode("F0ARGsome_sta", l3(tbeg, s0qs, tend))
+| F0ARGsome_met(tbeg, s0es, tend) =>
+  mknode("F0ARGsome_met", l3(tbeg, s0es, tend))
+)
+end (* end of [jsonize_f0arg] *)
+
+(*
+node("f0arg_node", res) where
 val res =
 (
 //
@@ -258,24 +288,29 @@ x0.node() of
   )
 ) : labjsonval
 end (* end of [jsonize_f0arg] *)
+*)
 
 
 implement
 jsonize_sq0arg
   (x0) =
-node("sq0arg", res) where
+node("sq0arg_node", res) where
 val res =
 (
 case+
 x0.node() of
 | SQ0ARGnone(tok) =>
-  jsonify("SQ0ARGnone", jsonize(tok))
+  (* jsonify("SQ0ARGnone", jsonize(tok)) *)
+  j1("SQ0ARGnone", tok)
 | SQ0ARGsome(tbeg, q0as, tend) =>
+  j3("SQ0ARGsome", tbeg, q0as, tend)
+  (*
   jsonify("SQ0ARGsome",
     jsonize(tbeg),
-    jsonize(q0as), (* jsonize_list<q0arg>("q0arglst", q0as), *)
+    jsonize(q0as),
     jsonize(tend)
-  )
+  )*)
+
 ) : labjsonval  (* end of [jsonize_sq0arg] *)
 end
 
@@ -283,19 +318,17 @@ end
 implement
 jsonize_tq0arg
   (x0) =
-node("tq0arg", res) where
+node("tq0arg_node", res) where
 val res =
 (
 case+
 x0.node() of
 | TQ0ARGnone(tok) =>
-  jsonify("TQ0ARGnone", jsonize(tok))
+  j1("TQ0ARGnone", tok)
+  (* jsonify("TQ0ARGnone", jsonize(tok)) *)
 | TQ0ARGsome(tbeg, q0as, tend) =>
-  jsonify("TQ0ARGsome",
-    jsonize(tbeg),
-    jsonize(q0as), // jsonize_list<q0arg>("q0arglst", q0as),
-    jsonize(tend)
-  )
+  j3("TQ0ARGsome", tbeg, q0as, tend)
+  (* jsonify("TQ0ARGsome", jsonize(tbeg), jsonize(q0as), jsonize(tend)) *)
 ) : labjsonval
 end
 
@@ -303,19 +336,17 @@ end
 implement
 jsonize_ti0arg
   (x0) =
-node("ti0arg", res) where
+node("ti0arg_node", res) where
 val res =
 (
 case+
 x0.node() of
 | TI0ARGnone(tok) =>
-  jsonify("TI0ARGnone", jsonize(tok))
+  (* jsonify("TI0ARGnone", jsonize(tok)) *)
+  j1("TI0ARGnone", tok)
 | TI0ARGsome(tbeg, q0as, tend) =>
-  jsonify("TI0ARGsome",
-    jsonize(tbeg),
-    jsonize(q0as), (* jsonize_list<s0exp>("s0explst", q0as), *)
-    jsonize(tend)
-  )
+  (* jsonify("TI0ARGsome", jsonize(tbeg), jsonize(q0as), jsonize(tend)) *)
+  j3("TI0ARGsome", tbeg, q0as, tend)
 ) : labjsonval
 end
 
@@ -330,7 +361,7 @@ val+DL0ABELED(l0, t0, x1) = x0
 in
   node("dl0abeled", res) where
   val res =
-    jsonify("SL0ABELED",
+    jsonify("DL0ABELED",
       jsonize(l0),
       jsonize(t0),
       jsonize_val<a>(x1)
@@ -351,15 +382,90 @@ local
 
 in (* in-of-local *)
 
+fun
+name_d0pat(x: d0pat_node): string =
+(
+case+ x of
+| D0Pid _ => "D0Pid"
+| D0Pint _ => "D0Pint"
+| D0Pchr _ => "D0Pchr"
+| D0Pflt _ => "D0Pflt"
+| D0Pstr _ => "D0Pstr"
+| D0Papps _ => "D0Papps"
+| D0Psqarg _ => "D0Psqarg"
+| D0Pparen _ => "D0Pparen"
+| D0Ptuple _ => "D0Ptuple"
+| D0Precord _ => "D0Precord"
+| D0Panno _ => "D0Panno"
+| D0Pqual _ => "D0Pqual"
+| D0Pnone _ => "D0Pnone"
+)
+
 implement
-jsonize_d0pat
-  (x0) =
-node("d0pat", res) where
+jsonize_d0pat(x0) =
+("d0pat_node", mknode(name, data)) : labjsonval
+where
+val name = name_d0pat(x0.node())
+val data =
+(
+case+ x0.node() of
+| D0Pid(id) => jval(id)
+| D0Pint(i0) => jval(i0)
+| D0Pchr(c0) => jval(c0)
+| D0Pflt(f0) => jval(f0)
+| D0Pstr(s0) => jval(s0)
+| D0Papps(d0ps) => jval(d0ps)
+| D0Psqarg(tbeg, s0as, tend) => l3(tbeg, s0as, tend)
+| D0Pparen(tbeg, d0ps, tend) => l3(tbeg, d0ps, tend)
+| D0Ptuple(tbeg, topt, d0ps, tend) => l4(tbeg, topt, d0ps, tend)
+| D0Precord(tbeg, topt, ld0ps, tend) => l4(tbeg, topt, ld0ps, tend)
+| D0Panno(d0p, ann) => l2(d0p, ann)
+| D0Pqual(tok, d0p) => l2(tok, d0p)
+| D0Pnone(tok) => jval(tok)
+) : jsonval
+end
+(*
+where
 val res =
 (
 case+ x0.node() of
 | D0Pid(id) =>
-  jsonify("D0Pid", jsonize(id))
+  mknode("D0Pid", jsonize(id))
+| D0Pint(i0) =>
+  mknode("D0Pint", jsonize(i0))
+| D0Pchr(c0) =>
+  mknode("D0Pchr", jsonize(c0))
+| D0Pflt(f0) =>
+  mknode("D0Pflt", jsonize(f0))
+| D0Pstr(s0) =>
+  mknode("D0Pstr", jsonize(s0))
+| D0Papps(d0ps) =>
+  mknode("D0Papps", jsonize(d0ps))
+| D0Psqarg(tbeg, s0as, tend) =>
+  mknode("D0Psqarg", l3(tbeg, s0as, tend))
+| D0Pparen(tbeg, d0ps, tend) =>
+  mknode("D0Pparen", l3(tbeg, d0ps, tend))
+| D0Ptuple(tbeg, topt, d0ps, tend) =>
+  mknode("D0Pparen", l4(tbeg, topt, d0ps, tend))
+| D0Precord(tbeg, topt, ld0ps, tend) =>
+  mknode("D0Precord", l4(tbeg, topt, ld0ps, tend))
+| D0Panno(d0p, ann) =>
+  mknode("D0Panno", l2(d0p, ann))
+| D0Pqual(tok, d0p) =>
+  mknode("D0Pqual", l2(tok, d0p))
+| D0Pnone(tok) =>
+  mknode("D0Pnone", jsonize(tok))
+)
+end
+*)
+(*
+node("d0pat_node", res) where
+val res =
+(
+case+ x0.node() of
+| D0Pid(id) =>
+  (* jsonify("D0Pid", jsonize(id)) *)
+  j1("D0Pid", id)
 | D0Pint(i0) =>
   jsonify("D0Pint", jsonize(i0))
 | D0Pchr(c0) =>
@@ -412,6 +518,7 @@ case+ x0.node() of
   jsonify("D0Pnone", jsonize(tok))
 ) : labjsonval
 end
+*)
 
 end // end of [local]
 
@@ -475,7 +582,7 @@ end // end of [local]
 implement
 jsonize_d0clau
   (x0) =
-node("d0clau", res) where
+node("d0clau_node", res) where
 val res =
 (
 case+
@@ -495,7 +602,7 @@ end (* end of [jsonize_d0clau] *)
 implement
 jsonize_d0gpat
   (x0) =
-node("d0gpat", res) where
+node("d0gpat_node", res) where
 val res =
 (
 case+
@@ -515,7 +622,7 @@ end (* end of [jsonize_d0gpat] *)
 implement
 jsonize_d0gua
   (x0) =
-node("d0gua", res) where
+node("d0gua_node", res) where
 val res =
 (
 case+
@@ -548,13 +655,18 @@ local
   implement
   jsonize_val<dl0abeled(d0exp)> = jsonize_dl0abeled<d0exp>
 
+(*
+  #define ji jsonize
+  macdef jl(nm,x,y,z) =
+  (,(nm), JSONlablist($list{labjsonval}(ji(,(x)), ji(,(y)),ji(,(z))))) : labjsonval
+*)
 
 in (* in-of-local *)
 
 implement
 jsonize_d0exp
   (x0) =
-node("d0exp", res) where
+node("d0exp_node", res) where
 val res =
 (
 case+ x0.node() of
@@ -572,42 +684,29 @@ case+ x0.node() of
   jsonify("D0Estr", jsonize(s0))
 //
 | D0Eapps(d0es) =>
-  jsonify("D0Eapps",
-    jsonize(d0es) (* jsonize_list<d0exp>("d0explst", d0es) *)
-  )
+  jsonify("D0Eapps", jsonize(d0es))
 //
 | D0Esqarg(tbeg, s0es, tend) =>
-  jsonify("D0Esqarg",
-    jsonize(tbeg),
-    jsonize(s0es), (* jsonize_list<s0exp>("s0explst", s0es), *)
-    jsonize(tend)
-  )
+  (* jsonify("D0Esqarg", jsonize(tbeg), jsonize(s0es), jsonize(tend)) *)
+  j3("D0Esqarg", tbeg, s0es, tend)
 | D0Etqarg(tbeg, s0es, tend) =>
-  jsonify("D0Etqarg",
-    jsonize(tbeg),
-    jsonize(s0es), (* jsonize_list<s0exp>("s0explst", s0es), *)
-    jsonize(tend)
-  )
+  jsonify("D0Etqarg", jsonize(tbeg), jsonize(s0es), jsonize(tend))
 //
 | D0Eparen(tbeg, d0es, tend) =>
-  jsonify("D0Eparen",
-    jsonize(tbeg),
-    jsonize(d0es), (* jsonize_list<d0exp>("d0explst", d0es), *)
-    jsonize(tend)
-  )
+  jsonify("D0Eparen", jsonize(tbeg), jsonize(d0es), jsonize(tend))
 //
 | D0Etuple(tbeg, topt, d0es, tend) =>
   jsonify("D0Etuple",
     jsonize(tbeg),
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(d0es), (* jsonize_list<d0exp>("d0explst", d0es), *)
+    jsonize(topt),
+    jsonize(d0es),
     jsonize(tend)
   )
 | D0Erecord(tbeg, topt, ld0es, tend) =>
   jsonify("D0Erecord",
     jsonize(tbeg),
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(ld0es), (* jsonize_list<dl0abeled(d0exp)>("labd0explst", ld0es), *)
+    jsonize(topt),
+    jsonize(ld0es),
     jsonize(tend)
   )
 //
@@ -617,7 +716,7 @@ case+ x0.node() of
     jsonize(d0e1),
     jsonize(d0e2),
     jsonize(d0e3),
-    jsonize(tend) (* jsonize_option<token>("tokenopt", tend) *)
+    jsonize(tend)
   )
 //
 | D0Ecase(tok0, d0e1, tof2, tbar, d0cs, tend) =>
@@ -625,72 +724,52 @@ case+ x0.node() of
     jsonize(tok0),
     jsonize(d0e1),
     jsonize(tof2),
-    jsonize(tbar), (* jsonize_option<token>("tokenopt", tbar), *)
-    jsonize(d0cs), (* jsonize_list<d0clau>("d0claulst", d0cs), *)
-    jsonize(tend) (* jsonize_option<token>("tokenopt", tend) *)
+    jsonize(tbar),
+    jsonize(d0cs),
+    jsonize(tend)
   )
 //
 | D0Elet(tok0, d0cs, topt, d0es, tok2) =>
   jsonify("D0Elet",
     jsonize(tok0),
-    jsonize(d0cs), (* jsonize_list<d0ecl>("d0eclist", d0cs), *)
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(d0es), (* jsonize_list<d0exp>("d0explst", d0es), *)
+    jsonize(d0cs),
+    jsonize(topt),
+    jsonize(d0es),
     jsonize(tok2)
   )
 //
 | D0Ewhere(d0e1, d0cs) =>
-  jsonify("D0Ewhere",
-    jsonize(d0e1),
-    jsonize(d0cs)
-  )
-//
-//
+  jsonify("D0Ewhere", jsonize(d0e1), jsonize(d0cs))
 | D0Ebrack(tbeg, d0es, tend) =>
-  jsonify("D0Ebrack",
-    jsonize(tbeg),
-    jsonize(d0es), (* jsonize_list<d0exp>("d0explst", d0es), *)
-    jsonize(tend)
-  )
+  jsonify("D0Ebrack", jsonize(tbeg), jsonize(d0es), jsonize(tend))
 | D0Edtsel(tdot, lab1, arg2) =>
-  jsonify("D0Edtsel",
-    jsonize(tdot),
-    jsonize(lab1),
-    jsonize(arg2) (* jsonize_option<d0exp>("d0expopt", arg2) *)
+  jsonify("D0Edtsel", jsonize(tdot), jsonize(lab1), jsonize(arg2)
   )
 //
 | D0Elam(tok0, arg1, res2, farrw, fbody, tend) =>
   jsonify("D0Elam",
     jsonize(tok0),
-    jsonize(arg1), (* jsonize_list<f0arg>("f0arglst", arg1), *)
+    jsonize(arg1),
     jsonize(res2),
     jsonize(farrw),
     jsonize(fbody),
-    jsonize(tend) (* jsonize_option<token>("tokenopt", tend) *)
+    jsonize(tend)
   )
 | D0Efix(tok0, fid0, arg1, res2, farrw, fbody, tend) =>
   jsonify("D0Efix",
     jsonize(tok0),
     jsonize(fid0),
-    jsonize(arg1), (* jsonize_list<f0arg>("f0arglst", arg1), *)
+    jsonize(arg1),
     jsonize(res2),
     jsonize(farrw),
     jsonize(fbody),
-    jsonize(tend) (* jsonize_option<token>("tokenopt", tend) *)
+    jsonize(tend)
   )
 //
 | D0Eanno(d0e, ann) =>
-  jsonify("D0Eanno",
-    jsonize(d0e),
-    jsonize(ann)
-  )
-//
+  jsonify("D0Eanno", jsonize(d0e), jsonize(ann))
 | D0Equal(tok, d0e) =>
-  jsonify("D0Equal",
-    jsonize(tok),
-    jsonize(d0e)
-  )
-//
+  jsonify("D0Equal", jsonize(tok), jsonize(d0e))
 | D0Enone(tok) =>
   jsonify("D0Enone", jsonize(tok))
 //
@@ -765,24 +844,19 @@ end // end of [local]
 
 
 implement
-jsonize_d0exp_THEN
-  (x0) =
+jsonize_d0exp_THEN(x0) =
 node("d0exp_THEN", res) where
 val res =
 (
 case+ x0 of
 | d0exp_THEN(tok, d0e) =>
-  jsonify("d0exp_THEN",
-    jsonize(tok),
-    jsonize(d0e)
-  )
+  jsonify("d0exp_THEN", jsonize(tok), jsonize(d0e))
 ) : labjsonval
 end
 
 
 implement
-jsonize_d0exp_ELSE
-  (x0) =
+jsonize_d0exp_ELSE(x0) =
 node("d0exp_ELSE", res) where
 val res =
 (
@@ -790,17 +864,13 @@ case+ x0 of
 | d0exp_ELSEnone() =>
   jsonify("d0exp_ELSEnone")
 | d0exp_ELSEsome(tok, d0e) =>
-  jsonify("d0exp_ELSEsome",
-    jsonize(tok),
-    jsonize(d0e)
-  )
+  jsonify("d0exp_ELSEsome", jsonize(tok), jsonize(d0e))
 ) : labjsonval
 end
 
 
 implement
-jsonize_endwhere
-  (x0) =
+jsonize_endwhere(x0) =
 node("endwhere", res) where
 val res =
 (
@@ -808,17 +878,13 @@ case+ x0 of
 | endwhere_cons1(tok) =>
   jsonify("endwhere_cons1", jsonize(tok))
 | endwhere_cons2(tok1, opt2) =>
-  jsonify("endwhere_cons2",
-    jsonize(tok1),
-    jsonize(opt2) (* jsonize_option<token>("tokenopt", opt2) *)
-  )
+  jsonify("endwhere_cons2", jsonize(tok1), jsonize(opt2))
 ) : labjsonval
 end
 
 
 implement
-jsonize_d0eclseq_WHERE
-  (x0) =
+jsonize_d0eclseq_WHERE(x0) =
 node("d0eclseq_WHERE", res) where
 val res =
 (
@@ -827,8 +893,8 @@ case+ x0 of
   (tok0, opt1, d0cs, opt2) =>
   jsonify("d0eclseq_WHERE",
     jsonize(tok0),
-    jsonize(opt1), (* jsonize_option<token>("tokenopt", opt1), *)
-    jsonize(d0cs), (* jsonize_list<d0ecl>("d0eclist", d0cs), *)
+    jsonize(opt1),
+    jsonize(d0cs),
     jsonize(opt2)
   )
 ) : labjsonval
@@ -836,8 +902,7 @@ end
 
 
 implement
-jsonize_f0unarrow
-  (x0) =
+jsonize_f0unarrow(x0) =
 node("f0unarrow", res) where
 val res =
 (
@@ -847,37 +912,27 @@ case+ x0 of
 | F0UNARROWdflt(tok) =>
   jsonify("F0UNARROWdflt", jsonize(tok))
 | F0UNARROWlist(tbeg, s0es, tend) =>
-  jsonify("F0UNARROWlist",
-    jsonize(tbeg),
-    jsonize(s0es), (* jsonize_list<s0exp>("s0explst", s0es), *)
-    jsonize(tend)
-  )
+  jsonify("F0UNARROWlist", jsonize(tbeg), jsonize(s0es), jsonize(tend))
 ) : labjsonval
 end
 
 
 implement
-jsonize_decmodopt
-  (x0) =
+jsonize_decmodopt(x0) =
 node("decmodopt", res) where
 val res =
 (
 case+ x0 of
 //
 | DECMODnone() =>
-  (* jsonify("DECMODnone", ) *)
-  @("DECOMODnone", jnul())
-//
+  jsonify("DECMODnone")
 | DECMODsing(tok, id0) =>
-  jsonify("DECMODsing",
-    jsonize(tok),
-    jsonize(id0)
-  )
+  jsonify("DECMODsing", jsonize(tok), jsonize(id0))
 | DECMODlist(tok, tbeg, ids, tend) =>
   jsonify("DECMODlist",
     jsonize(tok),
     jsonize(tbeg),
-    jsonize(ids), (* jsonize_list<i0dnt>("i0dntlst", ids), *)
+    jsonize(ids),
     jsonize(tend)
   )
 ) : labjsonval
@@ -885,8 +940,7 @@ end
 
 
 implement
-jsonize_teqd0expopt
-  (x0) =
+jsonize_teqd0expopt(x0) =
 node("teqd0expopt", res) where
 val res =
 (
@@ -894,17 +948,13 @@ case+ x0 of
 | TEQD0EXPnone() =>
   jsonify("TEQD0EXPnone")
 | TEQD0EXPsome(tok, d0e) =>
-  jsonify("TEQD0EXPsome",
-    jsonize(tok),
-    jsonize(d0e)
-  )
+  jsonify("TEQD0EXPsome", jsonize(tok), jsonize(d0e))
 ) : labjsonval
 end
 
 
 implement
-jsonize_wths0expopt
-  (x0) =
+jsonize_wths0expopt(x0) =
 node("wths0expopt", res) where
 val res =
 (
@@ -912,10 +962,7 @@ case+ x0 of
 | WTHS0EXPnone() =>
   jsonify("WTHS0EXPnone")
 | WTHS0EXPsome(tok, d0e) =>
-  jsonify("WTHS0EXPsome",
-    jsonize(tok),
-    jsonize(d0e)
-  )
+  jsonify("WTHS0EXPsome", jsonize(tok), jsonize(d0e))
 ) : labjsonval
 end
 
@@ -947,10 +994,228 @@ local
 
 in (* in-of-local *)
 
+fun name_d0ecl(x:d0ecl_node): string =
+(
+case+ x of
+| D0Cnone _ => "D0Cnone"
+| D0Ctokerr _ => "D0Ctokerr"
+| D0Cnonfix _ => "D0Cnonfix"
+| D0Cfixity _ => "D0Cfixity"
+| D0Cstatic _ => "D0Cstatic"
+| D0Cextern _ => "D0Cextern"
+| D0Cdefine _ => "D0Cdefine"
+| D0Cmacdef _ => "D0Cmacdef"
+| D0Cinclude _ => "D0Cinclude"
+| D0Cstaload _ => "D0Cstaload"
+(*
+| D0Cdynload _ => "D0Cdynload"
+*)
+| D0Cabssort _ => "D0Cabssort"
+| D0Cstacst0 _ => "D0Cstacst0"
+| D0Csortdef _ => "D0Csortdef"
+| D0Csexpdef _ => "D0Csexpdef"
+| D0Cabstype _ => "D0Cabstype"
+| D0Cabsimpl _ => "D0Cabsimpl"
+| D0Cvaldecl _ => "D0Cvaldecl"
+| D0Cvardecl _ => "D0Cvardecl"
+| D0Cfundecl _ => "D0Cfundecl"
+| D0Cimpdecl _ => "D0Cimpdecl"
+| D0Csymload _ => "D0Csymload"
+| D0Cdatasort _ => "D0Cdatasort"
+| D0Cdatatype _ => "D0Cdatatype"
+| D0Cdynconst _ => "D0Cdynconst"
+| D0Clocal _ => "D0Clocal"
+)
+
+
+fun args_d0ecl(x:d0ecl_node): List0(string) =
+(
+case+ x of
+| D0Cnone(tok) =>
+  $list{string}("tok")
+| D0Ctokerr(tok) =>
+  $list{string}("tok")
+| D0Cnonfix(tok, ids) =>
+  $list{string}("tok", "ids")
+| D0Cfixity(tok, ids, opt) =>
+  $list{string}("tok", "ids", "opt")
+| D0Cstatic(tok, d0c) =>
+  $list{string}("tok", "d0c")
+| D0Cextern(tok, d0c) =>
+  $list{string}("tok", "d0c")
+| D0Cdefine(tok, gid, gmas, gdef) =>
+  $list{string}("tok", "gid", "gmas", "gdef")
+| D0Cmacdef(tok, gid, gmas, mdef) =>
+  $list{string}("tok", "gid", "gmas", "mdef")
+| D0Cinclude(tok, d0e) =>
+  $list{string}("tok", "d0e")
+| D0Cstaload(tok, d0e) =>
+  $list{string}("tok", "d0e")
+(*
+| D0Cdynload(tok, d0e) =>
+  $list{string}(tok, d0e)
+*)
+| D0Cabssort(tok, tid) =>
+  $list{string}("tok", "tid")
+| D0Cstacst0(tok, sid, tmas, tok1, s0t2) =>
+  $list{string}("tok", "sid", "tmas", "tok1", "s0t2")
+| D0Csortdef(tok, tid, tok1, def2) =>
+  $list{string}("tok", "tid", "tok1", "def2")
+| D0Csexpdef(tok, sid, arg, res, tok1, tdef) =>
+  $list{string}("tok", "sid", "arg", "res", "tok1", "tdef")
+| D0Cabstype(tok, sid, arg, res, tdef) =>
+  $list{string}("tok", "sid", "arg", "res", "tdef")
+| D0Cabsimpl(tok, sqid, smas, res0, teq1, def2) =>
+  $list{string}("tok", "sqid", "smas", "res0", "teq1", "def2")
+| D0Cvaldecl(tok, mopt, d0cs) =>
+  $list{string}("tok", "mopt", "d0cs")
+| D0Cvardecl(tok, mopt, d0cs) =>
+  $list{string}("tok", "mopt", "d0cs")
+| D0Cfundecl(tok, mopt, tqas, d0cs) =>
+  $list{string}("tok", "mopt", "tqas", "d0cs")
+| D0Cimpdecl(tok, mopt, sqas, tqas, dqid, tias, f0as, res0, teq1, d0e2) =>
+  $list{string}("tok", "mopt", "sqas", "tqas", "dqid",
+    "tias", "f0as", "res0", "teq1", "d0e2")
+| D0Csymload(tok, sym, twth, dqid, tint) =>
+  $list{string}("tok", "sym", "twth", "dqid", "tint")
+| D0Cdatasort(tok, d0cs) =>
+  $list{string}("tok", "d0cs")
+| D0Cdatatype(tok, d0cs, wopt) =>
+  $list{string}("tok", "d0cs", "wopt")
+| D0Cdynconst(tok, tqas, d0cs) =>
+  $list{string}("tok", "tqas", "d0cs")
+| D0Clocal(tbeg, d0cs0, topt, d0cs1, tend) =>
+  $list{string}("tbeg", "d0cs0", "topt", "d0cs1", "tend")
+)
+
+fun jlst_d0ecl(x:d0ecl_node): List0(jsonval) =
+(
+case+ x of
+| D0Cnone(tok) =>
+  jlst1(tok)
+| D0Ctokerr(tok) =>
+  jlst1(tok)
+| D0Cnonfix(tok, ids) =>
+  jlst2(tok, ids)
+| D0Cfixity(tok, ids, opt) =>
+  jlst3(tok, ids, opt)
+| D0Cstatic(tok, d0c) =>
+  jlst2(tok, d0c)
+| D0Cextern(tok, d0c) =>
+  jlst2(tok, d0c)
+| D0Cdefine(tok, gid, gmas, gdef) =>
+  jlst4(tok, gid, gmas, gdef)
+| D0Cmacdef(tok, gid, gmas, mdef) =>
+  jlst4(tok, gid, gmas, mdef)
+| D0Cinclude(tok, d0e) =>
+  jlst2(tok, d0e)
+| D0Cstaload(tok, d0e) =>
+  jlst2(tok, d0e)
+(*
+| D0Cdynload(tok, d0e) =>
+  jlst2(tok, d0e)
+*)
+| D0Cabssort(tok, tid) =>
+  jlst2(tok, tid)
+| D0Cstacst0(tok, sid, tmas, tok1, s0t2) =>
+  jlst5(tok, sid, tmas, tok1, s0t2)
+| D0Csortdef(tok, tid, tok1, def2) =>
+  jlst4(tok, tid, tok1, def2)
+| D0Csexpdef(tok, sid, arg, res, tok1, tdef) =>
+  jlst6(tok, sid, arg, res, tok1, tdef)
+| D0Cabstype(tok, sid, arg, res, tdef) =>
+  jlst5(tok, sid, arg, res, tdef)
+| D0Cabsimpl(tok, sqid, smas, res0, teq1, def2) =>
+  jlst6(tok, sqid, smas, res0, teq1, def2)
+| D0Cvaldecl(tok, mopt, d0cs) =>
+  jlst3(tok, mopt, d0cs)
+| D0Cvardecl(tok, mopt, d0cs) =>
+  jlst3(tok, mopt, d0cs)
+| D0Cfundecl(tok, mopt, tqas, d0cs) =>
+  jlst4(tok, mopt, tqas, d0cs)
+| D0Cimpdecl(tok, mopt, sqas, tqas, dqid, tias, f0as, res0, teq1, d0e2) =>
+  jlst10(tok, mopt, sqas, tqas, dqid, tias, f0as, res0, teq1, d0e2)
+| D0Csymload(tok, sym, twth, dqid, tint) =>
+  jlst5(tok, sym, twth, dqid, tint)
+| D0Cdatasort(tok, d0cs) =>
+  jlst2(tok, d0cs)
+| D0Cdatatype(tok, d0cs, wopt) =>
+  jlst3(tok, d0cs, wopt)
+| D0Cdynconst(tok, tqas, d0cs) =>
+  jlst3(tok, tqas, d0cs)
+| D0Clocal(tbeg, d0cs0, topt, d0cs1, tend) =>
+  jlst5(tbeg, d0cs0, topt, d0cs1, tend)
+)
+
 implement
 jsonize_d0ecl
   (x0) =
-node("d0ecl", res) where
+("d0ecl_node", mknode(name, data)) : labjsonval
+where
+val name = name_d0ecl(x0.node())
+val args = args_d0ecl(x0.node())
+val lsts = jlst_d0ecl(x0.node())
+val data = arg_lablist(args, lsts)
+end
+(*
+val name = name_d0ecl(x0.node())
+val data =
+(
+case+ x0.node() of
+| D0Cnone(tok) => jval(tok)
+| D0Ctokerr(tok) => jval(tok)
+| D0Cnonfix(tok, ids) => l2(tok, ids)
+| D0Cfixity(tok, ids, opt) => l3(tok, ids, opt)
+| D0Cstatic(tok, d0c) => l2(tok, d0c)
+| D0Cextern(tok, d0c) => l2(tok, d0c)
+| D0Cdefine(tok, gid, gmas, gdef) => l4(tok, gid, gmas, gdef)
+| D0Cmacdef(tok, gid, gmas, mdef) => l4(tok, gid, gmas, mdef)
+| D0Cinclude(tok, d0e) => l2(tok, d0e)
+| D0Cstaload(tok, d0e) => l2(tok, d0e)
+(*
+| D0Cdynload(tok, d0e) =>
+  l2(tok, d0e)
+*)
+| D0Cabssort(tok, tid) => l2(tok, tid)
+| D0Cstacst0(tok, sid, tmas, tok1, s0t2) =>
+  l5(tok, sid, tmas, tok1, s0t2)
+| D0Csortdef(tok, tid, tok1, def2) =>
+  l4(tok, tid, tok1, def2)
+| D0Csexpdef(tok, sid, arg, res, tok1, tdef) =>
+  l6(tok, sid, arg, res, tok1, tdef)
+| D0Cabstype(tok, sid, arg, res, tdef) =>
+  l5(tok, sid, arg, res, tdef)
+| D0Cabsimpl(tok, sqid, smas, res0, teq1, def2) =>
+  l6(tok, sqid, smas, res0, teq1, def2)
+| D0Cvaldecl(tok, mopt, d0cs) =>
+  l3(tok, mopt, d0cs)
+| D0Cvardecl(tok, mopt, d0cs) =>
+  l3(tok, mopt, d0cs)
+| D0Cfundecl(tok, mopt, tqas, d0cs) =>
+  l4(tok, mopt, tqas, d0cs)
+| D0Cimpdecl(tok, mopt, sqas, tqas, dqid, tias, f0as, res0, teq1, d0e2) =>
+  l10(tok, mopt, sqas, tqas, dqid, tias, f0as, res0, teq1, d0e2)
+| D0Csymload(tok, sym, twth, dqid, tint) =>
+  l5(tok, sym, twth, dqid, tint)
+| D0Cdatasort(tok, d0cs) =>
+  l2(tok, d0cs)
+| D0Cdatatype(tok, d0cs, wopt) =>
+  l3(tok, d0cs, wopt)
+| D0Cdynconst(tok, tqas, d0cs) =>
+  l3(tok, tqas, d0cs)
+| D0Clocal(tbeg, d0cs0, topt, d0cs1, tend) =>
+  l5(tbeg, d0cs0, topt, d0cs1, tend)
+)
+: jsonval
+end
+*)
+
+
+(*
+implement
+jsonize_d0ecl
+  (x0) =
+node("d0ecl_node", res) where
 val res =
 (
 case+ x0.node() of
@@ -962,33 +1227,20 @@ case+ x0.node() of
   jsonify("D0Ctokerr", jsonize(tok))
 //
 | D0Cnonfix(tok, ids) =>
-  jsonify("D0Cnonfix",
-    jsonize(tok),
-    jsonize(ids) (* jsonize_list<i0dnt>("i0dntlst", ids) *)
-  )
+  jsonify("D0Cnonfix", jsonize(tok), jsonize(ids))
 | D0Cfixity(tok, ids, opt) =>
-  jsonify("D0Cfixity",
-    jsonize(tok),
-    jsonize(ids), (* jsonize_list<i0dnt>("i0dntlst", ids), *)
-    jsonize(opt)
-  )
+  jsonify("D0Cfixity", jsonize(tok), jsonize(ids), jsonize(opt))
 //
 | D0Cstatic(tok, d0c) =>
-  jsonify("D0Cstatic",
-    jsonize(tok),
-    jsonize(d0c)
-  )
+  jsonify("D0Cstatic", jsonize(tok), jsonize(d0c))
 | D0Cextern(tok, d0c) =>
-  jsonify("D0Cextern",
-    jsonize(tok),
-    jsonize(d0c)
-  )
+  jsonify("D0Cextern", jsonize(tok), jsonize(d0c))
 //
 | D0Cdefine(tok, gid, gmas, gdef) =>
   jsonify("D0Cdefine",
     jsonize(tok),
     jsonize(gid),
-    jsonize(gmas), (* jsonize_list<g0marg>("g0marglst", gmas), *)
+    jsonize(gmas),
     jsonize(gdef)
   )
 //
@@ -996,37 +1248,30 @@ case+ x0.node() of
   jsonify("D0Cmacdef",
     jsonize(tok),
     jsonize(gid),
-    jsonize(gmas), (* jsonize_list<g0marg>("g0marglst", gmas), *)
+    jsonize(gmas),
     jsonize(mdef)
   )
 //
 | D0Cinclude(tok, d0e) =>
-  jsonify("D0Cinclude",
-    jsonize(tok),
-    jsonize(d0e)
+  jsonify("D0Cinclude", jsonize(tok), jsonize(d0e)
   )
 //
 | D0Cstaload(tok, d0e) =>
-  jsonify("D0Cstaload",
-    jsonize(tok),
-    jsonize(d0e)
-  )
+  jsonify("D0Cstaload", jsonize(tok), jsonize(d0e))
 (*
 | D0Cdynload(tok, d0e) =>
   jsonify("D0Cdynload", tok, d0e)
 *)
 //
 | D0Cabssort(tok, tid) =>
-  jsonify("D0Cabssort",
-    jsonize(tok),
-    jsonize(tid)
+  jsonify("D0Cabssort", jsonize(tok), jsonize(tid)
   )
 //
 | D0Cstacst0(tok, sid, tmas, tok1, s0t2) =>
   jsonify("D0Cstacst0",
     jsonize(tok),
     jsonize(sid),
-    jsonize(tmas), (* jsonize_list<t0marg>("t0marglst", tmas), *)
+    jsonize(tmas),
     jsonize(tok1),
     jsonize(s0t2)
   )
@@ -1042,8 +1287,8 @@ case+ x0.node() of
   jsonify("D0Csexpdef",
     jsonize(tok),
     jsonize(sid),
-    jsonize(arg), (* jsonize_list<s0marg>("s0marglst", arg), *)
-    jsonize(res), (* jsonize_option<sort0>("sort0opt", res), *)
+    jsonize(arg),
+    jsonize(res),
     jsonize(tok1),
     jsonize(tdef)
   )
@@ -1052,8 +1297,8 @@ case+ x0.node() of
   jsonify("D0Cabstype",
     jsonize(tok),
     jsonize(sid),
-    jsonize(arg), (* jsonize_list<t0marg>("t0marglst", arg), *)
-    jsonize(res), (* jsonize_option<sort0>("sort0opt", res), *)
+    jsonize(arg),
+    jsonize(res),
     jsonize(tdef)
   )
 //
@@ -1061,32 +1306,24 @@ case+ x0.node() of
   jsonify("D0Cabsimpl",
     jsonize(tok),
     jsonize(sqid),
-    jsonize(smas), (* jsonize_list<s0marg>("s0marglst", smas), *)
-    jsonize(res0), (* jsonize_option<sort0>("sort0opt", res0), *)
+    jsonize(smas),
+    jsonize(res0),
     jsonize(teq1),
     jsonize(def2)
   )
 //
 | D0Cvaldecl(tok, mopt, d0cs) =>
-  jsonify("D0Cvaldecl",
-    jsonize(tok),
-    jsonize(mopt),
-    jsonize(d0cs) (* jsonize_list<v0aldecl>("v0aldeclst", d0cs) *)
-  )
+  jsonify("D0Cvaldecl", jsonize(tok), jsonize(mopt), jsonize(d0cs))
 //
 | D0Cvardecl(tok, mopt, d0cs) =>
-  jsonify("D0Cvardecl",
-    jsonize(tok),
-    jsonize(mopt),
-    jsonize(d0cs) (* jsonize_list<v0ardecl>("v0ardeclst", d0cs) *)
-  )
+  jsonify("D0Cvardecl", jsonize(tok), jsonize(mopt), jsonize(d0cs))
 //
 | D0Cfundecl(tok, mopt, tqas, d0cs) =>
   jsonify("D0Cfundecl",
     jsonize(tok),
     jsonize(mopt),
-    jsonize(tqas), (* jsonize_list<tq0arg>("tq0arglst", tqas), *)
-    jsonize(d0cs) (* jsonize_list<f0undecl>("f0undeclst", d0cs) *)
+    jsonize(tqas),
+    jsonize(d0cs)
   )
 //
 | D0Cimpdecl
@@ -1094,11 +1331,11 @@ case+ x0.node() of
   jsonify("D0Cimpdecl",
     jsonize(tok),
     jsonize(mopt),
-    jsonize(sqas), (* jsonize_list<sq0arg>("sq0arglst", sqas), *)
-    jsonize(tqas), (* jsonize_list<tq0arg>("tq0arglst", tqas), *)
+    jsonize(sqas),
+    jsonize(tqas),
     jsonize(dqid),
-    jsonize(tias), (* jsonize_list<ti0arg>("ti0arglst", tias), *)
-    jsonize(f0as), (* jsonize_list<f0arg>("f0arglst", f0as), *)
+    jsonize(tias),
+    jsonize(f0as),
     jsonize(res0),
     jsonize(teq1),
     jsonize(d0e2)
@@ -1110,35 +1347,24 @@ case+ x0.node() of
     jsonize(sym),
     jsonize(twth),
     jsonize(dqid),
-    jsonize(tint) (* jsonize_option<t0int>("t0intopt", tint) *)
+    jsonize(tint)
   )
 //
 | D0Cdatasort(tok, d0cs) =>
-  jsonify("D0Cdatasort",
-    jsonize(tok),
-    jsonize(d0cs) (* jsonize_list<d0tsort>("d0tsortlst", d0cs) *)
-  )
+  jsonify("D0Cdatasort", jsonize(tok), jsonize(d0cs))
 //
 | D0Cdatatype(tok, d0cs, wopt) =>
-  jsonify("D0Cdatatype",
-    jsonize(tok),
-    jsonize(d0cs), (* jsonize_list<d0atype>("d0atypelst",d0cs), *)
-    jsonize(wopt)
-  )
+  jsonify("D0Cdatatype", jsonize(tok), jsonize(d0cs), jsonize(wopt))
 //
 | D0Cdynconst(tok, tqas, d0cs) =>
-  jsonify("D0Cdynconst",
-    jsonize(tok),
-    jsonize(tqas), (* jsonize_list<tq0arg>("tq0arglst", tqas), *)
-    jsonize(d0cs) (* jsonize_list<d0cstdecl>("d0cstdeclst", d0cs) *)
-  )
+  jsonify("D0Cdynconst", jsonize(tok), jsonize(tqas), jsonize(d0cs))
 //
 | D0Clocal(tbeg, d0cs0, topt, d0cs1, tend) =>
   jsonify("D0Clocal",
     jsonize(tbeg),
-    jsonize(d0cs0), (* jsonize_list<d0ecl>("d0eclist", d0cs0), *)
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(d0cs1), (* jsonize_list<d0ecl>("d0eclist", d0cs1), *)
+    jsonize(d0cs0),
+    jsonize(topt),
+    jsonize(d0cs1),
     jsonize(tend)
   )
 //
@@ -1149,13 +1375,13 @@ case+ x0.node() of
 //
 ) : labjsonval  (* end of [jsonize_d0ecl] *)
 end
+*)
 
 end // end of [local]
 
 
 implement
-jsonize_precopt
-  (x0) =
+jsonize_precopt(x0) =
 node("precopt", res) where
 val res =
 (
@@ -1195,11 +1421,7 @@ case+ x0 of
 | PRECMODnone() =>
   jsonify("PRECMODnone")
 | PRECMODsome(tbeg, sint, tend) =>
-  jsonify("PRECMODsome",
-    jsonize(tbeg),
-    jsonize(sint),
-    jsonize(tend)
-  )
+  jsonify("PRECMODsome", jsonize(tbeg), jsonize(sint), jsonize(tend))
 ) : labjsonval
 end
 
@@ -1231,10 +1453,7 @@ case+ x0 of
 | G0EDEFnone() =>
   jsonify("G0EDEFnone")
 | G0EDEFsome(topt, g0e1) =>
-  jsonify("G0EDEFsome",
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(g0e1)
-  )
+  jsonify("G0EDEFsome", jsonize(topt), jsonize(g0e1))
 ) : labjsonval
 end
 
@@ -1249,10 +1468,7 @@ case+ x0 of
 | D0MDEFnone() =>
   jsonify("D0MDEFnone")
 | D0MDEFsome(topt, d0e1) =>
-  jsonify("D0MDEFsome",
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(d0e1)
-  )
+  jsonify("D0MDEFsome", jsonize(topt), jsonize(d0e1))
 ) : labjsonval
 end
 
@@ -1268,8 +1484,8 @@ case+ x0 of
 | WD0CSsome(tbeg, topt, d0cs, tend) =>
   jsonify("WD0CSsome",
     jsonize(tbeg),
-    jsonize(topt), (* jsonize_option<token>("tokenopt", topt), *)
-    jsonize(d0cs), (* jsonize_list<d0ecl>("d0eclist", d0cs), *)
+    jsonize(topt),
+    jsonize(d0cs),
     jsonize(tend)
   )
 ) : labjsonval
@@ -1281,17 +1497,30 @@ jsonize_v0aldecl
   (x0) = let
 //
 val+V0ALDECL(rcd) = x0
+(* val _ = $showtype(rcd) *)
 //
 in
+("v0aldecl", res) : labjsonval
+where
+val res =
+  jsonval_labval4(
+    "pat", jval(rcd.pat),
+    "teq", jval(rcd.teq),
+    "def", jval(rcd.def),
+    "wtp", jval(rcd.wtp)
+  )
+end
+(*
 node("v0aldecl", res) where
 val res =
   jsonify("V0ALDECL",
     jsonize(rcd.pat),
-    jsonize(rcd.teq), (* jsonize_option<token>("tokenopt", rcd.teq), *)
-    jsonize(rcd.def), (* jsonize_option<d0exp>("d0expopt", rcd.def), *)
+    jsonize(rcd.teq),
+    jsonize(rcd.def),
     jsonize(rcd.wtp)
   ) : labjsonval
 end
+*)
 end
 
 
@@ -1302,15 +1531,27 @@ jsonize_v0ardecl
 val+V0ARDECL(rcd) = x0
 //
 in
+("v0ardecl", res) : labjsonval
+where
+val res =
+  jsonval_labval4(
+    "nam", jval(rcd.nam),
+    "wth", jval(rcd.wth),
+    "res", jval(rcd.res),
+    "ini", jval(rcd.ini)
+  )
+end
+(*
 node("v0ardecl", res) where
 val res =
   jsonify("V0ARDECL",
     jsonize(rcd.nam),
-    jsonize(rcd.wth), (* jsonize_option<i0dnt>("i0dntopt", rcd.wth), *)
-    jsonize(rcd.res), (* jsonize_option<s0exp>("s0expopt", rcd.res), *)
+    jsonize(rcd.wth),
+    jsonize(rcd.res),
     jsonize(rcd.ini)
   ) : labjsonval
 end
+*)
 end // end of [jsonize_v0ardecl]
 
 
@@ -1321,17 +1562,31 @@ jsonize_f0undecl
 val+F0UNDECL(rcd) = x0
 //
 in
+("f0undecl", res) : labjsonval
+where
+val res =
+  jsonval_labval6(
+    "nam", jval(rcd.nam),
+    "arg", jval(rcd.arg),
+    "res", jval(rcd.res),
+    "teq", jval(rcd.teq),
+    "def", jval(rcd.def),
+    "wtp", jval(rcd.wtp)
+  )
+end
+(*
 node("f0undecl", res) where
 val res =
   jsonify("F0UNDECL",
     jsonize(rcd.nam),
-    jsonize(rcd.arg), (* jsonize_list<f0arg>("f0arglst", rcd.arg), *)
+    jsonize(rcd.arg),
     jsonize(rcd.res),
-    jsonize(rcd.teq), (* jsonize_option<token>("tokenopt", rcd.teq), *)
-    jsonize(rcd.def), (* jsonize_option<d0exp>("d0expopt", rcd.def), *)
+    jsonize(rcd.teq),
+    jsonize(rcd.def),
     jsonize(rcd.wtp)
   ) : labjsonval
 end
+*)
 end
 
 
@@ -1342,13 +1597,25 @@ jsonize_d0cstdecl
 val+D0CSTDECL(rcd) = x0
 //
 in
+("d0cstdecl", res) : labjsonval
+where
+val res =
+  jsonval_labval4(
+    "nam", jval(rcd.nam),
+    "arg", jval(rcd.arg),
+    "res", jval(rcd.res),
+    "def", jval(rcd.def)
+  )
+end
+(*
 node("d0cstdecl", res) where
 val res =
   jsonify("D0CSTDECL",
     jsonize(rcd.nam),
-    jsonize(rcd.arg), (* jsonize_list<d0arg>("d0arglst", rcd.arg), *)
+    jsonize(rcd.arg),
     jsonize(rcd.res),
     jsonize(rcd.def)
   ) : labjsonval
 end
+*)
 end

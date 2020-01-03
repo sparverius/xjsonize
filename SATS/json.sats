@@ -278,6 +278,12 @@ fun{a:t@ype} jsonize_list: (List(a)) -> labjsonval
 fun{a:t@ype} jsonize_option: (Option(a)) -> labjsonval
 fun{a:t@ype} jsonize_option_vt: (Option_vt(a)) -> labjsonval
 
+
+fun{a:t@ype} jsonize_list_named: (string, List(a)) -> labjsonval
+
+fun{a:t@ype} jsonize_option_named: (string, Option(a)) -> labjsonval
+
+
 fun
 jsonize_int(x:int): labjsonval
 

@@ -85,6 +85,40 @@ val res =
 end
 *)
 
+implement{a}
+jsonize_list_named(nm, xs) = @(nm, res): labjsonval
+where
+{
+  val () = assertloc(list_length(xs) >= 0)
+  val xys = list_map<a><jsonval>(xs) where
+  {
+    implement
+    list_map$fopr<a><jsonval>(x) = let
+      val xs = jsonize_val<a>(x)
+    in
+      jsonval_labval1(xs.0, xs.1)
+    end
+  }
+  val res = list_of_list_vt{jsonval}(xys)
+  val res = JSONlist(res)
+}
+
+
+implement{a}
+jsonize_option_named(nm, xs) = @(nm, res) : labjsonval
+where
+val res =
+(
+  case+ xs of
+  | None() => jnul()
+  | Some(x) => jsonval_labval1(xs.0, xs.1)
+    where
+      val xs = jsonize_val<a>(x)
+    end
+)
+end
+
+
 implement
 jsonval_int (i) = JSONint (i)
 

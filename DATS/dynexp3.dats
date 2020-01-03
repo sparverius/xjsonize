@@ -1,5 +1,4 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
 #staload "{$x}/SATS/dynexp1.sats"
@@ -21,67 +20,99 @@
 #staload "./../SATS/dynexp3.sats"
 
 #staload _ = "./json.dats"
+#staload _ = "./dynexp0.dats"
+#staload _ = "./staexp1.dats"
+#staload _ = "./dynexp1.dats"
+#staload _ = "./statyp2.dats"
+#staload _ = "./staexp2.dats"
+#staload _ = "./dynexp2.dats"
+
+
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/staexp0.dats"
+#staload _ = "{$XNAME}/DATS/dynexp0.dats"
+#staload _ = "{$XNAME}/DATS/staexp1.dats"
+#staload _ = "{$XNAME}/DATS/dynexp1.dats"
+#staload _ = "{$XNAME}/DATS/statyp2.dats"
+#staload _ = "{$XNAME}/DATS/staexp2.dats"
+#staload _ = "{$XNAME}/DATS/dynexp2.dats"
+#staload _ = "{$XNAME}/DATS/dynexp3.dats"
+
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/staexp0.dats"
+#staload _ = "{$XARGS}/DATS/dynexp0.dats"
+#staload _ = "{$XARGS}/DATS/staexp1.dats"
+#staload _ = "{$XARGS}/DATS/dynexp1.dats"
+#staload _ = "{$XARGS}/DATS/staexp2.dats"
+#staload _ = "{$XARGS}/DATS/dynexp2.dats"
+#staload _ = "{$XARGS}/DATS/dynexp3.dats"
+
+#include "./global.dats"
+
+implement totype_d3claulst<> = jsonize_d3claulst
+implement totype_f3arglst<> = jsonize_f3arglst
+implement totype_d3gualst<> = jsonize_d3gualst
+implement totype_v3aldeclist<> = jsonize_v3aldeclist
+implement totype_v3ardeclist<> = jsonize_v3ardeclist
+implement totype_f3undeclist<> = jsonize_f3undeclist
+implement totype_d3eclist<> = jsonize_d3eclist
+implement totype_d3eclistopt<> = jsonize_d3eclistopt
+implement totype_d3explst<> = jsonize_d3explst
+implement totype_d3explstopt<> = jsonize_d3explstopt
+implement totype_d3expopt<> = jsonize_d3expopt
+implement totype_d3patlst<> = jsonize_d3patlst
+
+implement totype_d3pat<> = jsonize_d3pat
+implement totype_f3arg<> = jsonize_f3arg
+implement totype_d3exp<> = jsonize_d3exp
+implement totype_d3gua<> = jsonize_d3gua
+implement totype_d3clau<> = jsonize_d3clau
+implement totype_d3gpat<> = jsonize_d3gpat
+implement totype_ti3arg<> = jsonize_ti3arg
+implement totype_d3ecl<> = jsonize_d3ecl
+implement totype_t2pcast<> = jsonize_t2pcast
+implement totype_v3aldecl<> = jsonize_v3aldecl
+implement totype_v3ardecl<> = jsonize_v3ardecl
+implement totype_f3undecl<> = jsonize_f3undecl
+
 
 local
 implement jsonize_val<d3ecl> = jsonize_d3ecl
-in
-implement jsonize_d3eclist(x) = jsonize_list<d3ecl>("d3eclist", x)
-end
-
-local
 implement jsonize_val<d3clau> = jsonize_d3clau
-in
-implement jsonize_d3claulst(x) = jsonize_list<d3clau>("d3claulst", x)
-end
-
-local
 implement jsonize_val<f3arg> = jsonize_f3arg
-in
-implement jsonize_f3arglst(x) = jsonize_list<f3arg>("f3arglst", x)
-end
-
-local
 implement jsonize_val<d3gua> = jsonize_d3gua
-in
-implement jsonize_d3gualst(x) = jsonize_list<d3gua>("d3gualst", x)
-end
-
-local
 implement jsonize_val<v3aldecl> = jsonize_v3aldecl
-in
-implement jsonize_v3aldeclist(x) = jsonize_list<v3aldecl>("v3aldeclist", x)
-end
-
-local
 implement jsonize_val<v3ardecl> = jsonize_v3ardecl
-in
-implement jsonize_v3ardeclist(x) = jsonize_list<v3ardecl>("v3ardeclist", x)
-end
-
-local
 implement jsonize_val<f3undecl> = jsonize_f3undecl
-in
-implement jsonize_f3undeclist(x) = jsonize_list<f3undecl>("f3undeclist", x)
-end
-
-local
 implement jsonize_val<d3exp> = jsonize_d3exp
-
-in
-implement jsonize_d3explst(x) = jsonize_list<d3exp>("d3explst", x)
-implement jsonize_d3expopt(x) = jsonize_option<d3exp>("d3expopt", x)
-end
-
-local
 implement jsonize_val<d3pat> = jsonize_d3pat
+//
+implement jsonize_val<d3explst> = jsonize_d3explst
+implement jsonize_val<d3eclist> = jsonize_d3eclist
 in
-implement jsonize_d3patlst(x) = jsonize_list<d3pat>("d3patlst", x)
+implement jsonize_d3eclist(x) = jsonize_list<d3ecl>(x)
+implement jsonize_d3claulst(x) = jsonize_list<d3clau>(x)
+implement jsonize_f3arglst(x) = jsonize_list<f3arg>(x)
+implement jsonize_d3gualst(x) = jsonize_list<d3gua>(x)
+implement jsonize_v3aldeclist(x) = jsonize_list<v3aldecl>(x)
+implement jsonize_v3ardeclist(x) = jsonize_list<v3ardecl>(x)
+implement jsonize_f3undeclist(x) = jsonize_list<f3undecl>(x)
+implement jsonize_d3explst(x) = jsonize_list<d3exp>(x)
+implement jsonize_d3expopt(x) = jsonize_option<d3exp>(x)
+implement jsonize_d3patlst(x) = jsonize_list<d3pat>(x)
+
+implement jsonize_d3explstopt(x) = jsonize_option<d3explst>(x)
+implement jsonize_d3eclistopt(x) = jsonize_option<d3eclist>(x)
+
+#include "./macro.dats"
+
 end
+
 
 
 implement
-jsonize_d3pat
-  (x0) =
+jsonize_d3pat(x0) = make_tagged(x0)
+(*
 node2("d3pat", jsonize(x0.loc()), res) where
 val res =
 (
@@ -148,11 +179,12 @@ case- x0.node() of
 //
 ) : labjsonval  (* end of [jsonize_d3pat] *)
 end
+*)
 
 
 implement
-jsonize_f3arg
-  (x0) =
+jsonize_f3arg(x0) = make_tagged(x0)
+(*
 node2("f3arg", jsonize(x0.loc()), res) where
 val res =
 (
@@ -177,11 +209,12 @@ case+ x0.node() of
   )
 ) : labjsonval
 end (* end of [jsonize_f3arg] *)
+*)
 
 
 implement
-jsonize_d3exp
-  (x0) =
+jsonize_d3exp(x0) = make_tagged(x0)
+(*
 node2("d3exp", jsonize(x0.loc()), res) where
 val res =
 (
@@ -389,11 +422,12 @@ x0.node() of
 //
 ) : labjsonval
 end
+*)
 
 
 implement
-jsonize_d3gua
-  (x0) =
+jsonize_d3gua(x0) = make_tagged(x0)
+(*
 node2("d3gua", jsonize(x0.loc()), res) where
 val res =
 (
@@ -405,11 +439,12 @@ x0.node() of
   jsonify("D3GUAmat", jsonize(d3e), jsonize(d3p))
 ) : labjsonval  (* end of [jsonize_d3gua] *)
 end
+*)
 
 
 implement
-jsonize_d3clau
-  (x0) =
+jsonize_d3clau(x0) = make_tagged(x0)
+(*
 node2("d3clau", jsonize(x0.loc()), res) where
 val res =
 (
@@ -424,11 +459,12 @@ x0.node() of
 //
 ) : labjsonval  (* end of [jsonize_d3clau] *)
 end
+*)
 
 
 implement
-jsonize_d3gpat
-  (x0) =
+jsonize_d3gpat(x0) = make_tagged(x0)
+(*
 node2("d3gpat", jsonize(x0.loc()), res) where
 val res =
 (
@@ -446,6 +482,7 @@ x0.node() of
 //
 ) : labjsonval
 end (* end of [jsonize_d3gpat] *)
+*)
 
 local
 
@@ -454,8 +491,8 @@ local
 in
 
 implement
-jsonize_ti3arg
-  (x0) =
+jsonize_ti3arg(x0) = make_untagged(x0)
+(*
 node("ti3arg", res) where
 val res =
 (
@@ -468,6 +505,7 @@ case+ x0 of
   )
 ) : labjsonval
 end
+*)
 end
 
 

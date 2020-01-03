@@ -1,5 +1,4 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
 #staload "{$x}/SATS/filpath.sats"
@@ -13,7 +12,8 @@
 local
 implement jsonize_val<filpath> = jsonize_filpath
 in
-implement jsonize_filpathopt(x) = jsonize_option<filpath>("filpathopt", x)
+(* implement jsonize_filpathopt(x) = jsonize_option<filpath>("filpathopt", x) *)
+implement jsonize_filpathopt(x) = jsonize_option2<filpath>("filpathopt", x)
 end
 
 

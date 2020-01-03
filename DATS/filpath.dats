@@ -8,18 +8,23 @@
 
 #staload _ = "./json.dats"
 
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/filpath.dats"
+
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/filpath.dats"
+
+#include "./global.dats"
+#include "./macro.dats"
 
 local
-implement jsonize_val<filpath> = jsonize_filpath
+
+  implement jsonize_val<filpath> = jsonize_filpath
+
 in
-(* implement jsonize_filpathopt(x) = jsonize_option<filpath>("filpathopt", x) *)
-implement jsonize_filpathopt(x) = jsonize_option2<filpath>("filpathopt", x)
+
+  implement jsonize_filpathopt(x) = jsonize_option<filpath>(x)
+
 end
 
-
-implement jsonize_filpath
-  (x) =
-  node("filpath", jsonize(full1))
-where
-  val full1 = filpath_get_full1(x)
-end
+implement jsonize_filpath(x) = make_notag(x)

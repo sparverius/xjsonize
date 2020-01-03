@@ -8,13 +8,19 @@
 
 #staload _ = "./json.dats"
 
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/symbol.dats"
 
-implement
-jsonize_symbol(x0) = @("symbol", JSONstring(x0.name())) : labjsonval
-(* @("symbol", jsonval_labval1("name", JSONstring(x0.name()))) : labjsonval *)
-  (* node("symbol", jsonize(x0.name())) *)
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/symbol.dats"
 
+#include "./global.dats"
+
+implement totype_val<symbol> = jsonize_symbol
+
+#include "./macro.dats"
+
+implement jsonize_symbol(x0) = make_notag(x0)
 (*
-implement
-labify_symbol(x0) = ("symbol", jsonize(x0.name()))
+@("symbol", JSONstring(x0.name())) : labjsonval
 *)

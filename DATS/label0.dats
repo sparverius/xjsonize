@@ -10,21 +10,13 @@
 
 #staload _ = "./json.dats"
 
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/label0.dats"
 
-implement
-jsonize_label
-  (l0) =
-node("label", res) where
-val res =
-(
-  case+ label_get_int(l0) of
-  | ~None_vt() => (
-      case+ label_get_sym(l0) of
-      | ~None_vt() => jsonize("None")
-      | ~Some_vt(sym) =>
-        jsonify("LABsym", jsonize(sym))
-    ) : labjsonval
-  | ~Some_vt(int) =>
-    jsonify("LABint", jsonize(int))
-): labjsonval
-end
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/label0.dats"
+
+#include "./global.dats"
+#include "./macro.dats"
+
+implement jsonize_label(l0) = make_untagged(l0)

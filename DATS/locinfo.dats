@@ -8,104 +8,18 @@
 
 #staload _ = "./json.dats"
 
-implement jsonize_location(loc) = @("loc", jnul()) : labjsonval
-implement jsonize_loc_t(loc) = @("loc", jnul()) : labjsonval
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/locinfo.dats"
 
-////
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/locinfo.dats"
 
+#include "./global.dats"
 
-implement labify_loc_t(loc) = @("loc", jsonize_loc_t(loc))
+implement totype_val<location> = jsonize_location
 
-implement
-jsonize_loc_t(loc) =
-(
-  JSONlablist($list{labjsonval}(
-    ("path",
-      jsonize($FIL.filpath_get_full1(loc.filpath()))
-    ),
-    ("beg", jsonize(loc.beg_ntot()+1))
-      (* JSONlablist($list{labjsonval}( *)
-      (*   ("chrs", jsonize(loc.beg_ntot()+1)), *)
-      (*   ("line", jsonize(loc.beg_nrow()+1)), *)
-      (*   ("offs", jsonize(loc.beg_ncol())) *)
-      (* )) *)
-    (* ) *)
-    ,
-    ("end", jsonize(loc.end_ntot()+1))
-      (* JSONlablist($list{labjsonval}( *)
-      (*   ("chrs", jsonize(loc.end_ntot()+1)), *)
-      (*   ("line", jsonize(loc.end_nrow()+1)), *)
-      (*   ("offs", jsonize(loc.end_ncol())) *)
-      (* )) *)
-    (* ) *)
-  ))
-)
+#include "./macro.dats"
 
+implement jsonize_location(loc) = make_notag(loc)
 
-implement
-jsonize_locrange(loc) =
-(
-  (* labval("pos", *)
-(*
-    JSONlablist($list{labjsonval}(
-      ("beg",
-        JSONlablist($list{labjsonval}(
-          ("chrs", jsonize(loc.beg_ntot()+1)),
-          ("line", jsonize(loc.beg_nrow()+1)),
-          ("offs", jsonize(loc.beg_ncol()))
-        ))
-      ),
-      ("end",
-        JSONlablist($list{labjsonval}(
-          ("chrs", jsonize(loc.end_ntot()+1)),
-          ("line", jsonize(loc.end_nrow()+1)),
-          ("offs", jsonize(loc.end_ncol()))
-        ))
-      )
-    ))
-*)
-  JSONlablist($list{labjsonval}(
-    ("path", jsonize($FIL.filpath_get_full1(loc.filpath()))),
-    ("beg", jsonize(loc.beg_ntot()+1)),
-    ("end", jsonize(loc.end_ntot()+1))
-  ))
-
-  (* ) *)
-)
-
-(*
-implement
-jsonize_location(loc) = res where
-  val fp0 = location_filpath(loc)
-  val jfil = jsonize($FIL.filpath_get_full1(fp0))
-  val res = jsonval_labval1("loc", jfil)
-end
-*)
-
-(*
-implement
-jsonize_location(loc) = res where
-  val fp0 = location_filpath(loc)
-  val jfil = jsonize($FIL.filpath_get_full1(fp0))
-  val res = jsonval_labval1("loc", jfil)
-
-  val res = node("loc", rst) where
-    val fst = ("path", jfil)
-    val snd = ("pos", jsonize_locrange(loc))
-    val rst = JSONlablist($list{labjsonval}(fst, snd))
-  end
-end
-*)
-
-implement
-jsonize_location(loc) = res where
-  val fp0 = location_filpath(loc)
-  val jfil = jsonize($FIL.filpath_get_full1(fp0))
-  (* val res = jsonval_labval1("loc", jfil) *)
-
-  (* val fst = ("path", jfil) *)
-  (* val snd = ("pos", jsonize_locrange(loc)) *)
-  (* val res = JSONlablist($list{labjsonval}(fst, snd)) *)
-
-  val res = jsonize_locrange(loc)
-end
+implement jsonize_loc_t(loc) = make_notag(loc)

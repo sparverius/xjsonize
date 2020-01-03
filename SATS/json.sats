@@ -1,4 +1,3 @@
-(* #include "./../HATS/libxargsof.hats" *)
 #include "./../HATS/x.hats"
 #staload "{$XARGS}/SATS/argsof.sats"
 
@@ -272,30 +271,12 @@ symintr jsonize
 symintr labify
 symintr labelize
 
-(*
-fun{a:t@ype} jsonize_val: (a) -> jsonval
-
-fun{a:t@ype} jsonize_list: (string, List(a)) -> jsonval
-
-fun{a:t@ype} jsonize_option: (string, Option(a)) -> jsonval
-fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> jsonval
-*)
-
 fun{a:t@ype} jsonize_val: (a) -> labjsonval
 
 fun{a:t@ype} jsonize_list: (List(a)) -> labjsonval
 
 fun{a:t@ype} jsonize_option: (Option(a)) -> labjsonval
 fun{a:t@ype} jsonize_option_vt: (Option_vt(a)) -> labjsonval
-
-fun{a:t@ype} jsonize_option2: (string, Option(a)) -> labjsonval
-(*
-fun{a:t@ype} jsonize_list: (string, List(a)) -> labjsonval
-
-fun{a:t@ype} jsonize_option: (string, Option(a)) -> labjsonval
-fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> labjsonval
-*)
-
 
 fun
 jsonize_int(x:int): labjsonval
@@ -378,79 +359,30 @@ typedef jv = //jsonval
 labjsonval
 *)
 
-fun
-jsonify0 (guard_name: string): labjsonval
-fun
-jsonify1 (guard_name: string, arg_json: labjsonval): labjsonval
-fun
-jsonify2 (string, labjsonval, labjsonval): labjsonval
-fun
-jsonify3 (string, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify4 (string, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify5 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify6 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify7 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify8 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify9 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
-fun
-jsonify10 (string, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval, labjsonval): labjsonval
+typedef ljv = labjsonval
 
-
-fun labjson_string(string, string): jsonval
-(*
-fun labjson_string2(string, string, string): jsonval
-fun labjson_string3(string, string, string, string): jsonval
-*)
-
-overload labjson with labjson_string
-
-fun to_jsonval_labjsonval(labjsonval): jsonval
-fun to_jsonval_jsonval(jsonval): jsonval
-
-overload to_jsonval with to_jsonval_labjsonval
-overload to_jsonval with to_jsonval_jsonval
-
-(*
-overload labjson with labjson_string2
-overload labjson with labjson_string3
-*)
-
-fun tagged_int(xs: string, ys: int) : labjsonval
-fun tagged_string(xs: string, ys: string) : labjsonval
-
-overload tagged with tagged_int
-overload tagged with tagged_string
-
-(*
 fun
-jsonify0 (guard_name: string): jsonval
+jsonify0 (guard_name: string): ljv
 fun
-jsonify1 (guard_name: string, arg_json: jsonval): jsonval
+jsonify1 (guard_name: string, arg_json: ljv): ljv
 fun
-jsonify2 (string, jv, jv): jsonval
+jsonify2 (string, ljv, ljv): ljv
 fun
-jsonify3 (string, jv, jv, jv): jsonval
+jsonify3 (string, ljv, ljv, ljv): ljv
 fun
-jsonify4 (string, jv, jv, jv, jv): jsonval
+jsonify4 (string, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify5 (string, jv, jv, jv, jv, jv): jsonval
+jsonify5 (string, ljv, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify6 (string, jv, jv, jv, jv, jv, jv): jsonval
+jsonify6 (string, ljv, ljv, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify7 (string, jv, jv, jv, jv, jv, jv, jv): jsonval
+jsonify7 (string, ljv, ljv, ljv, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify8 (string, jv, jv, jv, jv, jv, jv, jv, jv): jsonval
+jsonify8 (string, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify9 (string, jv, jv, jv, jv, jv, jv, jv, jv, jv): jsonval
+jsonify9 (string, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv): ljv
 fun
-jsonify10 (string, jv, jv, jv, jv, jv, jv, jv, jv, jv, jv): jsonval
-*)
+jsonify10 (string, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv, ljv): ljv
 
 overload jsonify with jsonify0
 overload jsonify with jsonify1
@@ -464,6 +396,21 @@ overload jsonify with jsonify8
 overload jsonify with jsonify9
 overload jsonify with jsonify10
 
+fun labjson_string(string, string): jsonval
+overload labjson with labjson_string
+
+fun to_jsonval_labjsonval(labjsonval): jsonval
+fun to_jsonval_jsonval(jsonval): jsonval
+
+overload to_jsonval with to_jsonval_labjsonval
+overload to_jsonval with to_jsonval_jsonval
+
+fun tagged_int(xs: string, ys: int) : labjsonval
+fun tagged_string(xs: string, ys: string) : labjsonval
+
+overload tagged with tagged_int
+overload tagged with tagged_string
+
 fun mknode_jsonval(x: string, y: jsonval): jsonval
 fun mknode_string(x: string, y: string): jsonval
 fun mknode_labjsonval(x: string, y: labjsonval): jsonval
@@ -471,21 +418,21 @@ overload mknode with mknode_jsonval
 overload mknode with mknode_string
 overload mknode with mknode_labjsonval
 
-
-
 fun
 jsonize_listize(xs: List0(labjsonval)): jsonval
 
 fun
 jsonize_labjsonvalist(xs: List0(labjsonval)): jsonval
-
 overload labelize with jsonize_labjsonvalist
 
 fun
 jsonize_lablist(nm: string, xs: List0(labjsonval)): labjsonval
-
-(* overload jsonize with jsonize_lablist *)
+(*
+overload jsonize with jsonize_lablist
+*)
 
 fun
 jsonize_named_labjsonvalist(nm: string, x: labjsonvalist): labjsonval
-(* overload jsonize with jsonize_named_labjsonvalist *)
+(*
+overload jsonize with jsonize_named_labjsonvalist
+*)

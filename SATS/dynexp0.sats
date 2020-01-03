@@ -25,8 +25,10 @@ overload jsonize with jsonize_sq0arg
 overload jsonize with jsonize_sq0arglst
 
 fun jsonize_tq0arg : jsonize_type(tq0arg)
+fun jsonize_tq0arg_node : jsonize_type(tq0arg_node)
 fun jsonize_tq0arglst : jsonize_type(tq0arglst)
 overload jsonize with jsonize_tq0arg
+overload jsonize with jsonize_tq0arg_node
 overload jsonize with jsonize_tq0arglst
 
 fun jsonize_ti0arg : jsonize_type(ti0arg)
@@ -36,9 +38,12 @@ overload jsonize with jsonize_ti0arglst
 
 fun jsonize_a0typ : jsonize_type(a0typ)
 fun jsonize_a0typlst : jsonize_type(a0typlst)
+fun jsonize_a0typopt : jsonize_type(a0typopt)
+fun jsonize_a0typlstopt : jsonize_type(a0typlstopt)
 overload jsonize with jsonize_a0typ
 overload jsonize with jsonize_a0typlst
-
+overload jsonize with jsonize_a0typopt
+overload jsonize with jsonize_a0typlstopt
 
 fun jsonize_d0arg : jsonize_type(d0arg)
 fun jsonize_d0arglst : jsonize_type(d0arglst)

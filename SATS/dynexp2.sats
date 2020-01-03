@@ -74,9 +74,11 @@ overload jsonize with jsonize_d2gpat
 fun jsonize_d2exp : jsonize_type(d2exp)
 fun jsonize_d2explst : jsonize_type(d2explst)
 fun jsonize_d2expopt : jsonize_type(d2expopt)
+fun jsonize_d2explstopt : jsonize_type(d2explstopt)
 overload jsonize with jsonize_d2exp
 overload jsonize with jsonize_d2explst
 overload jsonize with jsonize_d2expopt
+overload jsonize with jsonize_d2explstopt
 
 fun jsonize_v2aldecl : jsonize_type(v2aldecl)
 fun jsonize_v2aldeclist : jsonize_type(v2aldeclist)
@@ -95,8 +97,10 @@ overload jsonize with jsonize_f2undeclist
 
 fun jsonize_d2ecl : jsonize_type(d2ecl)
 fun jsonize_d2eclist : jsonize_type(d2eclist)
+fun jsonize_d2eclistopt : jsonize_type(d2eclistopt)
 overload jsonize with jsonize_d2ecl
 overload jsonize with jsonize_d2eclist
+overload jsonize with jsonize_d2eclistopt
 
 fun jsonize_impls2cst : jsonize_type(impls2cst)
 overload jsonize with jsonize_impls2cst

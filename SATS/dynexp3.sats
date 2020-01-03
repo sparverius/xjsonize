@@ -32,9 +32,11 @@ overload jsonize with jsonize_d3gpat
 fun jsonize_d3exp : jsonize_type(d3exp)
 fun jsonize_d3explst : jsonize_type(d3explst)
 fun jsonize_d3expopt : jsonize_type(d3expopt)
+fun jsonize_d3explstopt : jsonize_type(d3explstopt)
 overload jsonize with jsonize_d3exp
 overload jsonize with jsonize_d3explst
 overload jsonize with jsonize_d3expopt
+overload jsonize with jsonize_d3explstopt
 
 fun jsonize_t2pcast : jsonize_type(t2pcast)
 overload jsonize with jsonize_t2pcast
@@ -56,5 +58,7 @@ overload jsonize with jsonize_f3undeclist
 
 fun jsonize_d3ecl : jsonize_type(d3ecl)
 fun jsonize_d3eclist : jsonize_type(d3eclist)
+fun jsonize_d3eclistopt : jsonize_type(d3eclistopt)
 overload jsonize with jsonize_d3ecl
 overload jsonize with jsonize_d3eclist
+overload jsonize with jsonize_d3eclistopt

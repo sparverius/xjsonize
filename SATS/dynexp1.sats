@@ -32,8 +32,10 @@ overload jsonize with jsonize_ti1arglst
 
 fun jsonize_a1typ : jsonize_type(a1typ)
 fun jsonize_a1typlst : jsonize_type(a1typlst)
+fun jsonize_a1typlstopt : jsonize_type(a1typlstopt)
 overload jsonize with jsonize_a1typ
 overload jsonize with jsonize_a1typlst
+overload jsonize with jsonize_a1typlstopt
 
 fun jsonize_d1arg : jsonize_type(d1arg)
 fun jsonize_d1arglst : jsonize_type(d1arglst)
@@ -101,8 +103,10 @@ overload jsonize with jsonize_d1cstdeclist
 
 fun jsonize_d1ecl : jsonize_type(d1ecl)
 fun jsonize_d1eclist : jsonize_type(d1eclist)
+fun jsonize_d1eclistopt : jsonize_type(d1eclistopt)
 overload jsonize with jsonize_d1ecl
 overload jsonize with jsonize_d1eclist
+overload jsonize with jsonize_d1eclistopt
 
 fun jsonize_abstdf1 : jsonize_type(abstdf1)
 overload jsonize with jsonize_abstdf1

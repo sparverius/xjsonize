@@ -1,5 +1,4 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
 #staload "{$x}/SATS/locinfo.sats"

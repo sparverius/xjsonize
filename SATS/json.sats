@@ -1,3 +1,7 @@
+(* #include "./../HATS/libxargsof.hats" *)
+#include "./../HATS/x.hats"
+#staload "{$XARGS}/SATS/argsof.sats"
+
 datatype
 jsonval =
 //
@@ -21,6 +25,8 @@ where
   labjsonvalist = List0 (labjsonval)
   and
   jsonvalopt = Option (jsonval)
+
+assume ret_list_type_t = labjsonval
 
 (* typedef jsonize_type(a:t@ype) = a -> jsonval *)
 typedef jsonize_type(a:t@ype) = a -> labjsonval
@@ -277,10 +283,18 @@ fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> jsonval
 
 fun{a:t@ype} jsonize_val: (a) -> labjsonval
 
+fun{a:t@ype} jsonize_list: (List(a)) -> labjsonval
+
+fun{a:t@ype} jsonize_option: (Option(a)) -> labjsonval
+fun{a:t@ype} jsonize_option_vt: (Option_vt(a)) -> labjsonval
+
+fun{a:t@ype} jsonize_option2: (string, Option(a)) -> labjsonval
+(*
 fun{a:t@ype} jsonize_list: (string, List(a)) -> labjsonval
 
 fun{a:t@ype} jsonize_option: (string, Option(a)) -> labjsonval
 fun{a:t@ype} jsonize_option_vt: (string, Option_vt(a)) -> labjsonval
+*)
 
 
 fun
@@ -298,6 +312,9 @@ jsonize_bool(x:bool): labjsonval
 fun
 jsonize_double(x:double): labjsonval
 
+fun
+jsonize_uint(x:uint): labjsonval
+
 (* fun
 jsonize_float(x:float): jsonval = JSONstring(tostring_val<float>(x)) *)
 
@@ -310,6 +327,8 @@ overload jsonize with jsonize_string
 overload jsonize with jsonize_bool
 
 overload jsonize with jsonize_double
+
+overload jsonize with jsonize_uint
 
 (* overload jsonize with jsonize_float *)
 
@@ -455,6 +474,9 @@ overload mknode with mknode_labjsonval
 
 
 fun
+jsonize_listize(xs: List0(labjsonval)): jsonval
+
+fun
 jsonize_labjsonvalist(xs: List0(labjsonval)): jsonval
 
 overload labelize with jsonize_labjsonvalist
@@ -462,8 +484,8 @@ overload labelize with jsonize_labjsonvalist
 fun
 jsonize_lablist(nm: string, xs: List0(labjsonval)): labjsonval
 
-overload jsonize with jsonize_lablist
+(* overload jsonize with jsonize_lablist *)
 
 fun
 jsonize_named_labjsonvalist(nm: string, x: labjsonvalist): labjsonval
-overload jsonize with jsonize_named_labjsonvalist
+(* overload jsonize with jsonize_named_labjsonvalist *)

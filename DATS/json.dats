@@ -1,7 +1,8 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #staload "./../SATS/json.sats"
+
+#include "./../HATS/libxnameof.hats"
 
 implement mknode_jsonval(x, y) =
 jsonval_labval2("tag", JSONstring(x), "data", y)
@@ -58,7 +59,89 @@ implement tagged_int(tag, i) =
 implement tagged_string(tag, str) =
   @(tag, JSONstring(str)) : labjsonval
 
+(*
+local
+#staload "{$x}/SATS/lexing.sats"
+#staload "{$x}/SATS/staexp0.sats"
+#staload "{$x}/SATS/dynexp0.sats"
+#staload "{$x}/SATS/staexp1.sats"
+#staload "{$x}/SATS/dynexp1.sats"
+in
+implement nameof_val<d0tsortlst> = nameof_d0tsortlst
+implement nameof_val<tokenopt> = nameof_tokenopt
+implement nameof_val<a0typlst> = nameof_a0typlst
+*)
+(* where *)
+(* val _ = $showtype(x) end *)
+(* implement nameof_val<d0tsort_tbox)> = nameof_d0tsortlst *)
 
+implement{a}
+jsonize_list(xs) =
+(* @(nm, JSONlablist(res)): labjsonval *)
+@(nameof_val<List0(a)>(xs), JSONlist(res)): labjsonval
+where
+{
+  val () = assertloc(list_length(xs) >= 0)
+  val xys = list_map<a><jsonval>(xs) where
+  {
+    implement
+    list_map$fopr<a><jsonval>(x) = let
+      val xs = jsonize_val<a>(x)
+    in
+      jsonval_labval1(xs.0, xs.1)
+    end
+  }
+  val res = list_of_list_vt{jsonval}(xys)
+  (* val () = assertloc(list_length(res) >= 0) *)
+}
+
+
+implement{a}
+jsonize_option(xs) =
+@(nm, res) : labjsonval
+where
+val nm = nameof_val<Option(a)>(xs)
+val res =
+(
+  case+ xs of
+  | None() => jnul()
+  | Some(x) => jsonval_labval1(xs.0, xs.1)
+    where
+      val xs = jsonize_val<a>(x)
+    end
+  (*
+  case+ xs of
+  | None() => jsonize("None")
+  | Some(x) => jsonval_labval1("Some", jsonize_val<a>(x))
+  *)
+)
+end
+
+(*
+end
+*)
+
+implement{a}
+jsonize_option2(nm, xs) =
+@(nm, res) where
+val res =
+(
+  case+ xs of
+  | None() => jnul()
+  | Some(x) => jsonval_labval1(xs.0, xs.1)
+    where
+      val xs = jsonize_val<a>(x)
+    end
+  (*
+  case+ xs of
+  | None() => jsonize("None")
+  | Some(x) => jsonval_labval1("Some", jsonize_val<a>(x))
+  *)
+)
+end
+
+
+(*
 implement{a}
 jsonize_list(nm, xs) =
 (* @(nm, JSONlablist(res)): labjsonval *)
@@ -77,8 +160,9 @@ where
   val res = list_of_list_vt{jsonval}(xys)
   (* val () = assertloc(list_length(res) >= 0) *)
 }
+*)
 
-
+(*
 implement{a}
 jsonize_option(nm, xs) =
 @(nm, res) where
@@ -97,6 +181,7 @@ val res =
   *)
 )
 end
+*)
 
 (*
 implement{a}
@@ -148,7 +233,26 @@ implement
 jstr(x:string) = JSONstring(x)
 
 implement
-jsonize_int(x) = @("knd", JSONint(x)) : labjsonval
+jsonize_int(x) = @("data", JSONint(x)) : labjsonval
+
+implement
+jsonize_char(x) = @("data", JSONstring(tostring_char(x))) : labjsonval
+
+implement
+jsonize_string(x) = @("data", JSONstring(x)) : labjsonval
+
+implement
+jsonize_bool(x) = @("data", JSONbool(x)) : labjsonval
+
+implement
+jsonize_double(x) = @("data", JSONstring(tostring_val<double>(x))) : labjsonval
+
+implement
+jsonize_uint(x) = @("data", JSONstring(tostring_val<uint>(x))) : labjsonval
+
+(*
+implement
+jsonize_int(x) = @("int", JSONint(x)) : labjsonval
 
 implement
 jsonize_char(x) = @("char", JSONstring(tostring_char(x))) : labjsonval
@@ -161,6 +265,11 @@ jsonize_bool(x) = @("bool", JSONbool(x)) : labjsonval
 
 implement
 jsonize_double(x) = @("double", JSONstring(tostring_val<double>(x))) : labjsonval
+
+implement
+jsonize_uint(x) = @("uint", JSONstring(tostring_val<uint>(x))) : labjsonval
+*)
+
 
 implement
 jsonize_val<int>(x) = jsonize_int(x)
@@ -468,11 +577,26 @@ case+ x0 of
     val () = prstr "]"
   }
 | JSONlablist (lxs) =>
+(*
   {
     val () = prstr "{"
     val () = fprint_labjsonvalist (out, lxs)
     val () = prstr "}"
   }
+*)
+  (
+    case+ lxs of
+    | list_nil() => prstr "{}"
+    | list_cons(x, xs) =>
+      if iseqz xs andalso x.0 = "data"
+      then fprint_jsonval (out, x.1)
+      else
+      (
+        prstr "{";
+        fprint_labjsonvalist (out, lxs);
+        prstr "}"
+      )
+  )
 //
 | JSONoption (opt) =>
   {
@@ -671,7 +795,8 @@ where
   val xys = list_imap<labjsonval><labjsonval>(xs) where
   {
     implement
-    list_imap$fopr<labjsonval><labjsonval>(i, x) =
+    list_imap$fopr<labjsonval><labjsonval>(i, x) = //x
+
       (* @(tostring_int(i), to_jsonval(x)) : labjsonval *)
       @(arg, to_jsonval(x)) : labjsonval
       where
@@ -685,6 +810,18 @@ where
 
   }
   val res = list_of_list_vt{labjsonval}(xys)
+  (* val () = assertloc(list_length(res) >= 0) *)
+}
+
+implement jsonize_listize(xs) = JSONlist(res)
+where
+{
+  val xys = list_imap<labjsonval><jsonval>(xs) where
+  {
+    implement
+    list_imap$fopr<labjsonval><jsonval>(i, x) = to_jsonval(x)
+  }
+  val res = list_of_list_vt{jsonval}(xys)
   (* val () = assertloc(list_length(res) >= 0) *)
 }
 
@@ -719,7 +856,14 @@ where
 
 implement jsonize_val<labjsonval>(x) = x
 
-implement jsonize_named_labjsonvalist(nm, x) = jsonize_list<labjsonval>(nm, x)
+
+
+(* implement jsonize_named_labjsonvalist(nm, x) = jsonize_list<labjsonval>(nm, x) *)
+implement jsonize_named_labjsonvalist(nm, x) =
+  jsonize_list<labjsonval>(x)
+  where
+  implement nameof_val<List0(labjsonval)>(x) = nm
+  end
 
 
 

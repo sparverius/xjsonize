@@ -1,7 +1,8 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
+#include "./../HATS/libxnameof.hats"
+#include "./../HATS/libxargsof.hats"
 
 #staload "./../SATS/json.sats"
 #staload _ = "./json.dats"
@@ -14,20 +15,42 @@
 
 overload jsonize with $SYM_J.jsonize_symbol
 
+#include "./global.dats"
+
 local
 
 implement jsonize_val<token> = jsonize_token
 
 in
 
+implement jsonize_tokenopt<> = jsonize_option<token>
+implement jsonize_tokenlst<> = jsonize_list<token>
+
+(*
 implement{} jsonize_tokenopt(x) = jsonize_option<token>("tokenopt", x)
 implement{} jsonize_tokenlst(x) = jsonize_list<token>("tokenlst", x)
-
+*)
 
 end
 
 implement
 jsonize_tnode(tnd) =
+@(name, res): labjsonval
+where
+(* val res = jsonval_labval1(nameof_tag(tnd), JSONlablist()) *)
+val name = nameof(tnd)
+val tag = nameof_tag(tnd)
+val tks = argsof_tag(tnd)
+val data =
+(
+  case+ tks of
+  | list_nil() => jnul()
+  | list_cons(x, xs) =>
+    if iseqz xs then x.1 else JSONlablist(tks)
+) : jsonval
+val res = mknode(tag, data)
+end
+(*
 @("tnode", res): labjsonval
 where
 val res =
@@ -319,6 +342,7 @@ case+ tnd of
 (* : labjsonval *)
 (* end of [jsonize_tnode] *)
 end
+*)
 
 implement
 jsonize_token(tok) =

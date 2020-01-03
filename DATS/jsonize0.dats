@@ -38,11 +38,23 @@
 extern
 void
 libxatsopt_dynloadall();
+extern
+void
+libxnameof_dynloadall();
+extern
+void
+libxargsof_dynloadall();
 //
 %} (* %{^ *)
 val () =
 $extfcall
 (void, "libxatsopt_dynloadall")
+val () =
+$extfcall
+(void, "libxnameof_dynloadall")
+val () =
+$extfcall
+(void, "libxargsof_dynloadall")
 //
 (* ****** ****** *)
 //
@@ -55,6 +67,10 @@ UN = "prelude/SATS/unsafe.sats"
 //
 #include
 "./../HATS/libxatsopt.hats"
+#include
+"./../HATS/libxnameof.hats"
+#include
+"./../HATS/libxargsof.hats"
 //
 (* ****** ****** *)
 //
@@ -634,6 +650,18 @@ fprintln!
 //
 (* ****** ****** *)
 
+macdef output_json(name, lst) =
+{
+val fname0 = ,(name)
+val filp0 = $STDIO.fopen(fname0, file_mode_w)
+val filr0 = $UN.castvwtp0{FILEref}(filp0)
+val j0 = jsonize(,(lst))
+val json = jsonval_labval1(j0.0, j0.1)
+(* val () = println!("jsonized(0)", "\n", json) *)
+val () = fprint!(filr0, json)
+val err = $STDIO.fclose0(filr0)
+}
+
 local
 //
 static
@@ -752,9 +780,20 @@ println!
 ("process_fpath: d0cs = ", d0cs)
 *)
 //
+(*
+val fname0 = "./out/json0.json"
+val filp0 = $STDIO.fopen(fname0, file_mode_w)
+val filr0 = $UN.castvwtp0{FILEref}(filp0)
+val err = $STDIO.fclose0(filr0)
+*)
+
+val () = output_json("./out/json0.json", d0cs)
+(*
 val j0 = jsonize(d0cs)
 val json = jsonval_labval1(j0.0, j0.1)
 val () = println!("jsonized(0)", "\n", json)
+*)
+
 //
 val () = synread_main(d0cs)
 //
@@ -779,9 +818,12 @@ println!
 ("process_fpath: d1cs = ", d1cs)
 *)
 //
+val () = output_json("./out/json01.json", d1cs)
+(*
 val j1 = jsonize(d1cs)
 val json = jsonval_labval1(j1.0, j1.1)
 val () = println!("jsonized(0->1)", "\n", json)
+*)
 //
 (*
 val () = t1xread_main(d1cs)
@@ -802,9 +844,12 @@ d2cs where
 }
 end // end of [val]
 //
+val () = output_json("./out/json12.json", d2cs)
+(*
 val j0 = jsonize(d2cs)
 val json = jsonval_labval1(j0.0, j0.1)
 val () = println!("jsonized(1->2)", "\n", json)
+*)
 //
 (*
 val () =
@@ -833,9 +878,12 @@ d3cs where
 }
 end // end of [val]
 //
+val () = output_json("./out/json23.json", d3cs)
+(*
 val j23 = jsonize(d3cs)
 val json = jsonval_labval1(j23.0, j23.1)
 val () = println!("jsonized(2->3)", "\n", json)
+*)
 //
 (*
 val () =
@@ -859,9 +907,12 @@ d3cs where
 }
 end // end of [val]
 //
+val () = output_json("./out/json33.json", d3cs)
+(*
 val j33 = jsonize(d3cs)
 val json = jsonval_labval1(j33.0, j33.1)
 val () = println!("jsonized(3->3)", "\n", json)
+*)
 //
 (*
 val () =
@@ -873,9 +924,22 @@ println!
 val
 d3cs = trans3t_program(d3cs)
 //
+val () = output_json("./out/json3t.json", d3cs)
+(*
 val j3t = jsonize(d3cs)
 val json = jsonval_labval1(j3t.0, j3t.1)
 val () = println!("jsonized(3->3t)", "\n", json)
+*)
+
+#staload "{$XANADU}/SATS/locinfo.sats"
+
+  val dummy_token = token_make_node(the_location_dummy, T_IDENT_alp("foo"))
+  val
+  dummy_tq0arg = tq0arg_make_node(the_location_dummy, TQ0ARGnone(dummy_token))
+
+val j3t = jsonize(dummy_tq0arg)
+val json = jsonval_labval1(j3t.0, j3t.1)
+val () = println!(json)
 //
 (*
 val ((*void*)) =

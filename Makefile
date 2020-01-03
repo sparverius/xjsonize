@@ -10,9 +10,6 @@ CP=cp
 RMF=rm -f
 MVF=mv -f
 
-XATSHOMEQ=./../xanadu/
-XATSQ=./../xanadu/srcgen/xats
-
 ######
 
 PATSCC=$(PATSHOME)/bin/patscc
@@ -20,7 +17,7 @@ PATSOPT=$(PATSHOME)/bin/patsopt
 
 ######
 #
-CFLAGS=-O2
+CFLAGS=
 #
 # CFLAGS=-g
 # CFLAGS=-g -O
@@ -83,10 +80,18 @@ $(patsubst %.dats, BUILD/%_dats.o, $(SRCDATS))
 
 ######
 
+XATSHOMEQ=./../xanadu
+XATSQ=./../xanadu/srcgen/xats
+XNAME=./../xnameof
+XARGS=./../xargsof
+
 INCLUDE:=
 INCLUDE+=-I"."
 INCLUDE+=-I"./BUILD/xats"
-LIBRARY:=-L$(XATSQ)/../../lib -lxatsopt
+LIBRARY:=-L$(XATSHOMEQ)/lib -lxatsopt
+LIBRARY+=-L$(XNAME)/lib -lxnameof
+LIBRARY+=-L$(XARGS)/lib -lxargsof
+
 
 ######
 #

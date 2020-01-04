@@ -1441,6 +1441,45 @@
       "token"
     ]
   },
+  "q0arg": [
+    "q0arg_node"
+  ],
+  "sq0arg": [
+    "sq0arg_node"
+  ],
+  "tq0arg": [
+    "tq0arg_node"
+  ],
+  "ti0arg": [
+    "ti0arg_node"
+  ],
+  "a0typ": [
+    "a0typ_node"
+  ],
+  "d0arg": [
+    "d0arg_node"
+  ],
+  "f0arg": [
+    "f0arg_node"
+  ],
+  "d0pat": [
+    "d0pat_node"
+  ],
+  "d0exp": [
+    "d0exp_node"
+  ],
+  "d0gua": [
+    "d0gua_node"
+  ],
+  "d0gpat": [
+    "d0gpat_node"
+  ],
+  "d0clau": [
+    "d0clau_node"
+  ],
+  "d0ecl": [
+    "d0ecl_node"
+  ],
   "q0arglst": [
     "q0arg"
   ],

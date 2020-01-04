@@ -4,14 +4,24 @@
 
 #include "./../HATS/libxnameof.hats"
 
+
 implement mknode_jsonval(x, y) =
+  jsonval_labval1(x, y)
+(*
   jsonval_labval2("tag", JSONstring(x), "data", y)
+*)
 
 implement mknode_string(x, y) =
+  jsonval_labval1(x, JSONstring(y))
+(*
   jsonval_labval2("tag", JSONstring(x), "data", JSONstring(y))
+*)
 
 implement mknode_labjsonval(x, y) =
+  jsonval_labval1(x, jsonval_labval1(y.0, y.1))
+(*
   jsonval_labval2("tag", JSONstring(x), "data", jsonval_labval1(y.0, y.1))
+*)
 
 implement node(x, y) =
   @(x, jsonval_labval1(y.0, y.1))

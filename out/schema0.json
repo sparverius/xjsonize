@@ -1,0 +1,1498 @@
+{
+  "symbol": [
+    "string"
+  ],
+  "stamp": [
+    "uint"
+  ],
+  "location": [
+    "int",
+    "int",
+    "int",
+    "int",
+    "int",
+    "int"
+  ],
+  "filpath": [
+    "string",
+    "string",
+    "symbol"
+  ],
+  "label": {
+    "LABint": [
+      "int"
+    ],
+    "LABsym": [
+      "symbol"
+    ]
+  },
+  "valkind": {
+    "VLKval": [],
+    "VLKvalp": [],
+    "VLKvaln": [],
+    "VLKprval": []
+  },
+  "funkind": {
+    "FNKfn0": [],
+    "FNKfnx": [],
+    "FNKfn1": [],
+    "FNKfun": [],
+    "FNKprfn0": [],
+    "FNKprfn1": [],
+    "FNKprfun": [],
+    "FNKpraxi": [],
+    "FNKcastfn": []
+  },
+  "impkind": {
+    "IMPgen": [],
+    "IMPprf": [],
+    "IMPval": [],
+    "IMPfun": [],
+    "IMPtmp": []
+  },
+  "funclo2": {
+    "FC2fun": [],
+    "FC2clo": [
+      "int"
+    ]
+  },
+  "token": [
+    "tnode"
+  ],
+  "tokenopt": [
+    "token"
+  ],
+  "tnode": {
+    "T_EOF": [],
+    "T_ERR": [],
+    "T_EOL": [],
+    "T_BLANK": [
+      "string"
+    ],
+    "T_CLNLT": [
+      "string"
+    ],
+    "T_DOTLT": [
+      "string"
+    ],
+    "T_IDENT_alp": [
+      "string"
+    ],
+    "T_IDENT_sym": [
+      "string"
+    ],
+    "T_IDENT_srp": [
+      "string"
+    ],
+    "T_IDENT_dlr": [
+      "string"
+    ],
+    "T_IDENT_qual": [
+      "string"
+    ],
+    "T_INT1": [
+      "string"
+    ],
+    "T_INT2": [
+      "int",
+      "string"
+    ],
+    "T_INT3": [
+      "int",
+      "string",
+      "int"
+    ],
+    "T_FLOAT1": [
+      "string"
+    ],
+    "T_FLOAT2": [
+      "string"
+    ],
+    "T_FLOAT3": [
+      "int",
+      "string",
+      "int"
+    ],
+    "T_CHAR_nil": [
+      "string"
+    ],
+    "T_CHAR_char": [
+      "string"
+    ],
+    "T_CHAR_slash": [
+      "string"
+    ],
+    "T_STRING_closed": [
+      "string"
+    ],
+    "T_STRING_unclsd": [
+      "string"
+    ],
+    "T_SPECHAR": [
+      "int"
+    ],
+    "T_COMMENT_line": [
+      "string",
+      "string"
+    ],
+    "T_COMMENT_rest": [
+      "string",
+      "string"
+    ],
+    "T_COMMENT_cblock": [
+      "int",
+      "string"
+    ],
+    "T_COMMENT_mlblock": [
+      "int",
+      "string"
+    ],
+    "T_AT": [
+      "string"
+    ],
+    "T_BAR": [
+      "string"
+    ],
+    "T_CLN": [
+      "string"
+    ],
+    "T_DOT": [
+      "string"
+    ],
+    "T_EQ": [
+      "string"
+    ],
+    "T_LT": [
+      "string"
+    ],
+    "T_GT": [
+      "string"
+    ],
+    "T_DLR": [
+      "string"
+    ],
+    "T_SRP": [
+      "string"
+    ],
+    "T_EQLT": [
+      "string"
+    ],
+    "T_EQGT": [
+      "string"
+    ],
+    "T_LTGT": [
+      "string"
+    ],
+    "T_GTLT": [
+      "string"
+    ],
+    "T_MSLT": [
+      "string"
+    ],
+    "T_GTDOT": [
+      "string"
+    ],
+    "T_COMMA": [
+      "string"
+    ],
+    "T_SMCLN": [
+      "string"
+    ],
+    "T_BSLASH": [
+      "string"
+    ],
+    "T_LPAREN": [
+      "string"
+    ],
+    "T_RPAREN": [
+      "string"
+    ],
+    "T_LBRACE": [
+      "string"
+    ],
+    "T_RBRACE": [
+      "string"
+    ],
+    "T_EXISTS": [
+      "int"
+    ],
+    "T_LBRACK": [
+      "string"
+    ],
+    "T_RBRACK": [
+      "string"
+    ],
+    "T_TUPLE": [
+      "string"
+    ],
+    "T_RECORD": [
+      "string"
+    ],
+    "T_AS": [
+      "string"
+    ],
+    "T_OF": [
+      "string"
+    ],
+    "T_OP": [
+      "string"
+    ],
+    "T_OP_par": [
+      "string"
+    ],
+    "T_OP_sym": [
+      "string"
+    ],
+    "T_IN": [
+      "string"
+    ],
+    "T_AND": [
+      "string"
+    ],
+    "T_END": [
+      "string"
+    ],
+    "T_IF": [
+      "string"
+    ],
+    "T_SIF": [
+      "string"
+    ],
+    "T_THEN": [
+      "string"
+    ],
+    "T_ELSE": [
+      "string"
+    ],
+    "T_WHEN": [
+      "string"
+    ],
+    "T_WITH": [
+      "string"
+    ],
+    "T_CASE": [
+      "int"
+    ],
+    "T_SCASE": [
+      "string"
+    ],
+    "T_ENDIF": [
+      "string"
+    ],
+    "T_ENDSIF": [
+      "string"
+    ],
+    "T_ENDCASE": [
+      "string"
+    ],
+    "T_ENDSCASE": [
+      "string"
+    ],
+    "T_LAM": [
+      "string"
+    ],
+    "T_FIX": [
+      "string"
+    ],
+    "T_LET": [
+      "string"
+    ],
+    "T_WHERE": [
+      "string"
+    ],
+    "T_LOCAL": [
+      "string"
+    ],
+    "T_ENDLAM": [
+      "string"
+    ],
+    "T_ENDLET": [
+      "string"
+    ],
+    "T_ENDWHERE": [
+      "string"
+    ],
+    "T_ENDLOCAL": [
+      "string"
+    ],
+    "T_FUN": [
+      "string"
+    ],
+    "T_VAL": [
+      "string"
+    ],
+    "T_VAR": [
+      "string"
+    ],
+    "T_IMPLMNT": [
+      "string"
+    ],
+    "T_ABSSORT": [
+      "string"
+    ],
+    "T_SORTDEF": [
+      "string"
+    ],
+    "T_SEXPDEF": [
+      "string"
+    ],
+    "T_ABSTYPE": [
+      "string"
+    ],
+    "T_ABSIMPL": [
+      "string"
+    ],
+    "T_ABSOPEN": [
+      "string"
+    ],
+    "T_DATASORT": [
+      "string"
+    ],
+    "T_DATATYPE": [
+      "string"
+    ],
+    "T_WITHTYPE": [
+      "string"
+    ],
+    "T_SRP_NONFIX": [
+      "string"
+    ],
+    "T_SRP_FIXITY": [
+      "string"
+    ],
+    "T_SRP_STACST": [
+      "string"
+    ],
+    "T_SRP_STATIC": [
+      "string"
+    ],
+    "T_SRP_EXTERN": [
+      "string"
+    ],
+    "T_SRP_DEFINE": [
+      "string"
+    ],
+    "T_SRP_MACDEF": [
+      "string"
+    ],
+    "T_SRP_INCLUDE": [
+      "string"
+    ],
+    "T_SRP_STALOAD": [
+      "string"
+    ],
+    "T_SRP_DYNLOAD": [
+      "string"
+    ],
+    "T_SRP_SYMLOAD": [
+      "string"
+    ]
+  },
+  "t0int_node": {
+    "T0INTnone": [
+      "token"
+    ],
+    "T0INTsome": [
+      "token"
+    ]
+  },
+  "t0chr_node": {
+    "T0CHRnone": [
+      "token"
+    ],
+    "T0CHRsome": [
+      "token"
+    ]
+  },
+  "t0flt_node": {
+    "T0FLTnone": [
+      "token"
+    ],
+    "T0FLTsome": [
+      "token"
+    ]
+  },
+  "t0str_node": {
+    "T0STRnone": [
+      "token"
+    ],
+    "T0STRsome": [
+      "token"
+    ]
+  },
+  "i0dnt_node": {
+    "I0DNTnone": [
+      "token"
+    ],
+    "I0DNTsome": [
+      "token"
+    ]
+  },
+  "l0abl_node": {
+    "L0ABLsome": [
+      "label"
+    ],
+    "L0ABLnone": [
+      "token"
+    ]
+  },
+  "s0ymb_node": {
+    "S0YMBi0dnt": [
+      "i0dnt"
+    ],
+    "S0YMBdtlab": [
+      "token",
+      "l0abl"
+    ],
+    "S0YMBbrack": [
+      "token",
+      "token"
+    ]
+  },
+  "dq0eid": {
+    "DQ0EIDnone": [
+      "i0dnt"
+    ],
+    "DQ0EIDsome": [
+      "token",
+      "i0dnt"
+    ]
+  },
+  "g0exp_node": {
+    "G0Eid": [
+      "i0dnt"
+    ],
+    "G0Eint": [
+      "t0int"
+    ],
+    "G0Eapps": [
+      "g0exp"
+    ],
+    "G0Elist": [
+      "token",
+      "g0exp",
+      "token"
+    ],
+    "G0Enone": [
+      "token"
+    ]
+  },
+  "g0marg_node": {
+    "G0MARGnone": [
+      "token"
+    ],
+    "G0MARGsarg": [
+      "token",
+      "i0dnt",
+      "token"
+    ],
+    "G0MARGdarg": [
+      "token",
+      "i0dnt",
+      "token"
+    ]
+  },
+  "sort0_node": {
+    "S0Tid": [
+      "i0dnt"
+    ],
+    "S0Tint": [
+      "t0int"
+    ],
+    "S0Tapps": [
+      "s0rt0"
+    ],
+    "S0Tlist": [
+      "token",
+      "s0rt0",
+      "token"
+    ],
+    "S0Tqual": [
+      "token",
+      "sort0"
+    ],
+    "S0Tnone": [
+      "token"
+    ]
+  },
+  "s0rtcon_node": {
+    "S0RTCON": [
+      "i0dnt",
+      "sort0"
+    ]
+  },
+  "d0tsort_node": {
+    "D0TSORT": [
+      "i0dnt",
+      "token",
+      "s0rtcon"
+    ]
+  },
+  "s0rtdef_node": {
+    "S0RTDEFsort": [
+      "sort0"
+    ],
+    "S0RTDEFsbst": [
+      "token",
+      "s0arg",
+      "token",
+      "s0exp",
+      "token"
+    ]
+  },
+  "s0arg_node": {
+    "S0ARGnone": [
+      "token"
+    ],
+    "S0ARGsome": [
+      "i0dnt",
+      "sort0"
+    ]
+  },
+  "s0marg_node": {
+    "S0MARGnone": [
+      "token"
+    ],
+    "S0MARGsing": [
+      "i0dnt"
+    ],
+    "S0MARGlist": [
+      "token",
+      "s0arg",
+      "token"
+    ]
+  },
+  "t0arg_node": {
+    "T0ARGsome": [
+      "sort0",
+      "token"
+    ]
+  },
+  "t0marg_node": {
+    "T0MARGnone": [
+      "token"
+    ],
+    "T0MARGlist": [
+      "token",
+      "t0arg",
+      "token"
+    ]
+  },
+  "s0qua_node": {
+    "S0QUAprop": [
+      "s0exp"
+    ],
+    "S0QUAvars": [
+      "i0dnt",
+      "sort0"
+    ]
+  },
+  "s0uni_node": {
+    "S0UNInone": [
+      "token"
+    ],
+    "S0UNIsome": [
+      "token",
+      "s0qua",
+      "token"
+    ]
+  },
+  "s0exp_node": {
+    "S0Eid": [
+      "i0dnt"
+    ],
+    "S0Eop1": [
+      "token"
+    ],
+    "S0Eop2": [
+      "token",
+      "i0dnt",
+      "token"
+    ],
+    "S0Eint": [
+      "t0int"
+    ],
+    "S0Echr": [
+      "t0chr"
+    ],
+    "S0Eflt": [
+      "t0flt"
+    ],
+    "S0Estr": [
+      "t0str"
+    ],
+    "S0Eapps": [
+      "s0exp"
+    ],
+    "S0Eimp": [
+      "token",
+      "s0exp",
+      "token"
+    ],
+    "S0Eparen": [
+      "token",
+      "s0exp",
+      "s0exp_RPAREN"
+    ],
+    "S0Etuple": [
+      "token",
+      "token",
+      "s0exp",
+      "s0exp_RPAREN"
+    ],
+    "S0Erecord": [
+      "token",
+      "token",
+      "labs0exp",
+      "labs0exp_RBRACE"
+    ],
+    "S0Eforall": [
+      "token",
+      "s0qua",
+      "token"
+    ],
+    "S0Eexists": [
+      "token",
+      "s0qua",
+      "token"
+    ],
+    "S0Elam": [
+      "token",
+      "s0marg",
+      "sort0",
+      "token",
+      "s0exp",
+      "token"
+    ],
+    "S0Eanno": [
+      "s0exp",
+      "sort0"
+    ],
+    "S0Equal": [
+      "token",
+      "s0exp"
+    ],
+    "S0Enone": [
+      "token"
+    ]
+  },
+  "s0exp_RPAREN": {
+    "s0exp_RPAREN_cons0": [
+      "token"
+    ],
+    "s0exp_RPAREN_cons1": [
+      "token",
+      "s0exp",
+      "token"
+    ]
+  },
+  "labs0exp_RBRACE": {
+    "labs0exp_RBRACE_cons0": [
+      "token"
+    ],
+    "labs0exp_RBRACE_cons1": [
+      "token",
+      "labs0exp",
+      "token"
+    ]
+  },
+  "effs0expopt": {
+    "EFFS0EXPnone": [],
+    "EFFS0EXPsome": [
+      "s0exp"
+    ]
+  },
+  "d0atcon_node": {
+    "D0ATCON": [
+      "s0uni",
+      "i0dnt",
+      "s0exp",
+      "s0exp"
+    ]
+  },
+  "d0atype_node": {
+    "D0ATYPE": [
+      "i0dnt",
+      "t0marg",
+      "sort0",
+      "token",
+      "d0atcon"
+    ]
+  },
+  "t0int": [
+    "t0int_node"
+  ],
+  "t0chr": [
+    "t0chr_node"
+  ],
+  "t0flt": [
+    "t0flt_node"
+  ],
+  "t0str": [
+    "t0str_node"
+  ],
+  "i0dnt": [
+    "i0dnt_node"
+  ],
+  "l0abl": [
+    "l0abl_node"
+  ],
+  "s0ymb": [
+    "s0ymb_node"
+  ],
+  "g0exp": [
+    "g0exp_node"
+  ],
+  "g0marg": [
+    "g0marg_node"
+  ],
+  "sort0": [
+    "sort0_node"
+  ],
+  "s0rtcon": [
+    "s0rtcon_node"
+  ],
+  "d0tsort": [
+    "d0tsort_node"
+  ],
+  "s0rtdef": [
+    "s0rtdef_node"
+  ],
+  "s0arg": [
+    "s0arg_node"
+  ],
+  "s0marg": [
+    "s0marg_node"
+  ],
+  "t0arg": [
+    "t0arg_node"
+  ],
+  "t0marg": [
+    "t0marg_node"
+  ],
+  "s0qua": [
+    "s0qua_node"
+  ],
+  "s0uni": [
+    "s0uni_node"
+  ],
+  "s0exp": [
+    "s0exp_node"
+  ],
+  "d0atcon": [
+    "d0atcon_node"
+  ],
+  "d0atype": [
+    "d0atype_node"
+  ],
+  "g0explst": [
+    "g0exp"
+  ],
+  "s0rt0lst": [
+    "s0rt0"
+  ],
+  "s0rtconlst": [
+    "s0rtcon"
+  ],
+  "d0tsortlst": [
+    "d0tsort"
+  ],
+  "s0arglst": [
+    "s0arg"
+  ],
+  "s0marglst": [
+    "s0marg"
+  ],
+  "t0arglst": [
+    "t0arg"
+  ],
+  "t0marglst": [
+    "t0marg"
+  ],
+  "s0qualst": [
+    "s0qua"
+  ],
+  "s0unilst": [
+    "s0uni"
+  ],
+  "s0explst": [
+    "s0exp"
+  ],
+  "d0atconlst": [
+    "d0atcon"
+  ],
+  "s0expopt": [
+    "s0exp"
+  ],
+  "q0arg_node": {
+    "Q0ARGsome": [
+      "i0dnt",
+      "sort0"
+    ]
+  },
+  "sq0arg_node": {
+    "SQ0ARGnone": [
+      "token"
+    ],
+    "SQ0ARGsome": [
+      "token",
+      "q0arg",
+      "token"
+    ]
+  },
+  "tq0arg_node": {
+    "TQ0ARGnone": [
+      "token"
+    ],
+    "TQ0ARGsome": [
+      "token",
+      "q0arg",
+      "token"
+    ]
+  },
+  "ti0arg_node": {
+    "TI0ARGnone": [
+      "token"
+    ],
+    "TI0ARGsome": [
+      "token",
+      "s0exp",
+      "token"
+    ]
+  },
+  "a0typ_node": {
+    "A0TYPsome": [
+      "s0exp",
+      "token"
+    ]
+  },
+  "d0arg_node": {
+    "D0ARGnone": [
+      "token"
+    ],
+    "D0ARGsome_sta": [
+      "token",
+      "s0qua",
+      "token"
+    ],
+    "D0ARGsome_dyn1": [
+      "i0dnt"
+    ],
+    "D0ARGsome_dyn2": [
+      "token",
+      "a0typ",
+      "a0typlst",
+      "token"
+    ]
+  },
+  "f0arg_node": {
+    "F0ARGnone": [
+      "token"
+    ],
+    "F0ARGsome_dyn": [
+      "d0pat"
+    ],
+    "F0ARGsome_sta": [
+      "token",
+      "s0qua",
+      "token"
+    ],
+    "F0ARGsome_met": [
+      "token",
+      "s0exp",
+      "token"
+    ]
+  },
+  "labd0pat_RBRACE": {
+    "labd0pat_RBRACE_cons0": [
+      "token"
+    ],
+    "labd0pat_RBRACE_cons1": [
+      "token",
+      "labd0pat",
+      "token"
+    ]
+  },
+  "d0pat_RPAREN": {
+    "d0pat_RPAREN_cons0": [
+      "token"
+    ],
+    "d0pat_RPAREN_cons1": [
+      "token",
+      "d0pat",
+      "token"
+    ]
+  },
+  "d0pat_node": {
+    "D0Pid": [
+      "i0dnt"
+    ],
+    "D0Pint": [
+      "t0int"
+    ],
+    "D0Pchr": [
+      "t0chr"
+    ],
+    "D0Pflt": [
+      "t0flt"
+    ],
+    "D0Pstr": [
+      "t0str"
+    ],
+    "D0Papps": [
+      "d0pat"
+    ],
+    "D0Psqarg": [
+      "token",
+      "s0arg",
+      "token"
+    ],
+    "D0Pparen": [
+      "token",
+      "d0pat",
+      "d0pat_RPAREN"
+    ],
+    "D0Ptuple": [
+      "token",
+      "token",
+      "d0pat",
+      "d0pat_RPAREN"
+    ],
+    "D0Precord": [
+      "token",
+      "token",
+      "labd0pat",
+      "labd0pat_RBRACE"
+    ],
+    "D0Panno": [
+      "d0pat",
+      "s0exp"
+    ],
+    "D0Pqual": [
+      "token",
+      "d0pat"
+    ],
+    "D0Pnone": [
+      "token"
+    ]
+  },
+  "d0exp_RPAREN": {
+    "d0exp_RPAREN_cons0": [
+      "token"
+    ],
+    "d0exp_RPAREN_cons1": [
+      "token",
+      "d0exp",
+      "token"
+    ],
+    "d0exp_RPAREN_cons2": [
+      "token",
+      "d0exp",
+      "token"
+    ]
+  },
+  "labd0exp_RBRACE": {
+    "labd0exp_RBRACE_cons0": [
+      "token"
+    ],
+    "labd0exp_RBRACE_cons1": [
+      "token",
+      "labd0exp",
+      "token"
+    ]
+  },
+  "d0exp_THEN": {
+    "d0exp_THEN": [
+      "token",
+      "d0exp"
+    ]
+  },
+  "endwhere": {
+    "endwhere_cons1": [
+      "token"
+    ],
+    "endwhere_cons2": [
+      "token",
+      "token"
+    ]
+  },
+  "d0eclseq_WHERE": {
+    "d0eclseq_WHERE": [
+      "token",
+      "token",
+      "d0ecl",
+      "endwhere"
+    ]
+  },
+  "f0unarrow": {
+    "F0UNARROWnone": [
+      "token"
+    ],
+    "F0UNARROWdflt": [
+      "token"
+    ],
+    "F0UNARROWlist": [
+      "token",
+      "s0exp",
+      "token"
+    ]
+  },
+  "d0exp_node": {
+    "D0Eid": [
+      "i0dnt"
+    ],
+    "D0Eint": [
+      "t0int"
+    ],
+    "D0Echr": [
+      "t0chr"
+    ],
+    "D0Eflt": [
+      "t0flt"
+    ],
+    "D0Estr": [
+      "t0str"
+    ],
+    "D0Eapps": [
+      "d0exp"
+    ],
+    "D0Esqarg": [
+      "token",
+      "s0exp",
+      "token"
+    ],
+    "D0Etqarg": [
+      "token",
+      "s0exp",
+      "token"
+    ],
+    "D0Eparen": [
+      "token",
+      "d0exp",
+      "d0exp_RPAREN"
+    ],
+    "D0Etuple": [
+      "token",
+      "token",
+      "d0exp",
+      "d0exp_RPAREN"
+    ],
+    "D0Erecord": [
+      "token",
+      "token",
+      "labd0exp",
+      "labd0exp_RBRACE"
+    ],
+    "D0Eif0": [
+      "token",
+      "d0exp",
+      "d0exp_THEN",
+      "d0exp_ELSE",
+      "token"
+    ],
+    "D0Ecase": [
+      "token",
+      "d0exp",
+      "token",
+      "token",
+      "d0clau",
+      "token"
+    ],
+    "D0Elet": [
+      "token",
+      "d0ecl",
+      "token",
+      "d0exp",
+      "token"
+    ],
+    "D0Ewhere": [
+      "d0exp",
+      "d0eclseq_WHERE"
+    ],
+    "D0Ebrack": [
+      "token",
+      "d0exp",
+      "token"
+    ],
+    "D0Edtsel": [
+      "token",
+      "l0abl",
+      "d0exp"
+    ],
+    "D0Elam": [
+      "token",
+      "f0arg",
+      "effs0expopt",
+      "f0unarrow",
+      "d0exp",
+      "token"
+    ],
+    "D0Efix": [
+      "token",
+      "i0dnt",
+      "f0arg",
+      "effs0expopt",
+      "f0unarrow",
+      "d0exp",
+      "token"
+    ],
+    "D0Eanno": [
+      "d0exp",
+      "s0exp"
+    ],
+    "D0Equal": [
+      "token",
+      "d0exp"
+    ],
+    "D0Enone": [
+      "token"
+    ]
+  },
+  "d0gua_node": {
+    "D0GUAexp": [
+      "d0exp"
+    ],
+    "D0GUAmat": [
+      "d0exp",
+      "token",
+      "d0pat"
+    ]
+  },
+  "d0gpat_node": {
+    "D0GPATpat": [
+      "d0pat"
+    ],
+    "D0GPATgua": [
+      "d0pat",
+      "token",
+      "d0gua"
+    ]
+  },
+  "d0clau_node": {
+    "D0CLAUgpat": [
+      "d0gpat"
+    ],
+    "D0CLAUclau": [
+      "d0gpat",
+      "token",
+      "d0exp"
+    ]
+  },
+  "decmodopt": {
+    "DECMODnone": [],
+    "DECMODsing": [
+      "token",
+      "i0dnt"
+    ],
+    "DECMODlist": [
+      "token",
+      "token",
+      "i0dnt",
+      "token"
+    ]
+  },
+  "teqd0expopt": {
+    "TEQD0EXPnone": [],
+    "TEQD0EXPsome": [
+      "token",
+      "d0exp"
+    ]
+  },
+  "wths0expopt": {
+    "WTHS0EXPnone": [],
+    "WTHS0EXPsome": [
+      "token",
+      "s0exp"
+    ]
+  },
+  "v0aldecl": {
+    "V0ALDECL": [
+      "d0pat",
+      "token",
+      "d0exp",
+      "wths0expopt"
+    ]
+  },
+  "v0ardecl": {
+    "V0ARDECL": [
+      "i0dnt",
+      "i0dnt",
+      "s0exp",
+      "teqd0expopt"
+    ]
+  },
+  "f0undecl": {
+    "F0UNDECL": [
+      "i0dnt",
+      "f0arg",
+      "effs0expopt",
+      "token",
+      "d0exp",
+      "wths0expopt"
+    ]
+  },
+  "d0cstdecl": {
+    "D0CSTDECL": [
+      "i0dnt",
+      "d0arg",
+      "effs0expopt",
+      "teqd0expopt"
+    ]
+  },
+  "signint": {
+    "SIGNINTint": [
+      "token"
+    ],
+    "SIGNINTopr": [
+      "token",
+      "token"
+    ]
+  },
+  "precmod": {
+    "PRECMODnone": [],
+    "PRECMODsome": [
+      "token",
+      "signint",
+      "token"
+    ]
+  },
+  "precopt": {
+    "PRECOPTnil": [],
+    "PRECOPTint": [
+      "token"
+    ],
+    "PRECOPTopr": [
+      "i0dnt",
+      "precmod"
+    ]
+  },
+  "abstdf0": {
+    "ABSTDF0some": [],
+    "ABSTDF0lteq": [
+      "token",
+      "s0exp"
+    ],
+    "ABSTDF0eqeq": [
+      "token",
+      "s0exp"
+    ]
+  },
+  "g0expdef": {
+    "G0EDEFnone": [],
+    "G0EDEFsome": [
+      "token",
+      "g0exp"
+    ]
+  },
+  "d0macdef": {
+    "D0MDEFnone": [],
+    "D0MDEFsome": [
+      "token",
+      "d0exp"
+    ]
+  },
+  "wd0eclseq": {
+    "WD0CSnone": [],
+    "WD0CSsome": [
+      "token",
+      "token",
+      "d0ecl",
+      "token"
+    ]
+  },
+  "d0ecl_node": {
+    "D0Cnone": [
+      "token"
+    ],
+    "D0Ctokerr": [
+      "token"
+    ],
+    "D0Cnonfix": [
+      "token",
+      "i0dnt"
+    ],
+    "D0Cfixity": [
+      "token",
+      "i0dnt",
+      "precopt"
+    ],
+    "D0Cstatic": [
+      "token",
+      "d0ecl"
+    ],
+    "D0Cextern": [
+      "token",
+      "d0ecl"
+    ],
+    "D0Cdefine": [
+      "token",
+      "i0dnt",
+      "g0marg",
+      "g0expdef"
+    ],
+    "D0Cmacdef": [
+      "token",
+      "i0dnt",
+      "g0marg",
+      "d0macdef"
+    ],
+    "D0Cinclude": [
+      "token",
+      "d0exp"
+    ],
+    "D0Cstaload": [
+      "token",
+      "d0exp"
+    ],
+    "D0Cabssort": [
+      "token",
+      "i0dnt"
+    ],
+    "D0Cstacst0": [
+      "token",
+      "i0dnt",
+      "t0marg",
+      "token",
+      "sort0"
+    ],
+    "D0Csortdef": [
+      "token",
+      "i0dnt",
+      "token",
+      "s0rtdef"
+    ],
+    "D0Csexpdef": [
+      "token",
+      "i0dnt",
+      "s0marg",
+      "sort0",
+      "token",
+      "s0exp"
+    ],
+    "D0Cabstype": [
+      "token",
+      "i0dnt",
+      "t0marg",
+      "sort0",
+      "abstdf0"
+    ],
+    "D0Cabsimpl": [
+      "token",
+      "sq0eid",
+      "s0marg",
+      "sort0",
+      "token",
+      "s0exp"
+    ],
+    "D0Cvaldecl": [
+      "token",
+      "decmodopt",
+      "v0aldecl"
+    ],
+    "D0Cvardecl": [
+      "token",
+      "decmodopt",
+      "v0ardecl"
+    ],
+    "D0Cfundecl": [
+      "token",
+      "decmodopt",
+      "tq0arg",
+      "f0undecl"
+    ],
+    "D0Cimpdecl": [
+      "token",
+      "decmodopt",
+      "sq0arg",
+      "tq0arg",
+      "dq0eid",
+      "ti0arg",
+      "f0arg",
+      "effs0expopt",
+      "token",
+      "d0exp"
+    ],
+    "D0Csymload": [
+      "token",
+      "s0ymb",
+      "token",
+      "dq0eid",
+      "t0int"
+    ],
+    "D0Cdatasort": [
+      "token",
+      "d0tsort"
+    ],
+    "D0Cdatatype": [
+      "token",
+      "d0atype",
+      "wd0eclseq"
+    ],
+    "D0Cdynconst": [
+      "token",
+      "tq0arg",
+      "d0cstdecl"
+    ],
+    "D0Clocal": [
+      "token",
+      "d0ecl",
+      "token",
+      "d0ecl",
+      "token"
+    ]
+  },
+  "q0arglst": [
+    "q0arg"
+  ],
+  "sq0arglst": [
+    "sq0arg"
+  ],
+  "ti0arglst": [
+    "ti0arg"
+  ],
+  "a0typlst": [
+    "a0typ"
+  ],
+  "f0arglst": [
+    "f0arg"
+  ],
+  "d0patlst": [
+    "d0pat"
+  ],
+  "labd0patlst": [
+    "labd0pat"
+  ],
+  "d0explst": [
+    "d0exp"
+  ],
+  "d0gualst": [
+    "d0gua"
+  ],
+  "d0claulst": [
+    "d0clau"
+  ],
+  "v0aldeclist": [
+    "v0aldecl"
+  ],
+  "v0ardeclist": [
+    "v0ardecl"
+  ],
+  "f0undeclist": [
+    "f0undecl"
+  ],
+  "d0cstdeclist": [
+    "d0cstdecl"
+  ],
+  "d0eclist": [
+    "d0ecl"
+  ],
+  "a0typopt": [
+    "a0typ"
+  ],
+  "a0typlstopt": [
+    "a0typlst"
+  ],
+  "d0expopt": [
+    "d0exp"
+  ]
+}

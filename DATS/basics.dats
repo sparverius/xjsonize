@@ -8,126 +8,24 @@
 
 #staload _ = "./json.dats"
 
-fun name_valkind(vlk: valkind): string =
-(
-  case+ vlk of
-  | VLKval() => "VLKval"
-  | VLKvalp() => "VLKvalp"
-  | VLKvaln() => "VLKvaln"
-  (*
-  | VLKmcval() => "VLKprval"
-  *)
-  | VLKprval() => "VLKprval"
-)
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/basics.dats"
 
-fun data_valkind(vlk: valkind): string =
-(
-case+ vlk of
-| VLKval() => "val"
-| VLKvalp() => "val+"
-| VLKvaln() => "val-"
-(*
-| VLKmcval() => "VLKprval"
-*)
-| VLKprval() => "prval"
-)
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/basics.dats"
 
+#include "./global.dats"
 
+implement totype_dctkind<> = jsonize_dctkind
+implement totype_valkind<> = jsonize_valkind
+implement totype_funkind<> = jsonize_funkind
+implement totype_impkind<> = jsonize_impkind
+implement totype_funclo2<> = jsonize_funclo2
 
-implement
-jsonize_valkind
-  (vlk) = //@("valkind", JSONstring(res)) where
-  @("valkind", mknode(name, data)) where
-val name = name_valkind(vlk)
-val data = data_valkind(vlk)
+#include "./macro.dats"
 
-end
-
-fun name_funkind(fnk: funkind): string =
-(
-//
-case+ fnk of
-| FNKfn0() => "FNKfn0"
-| FNKfnx() => "FNKfnx"
-| FNKfn1() => "FNKfn1"
-| FNKfun() => "FNKfun"
-//
-| FNKprfn0() => "FNKprfn0"
-| FNKprfn1() => "FNKprfn1"
-| FNKprfun() => "FNKprfun"
-| FNKpraxi() => "FNKpraxi"
-//
-| FNKcastfn() => "FNKcastfn"
-//
-)
-
-fun data_funkind(fnk: funkind): string =
-(
-//
-case+ fnk of
-| FNKfn0() => "fn0"
-| FNKfnx() => "fnx"
-| FNKfn1() => "fn1"
-| FNKfun() => "fun"
-//
-| FNKprfn0() => "prfn0"
-| FNKprfn1() => "prfn1"
-| FNKprfun() => "prfun"
-| FNKpraxi() => "praxi"
-//
-| FNKcastfn() => "castfn"
-//
-)
-
-implement
-jsonize_funkind
-  (fnk) = //@("funkind", JSONstring(res)) where
-  @("funkind", mknode(name, data)) where
-val name = name_funkind(fnk)
-val data = data_funkind(fnk)
-end
-
-
-fun name_impkind(knd:impkind) : string =
-(
-  case+ knd of
-  | IMPprf() => "IMPprf"
-  | IMPval() => "IMPval"
-  | IMPfun() => "IMPfun"
-  | IMPtmp() => "IMPtmp"
-  | IMPgen() => "IMPgen"
-)
-
-fun data_impkind(knd:impkind) : string =
-(
-  case+ knd of
-  | IMPprf() => "implprf"
-  | IMPval() => "implval"
-  | IMPfun() => "implement"
-  | IMPtmp() => "impltmp"
-  | IMPgen() => "implgen"
-)
-
-
-implement
-jsonize_impkind
-  (knd) = (* @("impkind", JSONstring(res)) where *)
-  @("impkind", mknode(name, data)) where
-val name = name_impkind(knd)
-val data = data_impkind(knd)
-
-end
-
-
-implement
-jsonize_funclo2
-  (fc2) = node("funclo2", res) where
-  (* @("funclo2", jsonval_labval1(res.0, res.1)) where *)
-val res =
-(
-case+ fc2 of
-| FC2fun() => jsonify("FC2fun")
-| FC2clo(knd) =>
-  jsonify("FC2clo", jsonize(knd))
-) : labjsonval
-end
+implement jsonize_dctkind(knd) = make_untagged(knd)
+implement jsonize_valkind(knd) = make_untagged(knd)
+implement jsonize_funkind(knd) = make_untagged(knd)
+implement jsonize_impkind(knd) = make_untagged(knd)
+implement jsonize_funclo2(knd) = make_untagged(knd)

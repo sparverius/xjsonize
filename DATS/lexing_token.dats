@@ -1,8 +1,7 @@
 #include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
-#include "./../HATS/libxnameof.hats"
-#include "./../HATS/libxargsof.hats"
+#staload "{$x}/SATS/lexing.sats"
 
 #staload "./../SATS/json.sats"
 #staload _ = "./json.dats"
@@ -15,9 +14,19 @@
 
 overload jsonize with $SYM_J.jsonize_symbol
 
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/lexing_token.dats"
+
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/lexing_token.dats"
+
 #include "./global.dats"
 
 local
+
+implement totype_token<> = jsonize_token
+implement totype_tokenopt<> = jsonize_tokenopt
+implement totype_tokenlst<> = jsonize_tokenlst
 
 implement jsonize_val<token> = jsonize_token
 
@@ -31,11 +40,24 @@ implement{} jsonize_tokenopt(x) = jsonize_option<token>("tokenopt", x)
 implement{} jsonize_tokenlst(x) = jsonize_list<token>("tokenlst", x)
 *)
 
+#include "./macro.dats"
+
 end
 
-implement
-jsonize_tnode(tnd) =
-@(name, res): labjsonval
+implement jsonize_token(tok) = make_tagged(tok)
+implement jsonize_tnode(tnd) = make_untagged(tnd)
+(*
+(* @(name, res): labjsonval *)
+(* @(tag, data): labjsonval *)
+
+(* @("node", *)
+(* jsonval_labval3( *)
+(* "type", JSONstring(name), *)
+(* "cons", JSONstring(tag), *)
+(* "data", data *)
+(* ) *)
+(* ) : labjsonval *)
+
 where
 (* val res = jsonval_labval1(nameof_tag(tnd), JSONlablist()) *)
 val name = nameof(tnd)
@@ -50,6 +72,10 @@ val data =
 ) : jsonval
 val res = mknode(tag, data)
 end
+*)
+
+
+
 (*
 @("tnode", res): labjsonval
 where
@@ -344,6 +370,9 @@ case+ tnd of
 end
 *)
 
+
+(*
 implement
 jsonize_token(tok) =
 node2("token", jsonize_location(tok.loc()), jsonize_tnode(tok.node()))
+*)

@@ -17,10 +17,13 @@
 #staload "./../SATS/lexing.sats"
 #staload "./../SATS/staexp1.sats"
 #staload "./../SATS/staexp2.sats"
+#staload "./../SATS/statyp2.sats"
 
 #staload _ = "./json.dats"
 #staload _ = "./staexp0.dats"
 #staload _ = "./staexp1.dats"
+(* #staload _ = "./statyp2.dats" *)
+
 
 #include "./../HATS/libxnameof.hats"
 #staload _ = "{$XNAME}/DATS/staexp0.dats"
@@ -32,8 +35,11 @@
 #staload _ = "{$XARGS}/DATS/staexp0.dats"
 #staload _ = "{$XARGS}/DATS/staexp1.dats"
 #staload _ = "{$XARGS}/DATS/staexp2.dats"
+#staload _ = "{$XARGS}/DATS/statyp2.dats"
 
 #include "./global.dats"
+
+implement totype_t2ype<> = jsonize_t2ype
 
 implement totype_sort2lst<> = jsonize_sort2lst
 implement totype_s2explst<> = jsonize_s2explst

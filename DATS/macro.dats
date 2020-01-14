@@ -1,40 +1,53 @@
-macdef make_untagged(x0) = @(name, res): labjsonval
-where
+#include "./util.dats"
 
+macdef make_untagged_lablist(x0) = @(name, res): labjsonval
+where
 val name = nameof(,(x0))
 val tag = nameof_tag(,(x0))
-(* val () = println!(name) *)
-val tks = jsonize_labjsonvalist(argsof_tag(,(x0)))
-(* val tks = jsonize_listize(argsof_tag(,(x0))) *)
+val args = argsof_tag(,(x0))
+val tks = JSONlablist(args)
 val res = mknode(tag, tks)
 end
 
-macdef make_tagged(x0) = @(name, res): labjsonval
+macdef make_untagged(x0) = res
+where
+val name = nameof(,(x0))
+val tag = nameof_tag(,(x0))
+val args = argsof_tag(,(x0))
+val tks = jsonize_listize(args)
+val res = jsval3(name, JSONstring(tag), tks)
+end
+
+macdef make_tagged(x0) = res
 where
 val name = nameof(,(x0))
 val node = ,(x0).node()
 val tag = nameof_tag(node)
-(* val tks = JSONlablist(argsof_tag(node)) *)
-(* val () = println!(name) *)
-val tks = jsonize_labjsonvalist(argsof_tag(node))
-(* val tks = jsonize_listize(argsof_tag(node)) *)
-val res = mknode(tag, tks)
+val args = argsof_tag(node)
+val tks = jsonize_listize(args)
+val res = jsval3(name, JSONstring(tag), tks)
 end
 
-macdef make_untagged_list(x0, lst) = @(name, res): labjsonval
+macdef make_untagged_list(x0, lst) = res
 where
 val name = nameof(,(x0))
 val tag = nameof_tag(,(x0))
-(* val () = println!(name) *)
-val tks = jsonize_labjsonvalist(,(lst))
-(* val tks = jsonize_listize(,(lst)) *)
-val res = mknode(tag, tks)
+val args = ,(lst)
+val tks = jsonize_listize(args)
+val res = jsval3(name, JSONstring(tag), tks)
 end
 
-macdef make_notag(x0) = @(name, res): labjsonval
+macdef make_notag(x0) = res
 where
 val name = nameof(,(x0))
-(* val () = println!(name) *)
-val res = jsonize_labjsonvalist(argsof(,(x0)))
-(* val res = jsonize_listize(argsof(,(x0))) *)
+val args = argsof(,(x0))
+val tks = jsonize_listize(args)
+val res = jsval3(name, jnul(), tks)
+end
+
+macdef make_notag2(x0) = res
+where
+val name = nameof(,(x0))
+val tks = jsonize_listize(argsof(,(x0)))
+val res = jsval3(name, jnul(), tks)
 end

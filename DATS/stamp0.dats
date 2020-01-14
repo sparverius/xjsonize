@@ -21,10 +21,16 @@ implement totype_val<stamp> = jsonize_stamp
 
 #include "./macro.dats"
 
-implement jsonize_stamp(x0) = make_notag(x0)
-
 (*
-implement jsonize_stamp(x0) =
-@("stamp", JSONstring(tostring_uint(stamp2uint(x0))))
+implement jsonize_stamp(x0) = make_notag(x0)
 *)
-(* node("stamp", jsonize(tostring_uint(stamp2uint(x0)))) *)
+
+#include "./util.dats"
+
+implement jsonize_stamp(x0) =
+(* @("stamp", JSONstring(tostring_uint(stamp2uint(x0)))) : labjsonval *)
+(* @("stamp", *)
+(* jval3("stamp", jnul(), JSONstring(tostring_uint(stamp2uint(x0))))) : labjsonval *)
+
+(* jsval3("stamp", jnul(), JSONstring(tostring_uint(stamp2uint(x0)))) *)
+kndat("stamp", JSONstring(tostring_uint(stamp2uint(x0))))

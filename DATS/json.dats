@@ -7,21 +7,12 @@
 
 implement mknode_jsonval(x, y) =
   jsonval_labval1(x, y)
-(*
-  jsonval_labval2("tag", JSONstring(x), "data", y)
-*)
 
 implement mknode_string(x, y) =
   jsonval_labval1(x, JSONstring(y))
-(*
-  jsonval_labval2("tag", JSONstring(x), "data", JSONstring(y))
-*)
 
 implement mknode_labjsonval(x, y) =
   jsonval_labval1(x, jsonval_labval1(y.0, y.1))
-(*
-  jsonval_labval2("tag", JSONstring(x), "data", jsonval_labval1(y.0, y.1))
-*)
 
 implement node(x, y) =
   @(x, jsonval_labval1(y.0, y.1))
@@ -43,8 +34,48 @@ implement tagged_string(tag, str) =
   @(tag, JSONstring(str)) : labjsonval
 
 
+implement
+jsonval_int (i) = JSONint (i)
+
+(*
+implement
+jsonval_intinf (i) = JSONintinf (i)
+*)
+
+implement
+jsonval_bool (b) = JSONbool (b)
+
+implement
+jsonval_double (d) = JSONfloat (d)
+
+implement
+jsonval_string (str) = JSONstring (str)
+
+implement
+lab(x:string, rst:jsonval): jsonval =
+jsonval_labval1(x, rst)
+
+implement
+jnul() = //JSONnul()
+JSONstring("")
+
+implement
+jint(x:int) = JSONint(x)
+
+implement
+jbool(x:bool) = JSONbool(x)
+
+implement
+jfloat(x:double) = JSONfloat(x)
+
+implement
+jstr(x:string) = JSONstring(x)
+
+#include "./util.dats"
+
+
 implement{a}
-jsonize_list(xs) = @(nm, res): labjsonval
+jsonize_list(xs) = jsval3(nm, jnul(), res)
 where
 {
   val () = assertloc(list_length(xs) >= 0)
@@ -64,36 +95,19 @@ where
 
 
 implement{a}
-jsonize_option(xs) = @(nm, res) : labjsonval
+jsonize_option(xs) = jsval3(nm, jnul(), res)
 where
 val nm = nameof_val<Option(a)>(xs)
 val res =
 (
   case+ xs of
-  | None() => jnul()
-  | Some(x) => jsonval_labval1(xs.0, xs.1)
+  | None() => JSONlist($list{jsonval}())
+  | Some(x) => JSONlist($list{jsonval}(jsonval_labval1(xs.0, xs.1)))
     where
       val xs = jsonize_val<a>(x)
     end
 )
 end
-
-(*
-implement{a}
-jsonize_option_vt(xs) = @(nm, res) : labjsonval
-where
-val nm = nameof_val<Option_vt(a)>(xs)
-val res =
-(
-  case+ xs of
-  | ~None_vt() => jnul()
-  | ~Some_vt(x) => jsonval_labval1(xs.0, xs.1)
-    where
-      val xs = jsonize_val<a>(x)
-    end
-)
-end
-*)
 
 implement{a}
 jsonize_list_named(nm, xs) = @(nm, res): labjsonval
@@ -130,58 +144,22 @@ end
 
 
 implement
-jsonval_int (i) = JSONint (i)
-
-(*
-implement
-jsonval_intinf (i) = JSONintinf (i)
-*)
+jsonize_int(x) = kndat("int", JSONstring(tostring_int(x)))
 
 implement
-jsonval_bool (b) = JSONbool (b)
+jsonize_char(x) = kndat("char", JSONstring(tostring_char(x)))
 
 implement
-jsonval_double (d) = JSONfloat (d)
+jsonize_string(x) = kndat("string", JSONstring(x))
 
 implement
-jsonval_string (str) = JSONstring (str)
+jsonize_bool(x) = kndat("bool", JSONbool(x))
 
 implement
-lab(x:string, rst:jsonval): jsonval =
-jsonval_labval1(x, rst)
+jsonize_double(x) = kndat("double", JSONstring(tostring_val<double>(x)))
 
 implement
-jnul() = JSONnul()
-
-implement
-jint(x:int) = JSONint(x)
-
-implement
-jbool(x:bool) = JSONbool(x)
-
-implement
-jfloat(x:double) = JSONfloat(x)
-
-implement
-jstr(x:string) = JSONstring(x)
-
-implement
-jsonize_int(x) = @("data", JSONint(x)) : labjsonval
-
-implement
-jsonize_char(x) = @("data", JSONstring(tostring_char(x))) : labjsonval
-
-implement
-jsonize_string(x) = @("data", JSONstring(x)) : labjsonval
-
-implement
-jsonize_bool(x) = @("data", JSONbool(x)) : labjsonval
-
-implement
-jsonize_double(x) = @("data", JSONstring(tostring_val<double>(x))) : labjsonval
-
-implement
-jsonize_uint(x) = @("data", JSONstring(tostring_val<uint>(x))) : labjsonval
+jsonize_uint(x) = kndat("uint", JSONstring(tostring_val<uint>(x)))
 
 implement
 jsonize_val<int>(x) = jsonize_int(x)
@@ -500,7 +478,8 @@ case+ x0 of
     case+ lxs of
     | list_nil() => prstr "{}"
     | list_cons(x, xs) =>
-      if iseqz xs andalso x.0 = "data"
+      if iseqz xs
+      andalso x.0 = "node"
       then fprint_jsonval (out, x.1)
       else
       (

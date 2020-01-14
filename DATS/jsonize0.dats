@@ -126,6 +126,38 @@ implement jsonize_val<d2ecl> = jsonize_d2ecl
 #staload
 STDIO = "libats/libc/SATS/stdio.sats"
 //
+
+(*
+extern fun
+dup (fildes: int): int = "mac#"
+val temp_stdout = dup(1)
+*)
+
+(*
+extern fun
+freopen(path: string, mode: string, filr: FILEref):<!wrt> Ptr0 = "mac#freopen"
+val out_ptr = freopen("./out/stdout.log", "w", stdout_ref)
+val () = assertloc(isneqz(out_ptr))
+val err_ptr = freopen("./out/stderr.log", "w", stderr_ref)
+val () = assertloc(isneqz(err_ptr))
+*)
+
+(*
+val () = println!("PRINT")
+val () = prerrln!("PRERR")
+*)
+
+(*
+extern fun
+fdopen(fd: int, mode: string):<!wrt> Ptr0 = "mac#fdopen"
+val renew = fdopen(temp_stdout, "w")
+val () = stdout := renew
+*)
+(*
+val out_ref = $UN.castvwtp0{FILEref}(out_ptr)
+val err_ref = $UN.castvwtp0{FILEref}(err_ptr)
+*)
+
 (* ****** ****** *)
 //
 datatype
@@ -1449,6 +1481,11 @@ if (st0.nxerror > 0) then $ERR.abort()
 end // end of [xatsopt_main0]
 
 end // end of [local]
+
+(*
+val err = $STDIO.fclose0(out_ref)
+val err = $STDIO.fclose0(err_ref)
+*)
 
 (* ****** ****** *)
 

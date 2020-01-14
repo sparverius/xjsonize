@@ -140,11 +140,11 @@ implement jsonize_d2explstopt(x) = jsonize_option<d2explst>(x)
 
 end
 
-implement jsonize_d2con(x0) = make_notag(x0)
+implement jsonize_d2con(x0) = make_notag2(x0)
 
-implement jsonize_d2cst(x0) = make_notag(x0)
+implement jsonize_d2cst(x0) = make_notag2(x0)
 
-implement jsonize_d2var(x0) = make_notag(x0)
+implement jsonize_d2var(x0) = make_notag2(x0)
 
 implement jsonize_f2arg(x0) = make_tagged(x0)
 

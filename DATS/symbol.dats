@@ -20,7 +20,6 @@ implement totype_val<symbol> = jsonize_symbol
 
 #include "./macro.dats"
 
-implement jsonize_symbol(x0) = make_notag(x0)
-(*
-@("symbol", JSONstring(x0.name())) : labjsonval
-*)
+#include "./util.dats"
+
+implement jsonize_symbol(x0) = kndat("symbol", JSONstring(x0.name()))

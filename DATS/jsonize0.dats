@@ -694,6 +694,55 @@ val () = fprint!(filr0, json)
 val err = $STDIO.fclose0(filr0)
 }
 
+(*
+fun
+issfx
+( fp0: filpath
+, sfx: string): bool = let
+//
+val nm = fp0.given()
+val p0 = string2ptr(nm)
+val n0 = string_length(nm)
+val n1 = string_length(sfx)
+//
+in
+  if n0 < n1
+    then false
+    else let
+      val p1 =
+      ptr_add<char>(p0, n0-n1)
+    in
+      iseqz(strcmp($UN.cast{string}(p1), sfx))
+    end // end of [else]
+end // end of [issfix]
+*)
+
+
+(*
+fun
+getsfx
+(fp0: filpath): bool = let
+//
+val nm = fp0.given()
+val p0 = string2ptr(nm)
+val n0 = string_length(nm)
+val n1 = string_length(sfx)
+val en =
+//
+in
+  if n0 < n1
+    then false
+    else let
+      val p1 =
+      ptr_add<char>(p0, n0-n1)
+    in
+      iseqz(strcmp($UN.cast{string}(p1), sfx))
+    end // end of [else]
+end // end of [issfix]
+*)
+
+#include "./str.dats"
+
 local
 //
 static
@@ -819,7 +868,29 @@ val filr0 = $UN.castvwtp0{FILEref}(filp0)
 val err = $STDIO.fclose0(filr0)
 *)
 
-val () = output_json("./out/json0.json", d0cs)
+val is_stdin = $FP0.filpath_is_stdin(fp0)
+val fname = $FP0.filpath_get_given(fp0)
+
+val outp_path = "./out/"
+val file_name =
+(
+  if is_stdin then "json"
+  else filpath_name_string<>(fname)
+)
+: string
+
+val out_name = str_app(outp_path, file_name)
+
+val name00 = str_app(out_name, "00.json")
+val name01 = str_app(out_name, "01.json")
+val name12 = str_app(out_name, "12.json")
+val name23 = str_app(out_name, "23.json")
+val name33 = str_app(out_name, "33.json")
+val name3t = str_app(out_name, "3t.json")
+
+
+(* val () = output_json("./out/json0.json", d0cs) *)
+val () = output_json(name00, d0cs)
 (*
 val j0 = jsonize(d0cs)
 val json = jsonval_labval1(j0.0, j0.1)
@@ -850,7 +921,8 @@ println!
 ("process_fpath: d1cs = ", d1cs)
 *)
 //
-val () = output_json("./out/json01.json", d1cs)
+(* val () = output_json("./out/json01.json", d1cs) *)
+val () = output_json(name01, d1cs)
 (*
 val j1 = jsonize(d1cs)
 val json = jsonval_labval1(j1.0, j1.1)
@@ -876,7 +948,8 @@ d2cs where
 }
 end // end of [val]
 //
-val () = output_json("./out/json12.json", d2cs)
+(* val () = output_json("./out/json12.json", d2cs) *)
+val () = output_json(name12, d2cs)
 (*
 val j0 = jsonize(d2cs)
 val json = jsonval_labval1(j0.0, j0.1)
@@ -910,7 +983,8 @@ d3cs where
 }
 end // end of [val]
 //
-val () = output_json("./out/json23.json", d3cs)
+(* val () = output_json("./out/json23.json", d3cs) *)
+val () = output_json(name23, d3cs)
 (*
 val j23 = jsonize(d3cs)
 val json = jsonval_labval1(j23.0, j23.1)
@@ -939,7 +1013,8 @@ d3cs where
 }
 end // end of [val]
 //
-val () = output_json("./out/json33.json", d3cs)
+(* val () = output_json("./out/json33.json", d3cs) *)
+val () = output_json(name33, d3cs)
 (*
 val j33 = jsonize(d3cs)
 val json = jsonval_labval1(j33.0, j33.1)
@@ -956,13 +1031,47 @@ println!
 val
 d3cs = trans3t_program(d3cs)
 //
-val () = output_json("./out/json3t.json", d3cs)
+(* val () = output_json("./out/json3t.json", d3cs) *)
+val () = output_json(name3t, d3cs)
 (*
 val j3t = jsonize(d3cs)
 val json = jsonval_labval1(j3t.0, j3t.1)
 val () = println!("jsonized(3->3t)", "\n", json)
 *)
 
+val fname = $FP0.filpath_get_given(fp0)
+
+
+(* val fname = "/home/xaos/wrk/cc/repair/xjsonize/DATS/jsonize0.dats" *)
+
+val () = println!("extn = ", filpath_ext_string<>(fname))
+val () = println!("name = ", filpath_name_string<>(fname))
+
+val xys = strform<>(fname) where
+  implement
+  strform$fn<>(c) =
+    ifcase
+    | c = '.' => '_'
+    | c = '/' => '-'
+    | _ => c
+end
+
+val () = println!("form = ", xys)
+val () = free(xys)
+
+(*
+val () =
+(
+  ifcase
+  | filpath_is_stdin(fp0) => println!("stdin")
+  | _ =>
+  (
+
+  )
+)
+*)
+
+(*
 #staload "{$XANADU}/SATS/locinfo.sats"
 
   val dummy_token = token_make_node(the_location_dummy, T_IDENT_alp("foo"))
@@ -972,6 +1081,7 @@ val () = println!("jsonized(3->3t)", "\n", json)
 val j3t = jsonize(dummy_tq0arg)
 val json = jsonval_labval1(j3t.0, j3t.1)
 val () = println!(json)
+*)
 //
 (*
 val ((*void*)) =

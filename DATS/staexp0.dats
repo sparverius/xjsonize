@@ -71,7 +71,8 @@ implement totype_d0atcon<> = jsonize_d0atcon
 (* implement totype_labs0exp<> = jsonize_labs0exp *)
 
 
-implement(a:type) jsonize_val<sl0abled(a)> = jsonize_sl0abled<a>
+implement
+(a:type) jsonize_val<sl0abled(a)> = jsonize_sl0abled<a>
 
 local
 

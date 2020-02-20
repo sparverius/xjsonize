@@ -34,6 +34,7 @@ implement totype_s1qualst<> = jsonize_s1qualst
 implement totype_s1unilst<> = jsonize_s1unilst
 implement totype_s1marglst<> = jsonize_s1marglst
 implement totype_t1arglst<> = jsonize_t1arglst
+
 implement totype_s1rtconlst<> = jsonize_s1rtconlst
 implement totype_d1atconlst<> = jsonize_d1atconlst
 implement totype_sort1opt<> = jsonize_sort1opt

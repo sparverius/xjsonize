@@ -4,6 +4,7 @@
 
 #include "./../HATS/libxnameof.hats"
 
+#include "./util.dats"
 
 implement mknode_jsonval(x, y) =
   jsonval_labval1(x, y)
@@ -15,10 +16,12 @@ implement mknode_labjsonval(x, y) =
   jsonval_labval1(x, jsonval_labval1(y.0, y.1))
 
 implement node(x, y) =
-  @(x, jsonval_labval1(y.0, y.1))
+  (* @(x, jsonval_labval1(y.0, y.1)) *)
+  jsval3(x, JSONstring(y.0), y.1)
 
 implement node2(x, y, z) =
-  @(x, jsonval_labval1(z.0, z.1))
+  (* @(x, jsonval_labval1(z.0, z.1)) *)
+  jsval3(x, JSONstring(z.0), z.1)
 
 implement to_jsonval_labjsonval(x) = jsonval_labval1(x.0, x.1)
 
@@ -71,7 +74,6 @@ jfloat(x:double) = JSONfloat(x)
 implement
 jstr(x:string) = JSONstring(x)
 
-#include "./util.dats"
 
 
 implement{a}
@@ -701,7 +703,9 @@ where
 }
 
 
-implement jsonize_lablist(nm, xs) = @(nm, jsonize_labjsonvalist(xs)): labjsonval
+implement jsonize_lablist(nm, xs) =
+@(nm, jsonize_listize(xs)): labjsonval
+(* @(nm, jsonize_labjsonvalist(xs)): labjsonval *)
 
 implement jsonize_val<labjsonval>(x) = x
 

@@ -62,3 +62,10 @@ fun jsonize_d3eclistopt : jsonize_type(d3eclistopt)
 overload jsonize with jsonize_d3ecl
 overload jsonize with jsonize_d3eclist
 overload jsonize with jsonize_d3eclistopt
+
+///
+fun jsonize_t3cst : jsonize_type(t3cst)
+fun jsonize_t3cstlst : jsonize_type(t3cstlst)
+overload jsonize with jsonize_t3cst
+overload jsonize with jsonize_t3cstlst
+///

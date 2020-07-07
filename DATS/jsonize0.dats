@@ -898,7 +898,7 @@ val () = println!("jsonized(0)", "\n", json)
 *)
 
 //
-val () = synread_main(d0cs)
+val () = synread_program(d0cs)
 //
 (*
 val
@@ -912,7 +912,7 @@ d1cs = trans01_declist(d0cs)
 in
 d1cs where
 {
-  val () = tread01_main(d1cs)
+  val () = tread01_program(d1cs)
 }
 end // end of [val]
 (*
@@ -944,7 +944,7 @@ d2cs = trans12_declist(d1cs)
 in
 d2cs where
 {
-  val () = tread12_main(d2cs)
+  val () = tread12_program(d2cs)
 }
 end // end of [val]
 //
@@ -1001,15 +1001,16 @@ val
 d3cs = trans33_declist(d3cs)
 *)
 //
+val env33 = abstenv_make_nil()
 val
 d3cs =
 let
 val
-d3cs = trans33_declist(d3cs)
+d3cs = trans33_declist(env33, d3cs)
 in
 d3cs where
 {
-  val () = tread33_main(d3cs)
+  val () = tread33_program(d3cs)
 }
 end // end of [val]
 //
@@ -1033,16 +1034,24 @@ d3cs = trans3t_program(d3cs)
 //
 (* val () = output_json("./out/json3t.json", d3cs) *)
 val () = output_json(name3t, d3cs)
+
+
 (*
 val j3t = jsonize(d3cs)
 val json = jsonval_labval1(j3t.0, j3t.1)
 val () = println!("jsonized(3->3t)", "\n", json)
 *)
 
+
+///
+val () = abstenv_free_top(env33)
+///
+
+
 val fname = $FP0.filpath_get_given(fp0)
 
 
-(* val fname = "/home/xaos/wrk/cc/repair/xjsonize/DATS/jsonize0.dats" *)
+(* val fname = "~/wrk/cc/NEW/xjsonize/DATS/jsonize0.dats" *)
 
 val () = println!("extn = ", filpath_ext_string<>(fname))
 val () = println!("name = ", filpath_name_string<>(fname))

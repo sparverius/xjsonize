@@ -75,6 +75,10 @@ implement totype_v3aldecl<> = jsonize_v3aldecl
 implement totype_v3ardecl<> = jsonize_v3ardecl
 implement totype_f3undecl<> = jsonize_f3undecl
 
+///
+implement totype_t3cst<> = jsonize_t3cst
+implement totype_t3cstlst<> = jsonize_t3cstlst
+///
 
 local
 implement jsonize_val<d3ecl> = jsonize_d3ecl
@@ -89,6 +93,11 @@ implement jsonize_val<d3pat> = jsonize_d3pat
 //
 implement jsonize_val<d3explst> = jsonize_d3explst
 implement jsonize_val<d3eclist> = jsonize_d3eclist
+
+///
+implement jsonize_val<t3cst> = jsonize_t3cst
+///
+
 in
 implement jsonize_d3eclist(x) = jsonize_list<d3ecl>(x)
 implement jsonize_d3claulst(x) = jsonize_list<d3clau>(x)
@@ -103,6 +112,8 @@ implement jsonize_d3patlst(x) = jsonize_list<d3pat>(x)
 
 implement jsonize_d3explstopt(x) = jsonize_option<d3explst>(x)
 implement jsonize_d3eclistopt(x) = jsonize_option<d3eclist>(x)
+
+implement jsonize_t3cstlst(x) = jsonize_list<t3cst>(x)
 
 #include "./macro.dats"
 
@@ -140,3 +151,8 @@ implement jsonize_v3aldecl(x0) = make_untagged(x0)
 implement jsonize_v3ardecl(x0) = make_untagged(x0)
 
 implement jsonize_f3undecl(x0) = make_untagged(x0)
+
+
+///
+implement jsonize_t3cst(x0) = make_untagged(x0)
+///

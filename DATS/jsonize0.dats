@@ -806,13 +806,15 @@ val
 dp0 =
 $FP0.dirpath_make
 ($FP0.filpath_get_dirname(fp0))
-val () =
-let
-val out = stdout_ref
-in
-fprint(out, "dirpath = ");
-$FP0.fprintln_dirpath(out, dp0)
-end
+#ifdef __XATS_DEBUG__
+  val () =
+  let
+  val out = stdout_ref
+  in
+  fprint(out, "dirpath = ");
+  $FP0.fprintln_dirpath(out, dp0)
+  end
+#endif
 in
   $FP0.the_filpathlst_ppush(fp0);
   $FP0.the_dirpathlst_ppush(dp0)
@@ -1050,12 +1052,10 @@ val () = abstenv_free_top(env33)
 
 val fname = $FP0.filpath_get_given(fp0)
 
-
-(* val fname = "~/wrk/cc/NEW/xjsonize/DATS/jsonize0.dats" *)
-
+(* val fname = "~/xjsonize/DATS/jsonize0.dats" *)
+#ifdef __XATS_JSON_DEBUG__
 val () = println!("extn = ", filpath_ext_string<>(fname))
 val () = println!("name = ", filpath_name_string<>(fname))
-
 val xys = strform<>(fname) where
   implement
   strform$fn<>(c) =
@@ -1064,10 +1064,9 @@ val xys = strform<>(fname) where
     | c = '/' => '-'
     | _ => c
 end
-
 val () = println!("form = ", xys)
 val () = free(xys)
-
+#endif
 (*
 val () =
 (

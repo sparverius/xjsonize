@@ -8,8 +8,7 @@ CC=gcc
 SED=sed
 CP=cp
 RMF=rm -f
-
-XQ=$(shell cat .xq)
+MVF=mv -f
 
 ######
 
@@ -18,7 +17,7 @@ PATSOPT=$(PATSHOME)/bin/patsopt
 
 ######
 #
-CFLAGS=-O2
+CFLAGS=
 #
 # CFLAGS=-g
 # CFLAGS=-g -O
@@ -81,15 +80,23 @@ $(patsubst %.dats, BUILD/%_dats.o, $(SRCDATS))
 
 ######
 
+XATSHOMEQ=./../xanadu
+XATSQ=./../xanadu/srcgen/xats
+XNAME=./../xnameof
+XARGS=./../xargsof
+
 INCLUDE:=
 INCLUDE+=-I"."
 INCLUDE+=-I"./BUILD/xats"
-LIBRARY:=-L$(XQ)/../../lib -lxatsopt
+LIBRARY:=-L$(XATSHOMEQ)/lib -lxatsopt
+LIBRARY+=-L$(XNAME)/lib -lxnameof
+LIBRARY+=-L$(XARGS)/lib -lxargsof
+
 
 ######
 #
-ifeq ($(XQ),)
-all: ; @printf "exiting... \$$XQ not defined\n"
+ifeq ($(XATSQ),)
+all: ; @printf "exiting... \$$XATSQ not defined\n"
 else
 all: \
 xjsonize
@@ -97,7 +104,7 @@ endif
 xjsonize: \
 DATS/xjsonize.dats \
 $(OBJSATS) $(OBJDATS) ; \
-$(PATSCC) -cleanaft -o xjsonize \
+$(PATSCC) -cleanaft -o ./bin/xjsonize \
 $(INCLUDE) $(CFLAGS) $(GCFLAG) $^ $(LIBGC) $(LIBRARY)
 #
 ######
@@ -105,10 +112,9 @@ $(INCLUDE) $(CFLAGS) $(GCFLAG) $^ $(LIBGC) $(LIBRARY)
 libxjsonize: \
 $(OBJSATS) $(OBJDATS) \
 BUILD/libxjsonize_dats.o ; \
-($(AR) -r $@.a $^)
-# && $(CP) -f $@.a ./lib)
+($(AR) -r $@.a $^ && $(MVF) $@.a ./lib)
 BUILD/libxjsonize_dats.o: \
-DATS/xjsonize.dats; $(PATSCC) -DATS _LIBXJSONIZE_ -o $@ -c $<
+DATS/xjsonize.dats; $(PATSCC) -DATS _LIBXJSONIZE_ $(INCLUDE) -o $@ -c $<
 
 ######
 
@@ -160,8 +166,8 @@ clean:: ; $(RMF) xjsonize_dats.c
 
 cleanall:: clean
 cleanall:: ; $(RMF) xjsonize
-cleanall:: ; (cd $(XQ) && make cleanall)
-cleanall:: ; $(RMF) $(XQ)/../../lib/libxatsopt.a
+# cleanall:: ; (cd $(XATSQ) && make cleanall)
+# cleanall:: ; $(RMF) $(XATSQ)/../../lib/libxatsopt.a
 
 ######
 

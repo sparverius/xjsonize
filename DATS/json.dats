@@ -1,82 +1,41 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #staload "./../SATS/json.sats"
 
-(*
-implement
-node(x, y) =
-jsonval_labval2("node", jsonize(x), "json", y)
-*)
+#include "./../HATS/libxnameof.hats"
 
-implement
-node(x, y) =
-jsonval_labval1(x, y)
+#include "./util.dats"
 
+implement mknode_jsonval(x, y) =
+  jsonval_labval1(x, y)
 
-implement
-node2(x, y, z) =
-jsonval_labval1(x, z)
-(*
-implement
-node2(x, y, z) =
-jsonval_labval2("node", jsonize(x), "json", z)
-*)
-(*
-implement
-node2(x, y, z) =
-jsonval_labval3("name", jsonize(x), "loc", y, "node", z)
-*)
+implement mknode_string(x, y) =
+  jsonval_labval1(x, JSONstring(y))
 
-(*
-implement
-node2(x, y, z) =
-jsonval_labval1(x, jsonval_labval2("loc", y, "node", z))
-*)
+implement mknode_labjsonval(x, y) =
+  jsonval_labval1(x, jsonval_labval1(y.0, y.1))
 
+implement node(x, y) =
+  (* @(x, jsonval_labval1(y.0, y.1)) *)
+  jsval3(x, JSONstring(y.0), y.1)
 
+implement node2(x, y, z) =
+  (* @(x, jsonval_labval1(z.0, z.1)) *)
+  jsval3(x, JSONstring(z.0), z.1)
 
-implement{a}
-jsonize_list(nm, xs) =
-jsonval_labval1(nm, JSONlist(res)) where
-{
-  val xys = list_map<a><jsonval>(xs) where
-  {
-    implement
-    list_map$fopr<a><jsonval>(x) = jsonize_val<a>(x)
-  }
-  val res = list_of_list_vt{jsonval}(xys)
-}
+implement to_jsonval_labjsonval(x) = jsonval_labval1(x.0, x.1)
 
+implement to_jsonval_jsonval(x) = x
 
-implement{a}
-jsonize_option(nm, xs) =
-jsonval_labval1(nm, res) where
-val res =
-(
-  case+ xs of
-  | None() => jnul()
-  | Some(x) => jsonize_val<a>(x)
-  (*
-  case+ xs of
-  | None() => jsonize("None")
-  | Some(x) => jsonval_labval1("Some", jsonize_val<a>(x))
-  *)
-)
-end
+implement labjson_string(tag, i) =
+  labval(tag, JSONstring(i))
 
-(*
-implement{a}
-jsonize_option_vt(nm, xs) =
-jsonval_labval1(nm, res) where
-val res =
-(
-  case+ xs of
-  | ~None_vt() => jsonize("None")
-  | ~Some_vt(x) => jsonval_labval1("Some_vt", jsonize_val<a>(x))
-)
-end
-*)
+implement tagged_int(tag, i) =
+  @(tag, JSONstring(tostring_int(i))) : labjsonval
+
+implement tagged_string(tag, str) =
+  @(tag, JSONstring(str)) : labjsonval
+
 
 implement
 jsonval_int (i) = JSONint (i)
@@ -100,7 +59,8 @@ lab(x:string, rst:jsonval): jsonval =
 jsonval_labval1(x, rst)
 
 implement
-jnul() = JSONnul()
+jnul() = //JSONnul()
+JSONstring("")
 
 implement
 jint(x:int) = JSONint(x)
@@ -114,20 +74,94 @@ jfloat(x:double) = JSONfloat(x)
 implement
 jstr(x:string) = JSONstring(x)
 
-implement
-jsonize_int(x) = JSONint(x)
+
+
+implement{a}
+jsonize_list(xs) = jsval3(nm, jnul(), res)
+where
+{
+  val () = assertloc(list_length(xs) >= 0)
+  val nm = nameof_val<List0(a)>(xs)
+  val xys = list_map<a><jsonval>(xs) where
+  {
+    implement
+    list_map$fopr<a><jsonval>(x) = let
+      val xs = jsonize_val<a>(x)
+    in
+      jsonval_labval1(xs.0, xs.1)
+    end
+  }
+  val res = list_of_list_vt{jsonval}(xys)
+  val res = JSONlist(res)
+}
+
+
+implement{a}
+jsonize_option(xs) = jsval3(nm, jnul(), res)
+where
+val nm = nameof_val<Option(a)>(xs)
+val res =
+(
+  case+ xs of
+  | None() => JSONlist($list{jsonval}())
+  | Some(x) => JSONlist($list{jsonval}(jsonval_labval1(xs.0, xs.1)))
+    where
+      val xs = jsonize_val<a>(x)
+    end
+)
+end
+
+implement{a}
+jsonize_list_named(nm, xs) = @(nm, res): labjsonval
+where
+{
+  val () = assertloc(list_length(xs) >= 0)
+  val xys = list_map<a><jsonval>(xs) where
+  {
+    implement
+    list_map$fopr<a><jsonval>(x) = let
+      val xs = jsonize_val<a>(x)
+    in
+      jsonval_labval1(xs.0, xs.1)
+    end
+  }
+  val res = list_of_list_vt{jsonval}(xys)
+  val res = JSONlist(res)
+}
+
+
+implement{a}
+jsonize_option_named(nm, xs) = @(nm, res) : labjsonval
+where
+val res =
+(
+  case+ xs of
+  | None() => jnul()
+  | Some(x) => jsonval_labval1(xs.0, xs.1)
+    where
+      val xs = jsonize_val<a>(x)
+    end
+)
+end
+
 
 implement
-jsonize_char(x) = JSONstring(tostring_char(x))
+jsonize_int(x) = kndat("int", JSONstring(tostring_int(x)))
 
 implement
-jsonize_string(x) = JSONstring(x)
+jsonize_char(x) = kndat("char", JSONstring(tostring_char(x)))
 
 implement
-jsonize_bool(x) = JSONbool(x)
+jsonize_string(x) = kndat("string", JSONstring(x))
 
 implement
-jsonize_double(x) = JSONstring(tostring_val<double>(x))
+jsonize_bool(x) = kndat("bool", JSONbool(x))
+
+implement
+jsonize_double(x) = kndat("double", JSONstring(tostring_val<double>(x)))
+
+implement
+jsonize_uint(x) = kndat("uint", JSONstring(tostring_val<uint>(x)))
 
 implement
 jsonize_val<int>(x) = jsonize_int(x)
@@ -435,11 +469,27 @@ case+ x0 of
     val () = prstr "]"
   }
 | JSONlablist (lxs) =>
+(*
   {
     val () = prstr "{"
     val () = fprint_labjsonvalist (out, lxs)
     val () = prstr "}"
   }
+*)
+  (
+    case+ lxs of
+    | list_nil() => prstr "{}"
+    | list_cons(x, xs) =>
+      if iseqz xs
+      andalso x.0 = "node"
+      then fprint_jsonval (out, x.1)
+      else
+      (
+        prstr "{";
+        fprint_labjsonvalist (out, lxs);
+        prstr "}"
+      )
+  )
 //
 | JSONoption (opt) =>
   {
@@ -620,66 +670,151 @@ fun jsontyp(xs: jsonval): string =
     | JSONoption(jsonvalopt) => "JSONoption"
 )
 
-#define JSON_OUTPUT 0
+
+
+implement jsonize_labjsonvalist(xs) = JSONlablist(res)
+where
+{
+  val xys = list_imap<labjsonval><labjsonval>(xs) where
+  {
+    implement
+    list_imap$fopr<labjsonval><labjsonval>(i, x) = //x
+      @(arg, to_jsonval(x)) : labjsonval
+      where
+        val arg_num = tostring_int(i)
+        (* val name = strptr2string(string0_append(nm, "__")) *)
+        (* val str = string0_append(name, arg_num) *)
+        (* val arg = strptr2string(str) *)
+        val arg = arg_num // remove here and replace with above 'arg'
+      end
+  }
+  val res = list_of_list_vt{labjsonval}(xys)
+}
+
+implement jsonize_listize(xs) = JSONlist(res)
+where
+{
+  val xys = list_imap<labjsonval><jsonval>(xs) where
+  {
+    implement
+    list_imap$fopr<labjsonval><jsonval>(i, x) = to_jsonval(x)
+  }
+  val res = list_of_list_vt{jsonval}(xys)
+}
+
+
+implement jsonize_lablist(nm, xs) =
+@(nm, jsonize_listize(xs)): labjsonval
+(* @(nm, jsonize_labjsonvalist(xs)): labjsonval *)
+
+implement jsonize_val<labjsonval>(x) = x
+
+implement jsonize_named_labjsonvalist(nm, x) =
+  jsonize_list<labjsonval>(x)
+  where
+  implement nameof_val<List0(labjsonval)>(x) = nm
+  end
+
+#define jl jsonize
+
+macdef j2(nm,a,b) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b))))
+
+macdef j3(nm,a,b,c) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c))))
+
+macdef j4(nm,a,b,c,d,e,f,g,h,i,j) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d))))
+
+macdef j5(nm,a,b,c,d,e) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)), jl(,(e))))
+
+macdef j6(nm,a,b,c,d,e,f) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)), jl(,(e)), jl(,(f))))
+
+macdef j7(nm,a,b,c,d,e,f,g) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)),jl(,(e)), jl(,(f)), jl(,(g))))
+
+macdef j8(nm,a,b,c,d,e,f,g,h) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)),
+    jl(,(e)), jl(,(f)), jl(,(g)), jl(,(h))))
+
+macdef j9(nm,a,b,c,d,e,f,g,h,i) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)), jl(,(e)),
+    jl(,(f)), jl(,(g)), jl(,(h)), jl(,(i))))
+
+macdef j10(nm,a,b,c,d,e,f,g,h,i,j) =
+  jsonize_lablist(,(nm), $list{labjsonval}(
+    jl(,(a)), jl(,(b)), jl(,(c)), jl(,(d)), jl(,(e)),
+    jl(,(f)), jl(,(g)), jl(,(h)), jl(,(i)), jl(,(j))))
 
 
 implement
-jsonify0(guard_name) = JSONstring(guard_name)
+jsonify0(guard_name) = @(guard_name, jnul()) : labjsonval
+(* @("string", JSONstring(guard_name)) : labjsonval *)
 
 implement
 jsonify1(guard_name, json) =
-jsonval_labval1(guard_name, json)
+@(guard_name, jsonval_labval1(json.0, json.1)) : labjsonval
+
 implement
 jsonify2 (guard_name, j0, j1) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1)
+  end
+
 implement
 jsonify3 (guard_name, j0, j1, j2) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2)
+  end
+
 implement
 jsonify4 (guard_name, j0, j1, j2, j3) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3)
+  end
+
 implement
 jsonify5 (guard_name, j0, j1, j2, j3, j4) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4)
+  end
+
 implement
 jsonify6 (guard_name, j0, j1, j2, j3, j4, j5) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4, j5))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4, j5)
+  end
+
 implement
 jsonify7 (guard_name, j0, j1, j2, j3, j4, j5, j6) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4, j5, j6))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4, j5, j6)
+  end
+
 implement
 jsonify8 (guard_name, j0, j1, j2, j3, j4, j5, j6, j7) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4, j5, j6, j7))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4, j5, j6, j7)
+  end
+
 implement
 jsonify9 (guard_name, j0, j1, j2, j3, j4, j5, j6, j7, j8) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4, j5, j6, j7, j8))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4, j5, j6, j7, j8)
+  end
+
 implement
 jsonify10 (guard_name, j0, j1, j2, j3, j4, j5, j6, j7, j8, j9) =
-jsonval_labval1(guard_name, rst) where
-val rst =
-JSONlist($list{jsonval}(j0, j1, j2, j3, j4, j5, j6, j7, j8, j9))
-end
+jsonize_lablist(guard_name, rst) where
+    val rst = $list{labjsonval}(j0, j1, j2, j3, j4, j5, j6, j7, j8, j9)
+  end

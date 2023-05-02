@@ -1,74 +1,107 @@
 #include "./x.hats"
 
+#ifndef XATS_LIB
+#define XATS_LIB
+
 (* ****** ****** *)
 //
 #staload
-"{$x}/SATS/label0.sats"
+"{$XANADU}/SATS/xlabel0.sats"
 #staload
-"{$x}/SATS/stamp0.sats"
+"{$XANADU}/SATS/xstamp0.sats"
 #staload
-"{$x}/SATS/symbol.sats"
+"{$XANADU}/SATS/xsymbol.sats"
 //
 (* ****** ****** *)
 //
 #staload
-"{$x}/SATS/filsrch.sats"
+"{$XANADU}/SATS/filsrch.sats"
 //
 (* ****** ****** *)
 //
+#staload "{$XANADU}/SATS/dynexp0.sats"
+#staload "{$XANADU}/SATS/parsing.sats"
+#staload "{$XANADU}/SATS/synread.sats"
+//
+#staload "{$XANADU}/SATS/dynexp1.sats"
+#staload "{$XANADU}/SATS/trans01.sats"
+#staload "{$XANADU}/SATS/tread01.sats"
+//
+#staload "{$XANADU}/SATS/dynexp2.sats"
+#staload "{$XANADU}/SATS/trans12.sats"
+#staload "{$XANADU}/SATS/tread12.sats"
+//
+#staload "{$XANADU}/SATS/dynexp3.sats"
+#staload "{$XANADU}/SATS/trans23.sats"
+#staload "{$XANADU}/SATS/tread23.sats"
+//
+#staload "{$XANADU}/SATS/trans33.sats"
+#staload "{$XANADU}/SATS/tread33.sats"
+//
+#staload "{$XANADU}/SATS/trans3t.sats"
+#staload "{$XANADU}/SATS/trans3x.sats"
+#staload "{$XANADU}/SATS/tread3x.sats"
+//
+#staload "{$XANADU}/SATS/intrep0.sats"
+#staload "{$XANADU}/SATS/trcmp30.sats"
+//
+(* ****** ****** *)
+#staload "{$XANADU}/SATS/xatsopt.sats"
+(*
 #staload
-"{$x}/SATS/lexing.sats"
+"{$XANADU}/SATS/lexing0.sats"
 //
 #staload
-"{$x}/SATS/parsing.sats"
+"{$XANADU}/SATS/parsing.sats"
 //
 #staload
-"{$x}/SATS/staexp0.sats"
+"{$XANADU}/SATS/staexp0.sats"
 #staload
-"{$x}/SATS/dynexp0.sats"
+"{$XANADU}/SATS/dynexp0.sats"
 #staload
-"{$x}/SATS/synread.sats"
+"{$XANADU}/SATS/synread.sats"
 //
 #staload
-"{$x}/SATS/trans01.sats"
+"{$XANADU}/SATS/trans01.sats"
 #staload
-"{$x}/SATS/staexp1.sats"
+"{$XANADU}/SATS/staexp1.sats"
 #staload
-"{$x}/SATS/dynexp1.sats"
+"{$XANADU}/SATS/dynexp1.sats"
 #staload
-"{$x}/SATS/tread01.sats"
+"{$XANADU}/SATS/tread01.sats"
 //
 #staload
-"{$x}/SATS/trans12.sats"
+"{$XANADU}/SATS/trans12.sats"
 #staload
-"{$x}/SATS/tread12.sats"
+"{$XANADU}/SATS/tread12.sats"
 //
 #staload
-"{$x}/SATS/trans23.sats"
+"{$XANADU}/SATS/trans23.sats"
 #staload
-"{$x}/SATS/trans33.sats"
+"{$XANADU}/SATS/trans33.sats"
 //
 #staload
-"{$x}/SATS/tread33.sats"
+"{$XANADU}/SATS/tread33.sats"
 //
 #staload
-"{$x}/SATS/trans3t.sats"
+"{$XANADU}/SATS/trans3t.sats"
+*)
 //
 (* ****** ****** *)
 //
 #staload
 GLO =
-"{$x}/SATS/global.sats"
+"{$XANADU}/SATS/xglobal.sats"
 //
 #staload
 ERR =
-"{$x}/SATS/xerrory.sats"
+"{$XANADU}/SATS/xerrory.sats"
 //
 (* ****** ****** *)
 //
 #staload
 FP0 =
-"{$x}/SATS/filpath.sats"
+"{$XANADU}/SATS/filpath.sats"
 //
   typedef
   fpath_t = $FP0.filpath
@@ -81,46 +114,50 @@ FP0 =
 (* ****** ****** *)
 //
 #staload S2E =
-"{$x}/SATS/staexp2.sats"
+"{$XANADU}/SATS/staexp2.sats"
 #staload D2E =
-"{$x}/SATS/dynexp2.sats"
+"{$XANADU}/SATS/dynexp2.sats"
+#staload D3E =
+"{$XANADU}/SATS/dynexp3.sats"
 //
 (* ****** ****** *)
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp0_print.dats"
+"{$XANADU}/DATS/staexp0_print0.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp0_print.dats"
+"{$XANADU}/DATS/dynexp0_print0.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp1_print.dats"
+"{$XANADU}/DATS/staexp1_print0.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp1_print.dats"
+"{$XANADU}/DATS/dynexp1_print0.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/staexp2_print.dats"
+"{$XANADU}/DATS/staexp2_print0.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/statyp2_print.dats"
+"{$XANADU}/DATS/statyp2_print0.dats"
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp2_print.dats"
+"{$XANADU}/DATS/dynexp2_print0.dats"
 //
 #staload
 _(*TMP*) =
-"{$x}/DATS/dynexp3_print.dats"
-//
-(* ****** ****** *)
-//
-#staload
-_(*TMP*) =
-"{$x}/DATS/trans12_envmap.dats"
+"{$XANADU}/DATS/dynexp3_print0.dats"
 //
 (* ****** ****** *)
+//
+#staload
+_(*TMP*) =
+"{$XANADU}/DATS/trans12_envmap.dats"
+//
+(* ****** ****** *)
+
+#endif
 
 (* end of [libxatsopt.hats] *)

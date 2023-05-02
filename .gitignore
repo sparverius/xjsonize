@@ -1,3 +1,6 @@
 *~
-HATS/x.hats
 .xq
+BUILD/*.o
+xjsonize
+xjsonize_dats.c
+lib/libxjsonize.a

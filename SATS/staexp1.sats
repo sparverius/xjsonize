@@ -11,6 +11,9 @@ overload jsonize with jsonize_g1exp
 overload jsonize with jsonize_g1explst
 overload jsonize with jsonize_g1expopt
 
+fun jsonize_f1unarrow : jsonize_type(f1unarrow)
+overload jsonize with jsonize_f1unarrow
+
 fun jsonize_g1marg : jsonize_type(g1marg)
 fun jsonize_g1marglst : jsonize_type(g1marglst)
 overload jsonize with jsonize_g1marg
@@ -90,3 +93,17 @@ fun jsonize_d1atype : jsonize_type(d1atype)
 fun jsonize_d1atypelst : jsonize_type(d1atypelst)
 overload jsonize with jsonize_d1atype
 overload jsonize with jsonize_d1atypelst
+
+fun jsonize_g1nam : jsonize_type(g1nam)
+fun jsonize_g1namlst : jsonize_type(g1namlst)
+fun jsonize_g1namopt : jsonize_type(g1namopt)
+overload jsonize with jsonize_g1nam
+overload jsonize with jsonize_g1namlst
+overload jsonize with jsonize_g1namopt
+
+//#staload "{$x}/DATS/gmacro1_define.dats"
+
+fun jsonize_g1mac : jsonize_type(g1mac)
+//fun jsonize_g1maclst : jsonize_type(g1maclst)
+overload jsonize with jsonize_g1mac
+//overload jsonize with jsonize_g1maclst

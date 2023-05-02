@@ -1,80 +1,31 @@
-#include "share/atspre_staload.hats"
-#staload UN = "prelude/SATS/unsafe.sats"
+#include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
-#staload "{$x}/SATS/basics.sats"
+#staload "{$x}/SATS/xbasics.sats"
 
 #staload "./../SATS/json.sats"
 #staload "./../SATS/basics.sats"
 
 #staload _ = "./json.dats"
 
+#include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/basics.dats"
 
-implement
-jsonize_valkind
-  (vlk) = node("valkind", res) where
-val res =
-(
-//
-case+ vlk of
-| VLKval() => jsonize("VLKval")
-| VLKvalp() => jsonize("VLKvalp")
-| VLKvaln() => jsonize("VLKvaln")
-(*
-| VLKmcval() => jsonize("VLKprval")
-*)
-| VLKprval() => jsonize("VLKprval")
-//
-) (* end of [jsonize_valkind] *)
-end
+#include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/basics.dats"
 
-implement
-jsonize_funkind
-  (fnk) = node("funkind", res) where
-val res =
-(
-//
-case+ fnk of
-| FNKfn0() => jsonize("FNKfn0")
-| FNKfnx() => jsonize("FNKfnx")
-| FNKfn1() => jsonize("FNKfn1")
-| FNKfun() => jsonize("FNKfun")
-//
-| FNKprfn0() => jsonize("FNKprfn0")
-| FNKprfn1() => jsonize("FNKprfn1")
-| FNKprfun() => jsonize("FNKprfun")
-| FNKpraxi() => jsonize("FNKpraxi")
-//
-| FNKcastfn() => jsonize("FNKcastfn")
-//
-) (* end of [jsonize_funkind] *)
-end
+#include "./global.dats"
 
+implement totype_dctkind<> = jsonize_dctkind
+implement totype_valkind<> = jsonize_valkind
+implement totype_funkind<> = jsonize_funkind
+implement totype_impkind<> = jsonize_impkind
+implement totype_funclo2<> = jsonize_funclo2
 
-implement
-jsonize_impkind
-  (knd) = node("impkind", res) where
-val res =
-(
-case+ knd of
-| IMPprf() => jsonize("IMPprf")
-| IMPval() => jsonize("IMPval")
-| IMPfun() => jsonize("IMPfun")
-| IMPtmp() => jsonize("IMPtmp")
-| IMPgen() => jsonize("IMPgen")
-) (* end of [jsonize_impkind] *)
-end
+#include "./macro.dats"
 
-
-implement
-jsonize_funclo2
-  (fc2) = node("funclo2", res) where
-val res =
-(
-case+ fc2 of
-| FC2fun() =>
-  jsonize("FC2fun")
-| FC2clo(knd) =>
-  jsonify("FC2clo", jsonize(knd))
-)
-end
+implement jsonize_dctkind(knd) = make_untagged(knd)
+implement jsonize_valkind(knd) = make_untagged(knd)
+implement jsonize_funkind(knd) = make_untagged(knd)
+implement jsonize_impkind(knd) = make_untagged(knd)
+implement jsonize_funclo2(knd) = make_untagged(knd)

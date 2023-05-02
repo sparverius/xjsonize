@@ -63,3 +63,11 @@ overload jsonize with jsonize_effs2expopt
 
 fun jsonize_s2itm: jsonize_type(s2itm)
 overload jsonize with jsonize_s2itm
+
+fun jsonize_fmodenv: jsonize_type(fmodenv)
+fun jsonize_fmodenvopt: jsonize_type(fmodenvopt)
+overload jsonize with jsonize_fmodenv
+overload jsonize with jsonize_fmodenvopt
+
+fun jsonize_s2xtv: jsonize_type(s2xtv)
+overload jsonize with jsonize_s2xtv

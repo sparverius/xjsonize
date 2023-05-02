@@ -80,20 +80,20 @@ overload jsonize with jsonize_d2explst
 overload jsonize with jsonize_d2expopt
 overload jsonize with jsonize_d2explstopt
 
-fun jsonize_v2aldecl : jsonize_type(v2aldecl)
-fun jsonize_v2aldeclist : jsonize_type(v2aldeclist)
-overload jsonize with jsonize_v2aldecl
-overload jsonize with jsonize_v2aldeclist
+fun jsonize_d2valdecl : jsonize_type(d2valdecl)
+fun jsonize_d2valdeclist : jsonize_type(d2valdeclist)
+overload jsonize with jsonize_d2valdecl
+overload jsonize with jsonize_d2valdeclist
 
-fun jsonize_v2ardecl : jsonize_type(v2ardecl)
-fun jsonize_v2ardeclist : jsonize_type(v2ardeclist)
-overload jsonize with jsonize_v2ardecl
-overload jsonize with jsonize_v2ardeclist
+fun jsonize_d2vardecl : jsonize_type(d2vardecl)
+fun jsonize_d2vardeclist : jsonize_type(d2vardeclist)
+overload jsonize with jsonize_d2vardecl
+overload jsonize with jsonize_d2vardeclist
 
-fun jsonize_f2undecl : jsonize_type(f2undecl)
-fun jsonize_f2undeclist : jsonize_type(f2undeclist)
-overload jsonize with jsonize_f2undecl
-overload jsonize with jsonize_f2undeclist
+fun jsonize_d2fundecl : jsonize_type(d2fundecl)
+fun jsonize_d2fundeclist : jsonize_type(d2fundeclist)
+overload jsonize with jsonize_d2fundecl
+overload jsonize with jsonize_d2fundeclist
 
 fun jsonize_d2ecl : jsonize_type(d2ecl)
 fun jsonize_d2eclist : jsonize_type(d2eclist)
@@ -107,3 +107,15 @@ overload jsonize with jsonize_impls2cst
 
 fun jsonize_impld2cst : jsonize_type(impld2cst)
 overload jsonize with jsonize_impld2cst
+
+fun jsonize_st2inv : jsonize_type(st2inv)
+fun jsonize_st2qua : jsonize_type(st2qua)
+fun jsonize_st2qualst : jsonize_type(st2qualst)
+overload jsonize with jsonize_st2inv
+overload jsonize with jsonize_st2qua
+overload jsonize with jsonize_st2qualst
+
+fun jsonize_d2typ : jsonize_type(d2typ)
+fun jsonize_d2typlst : jsonize_type(d2typlst)
+overload jsonize with jsonize_d2typ
+overload jsonize with jsonize_d2typlst

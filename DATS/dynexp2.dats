@@ -19,6 +19,7 @@
 #staload "./../SATS/staexp2.sats"
 
 #staload _ = "./json.dats"
+#staload _ = "./stamp0.dats"
 #staload _ = "./staexp0.dats"
 #staload _ = "./dynexp0.dats"
 #staload _ = "./staexp1.dats"
@@ -27,6 +28,7 @@
 #staload _ = "./statyp2.dats"
 
 #include "./../HATS/libxnameof.hats"
+#staload _ = "{$XNAME}/DATS/stamp0.dats"
 #staload _ = "{$XNAME}/DATS/staexp0.dats"
 #staload _ = "{$XNAME}/DATS/dynexp0.dats"
 #staload _ = "{$XNAME}/DATS/staexp1.dats"
@@ -35,6 +37,7 @@
 #staload _ = "{$XNAME}/DATS/dynexp2.dats"
 
 #include "./../HATS/libxargsof.hats"
+#staload _ = "{$XARGS}/DATS/stamp0.dats"
 #staload _ = "{$XARGS}/DATS/staexp0.dats"
 #staload _ = "{$XARGS}/DATS/dynexp0.dats"
 #staload _ = "{$XARGS}/DATS/staexp1.dats"
@@ -62,9 +65,9 @@ implement totype_d2claulst<> = jsonize_d2claulst
 implement totype_d2explst<> = jsonize_d2explst
 implement totype_d2expopt<> = jsonize_d2expopt
 implement totype_d2explstopt<> = jsonize_d2explstopt
-implement totype_v2aldeclist<> = jsonize_v2aldeclist
-implement totype_v2ardeclist<> = jsonize_v2ardeclist
-implement totype_f2undeclist<> = jsonize_f2undeclist
+implement totype_d2valdeclist<> = jsonize_d2valdeclist
+implement totype_d2vardeclist<> = jsonize_d2vardeclist
+implement totype_d2fundeclist<> = jsonize_d2fundeclist
 implement totype_d2eclist<> = jsonize_d2eclist
 implement totype_d2eclistopt<> = jsonize_d2eclistopt
 
@@ -85,9 +88,23 @@ implement totype_impls2cst<> = jsonize_impls2cst
 implement totype_d2clau<> = jsonize_d2clau
 implement totype_d2gua<> = jsonize_d2gua
 implement totype_d2gpat<> = jsonize_d2gpat
-implement totype_v2aldecl<> = jsonize_v2aldecl
-implement totype_v2ardecl<> = jsonize_v2ardecl
-implement totype_f2undecl<> = jsonize_f2undecl
+implement totype_d2valdecl<> = jsonize_d2valdecl
+implement totype_d2vardecl<> = jsonize_d2vardecl
+implement totype_d2fundecl<> = jsonize_d2fundecl
+
+//
+
+implement totype_d2typlst<> = jsonize_d2typlst
+implement totype_st2qualst<> = jsonize_st2qualst
+
+implement totype_d2typ<> = jsonize_d2typ
+implement totype_st2qua<> = jsonize_st2qua
+implement totype_st2inv<> = jsonize_st2inv
+
+(*
+implement jsonize_val<stamp> = jsonize_stamp
+implement totype_stamp<> = jsonize_stamp
+*)
 
 
 local
@@ -104,10 +121,14 @@ implement jsonize_val<ti2arg> = jsonize_ti2arg
 implement jsonize_val<d2gua> = jsonize_d2gua
 implement jsonize_val<d2clau> = jsonize_d2clau
 implement jsonize_val<d2exp> = jsonize_d2exp
-implement jsonize_val<v2aldecl> = jsonize_v2aldecl
-implement jsonize_val<v2ardecl> = jsonize_v2ardecl
-implement jsonize_val<f2undecl> = jsonize_f2undecl
+implement jsonize_val<d2valdecl> = jsonize_d2valdecl
+implement jsonize_val<d2vardecl> = jsonize_d2vardecl
+implement jsonize_val<d2fundecl> = jsonize_d2fundecl
 implement jsonize_val<d2ecl> = jsonize_d2ecl
+(*
+implement jsonize_val<stamp> = jsonize_stamp
+implement totype_stamp<> = jsonize_stamp
+*)
 in
 implement jsonize_sq2arglst(x) = jsonize_list<sq2arg>(x)
 implement jsonize_tq2arglst(x) = jsonize_list<tq2arg>(x)
@@ -125,9 +146,9 @@ implement jsonize_d2gualst(x) = jsonize_list<d2gua>(x)
 implement jsonize_d2claulst(x) = jsonize_list<d2clau>(x)
 implement jsonize_d2explst(x) = jsonize_list<d2exp>(x)
 implement jsonize_d2expopt(x) = jsonize_option<d2exp>(x)
-implement jsonize_v2aldeclist(x) = jsonize_list<v2aldecl>(x)
-implement jsonize_v2ardeclist(x) = jsonize_list<v2ardecl>(x)
-implement jsonize_f2undeclist(x) = jsonize_list<f2undecl>(x)
+implement jsonize_d2valdeclist(x) = jsonize_list<d2valdecl>(x)
+implement jsonize_d2vardeclist(x) = jsonize_list<d2vardecl>(x)
+implement jsonize_d2fundeclist(x) = jsonize_list<d2fundecl>(x)
 implement jsonize_d2eclist(x) = jsonize_list<d2ecl>(x)
 
 implement jsonize_val<d2eclist> = jsonize_list<d2ecl>
@@ -174,8 +195,23 @@ implement jsonize_d2gua(x0) = make_tagged(x0)
 
 implement jsonize_d2gpat(x0) = make_tagged(x0)
 
-implement jsonize_v2aldecl(x0) = make_untagged(x0)
+implement jsonize_d2valdecl(x0) = make_untagged(x0)
 
-implement jsonize_v2ardecl(x0) = make_untagged(x0)
+implement jsonize_d2vardecl(x0) = make_untagged(x0)
 
-implement jsonize_f2undecl(x0) = make_untagged(x0)
+implement jsonize_d2fundecl(x0) = make_untagged(x0)
+
+//
+
+
+implement jsonize_val<d2typ> = jsonize_d2typ
+implement jsonize_val<st2qua> = jsonize_st2qua
+implement jsonize_val<st2inv> = jsonize_st2inv
+
+
+implement jsonize_d2typ(x2) = make_tagged(x2)
+implement jsonize_st2inv(x2) = make_untagged(x2)
+implement jsonize_st2qua(x2) = make_untagged(x2)
+
+implement jsonize_d2typlst(x) = jsonize_list<d2typ>(x)
+implement jsonize_st2qualst(x) = jsonize_list<st2qua>(x)

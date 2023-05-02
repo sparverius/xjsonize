@@ -1,3 +1,4 @@
+#staload "./../SATS/locinfo.sats"
 #include "./util.dats"
 
 macdef make_untagged_lablist(x0) = @(name, res): labjsonval
@@ -28,14 +29,19 @@ val tks = jsonize_listize(args)
 val res = jsval3(name, JSONstring(tag), tks)
 end
 
-macdef make_untagged_list(x0, lst) = res
+(*
+macdef make_tagged_loc(x0) = res
 where
 val name = nameof(,(x0))
-val tag = nameof_tag(,(x0))
-val args = ,(lst)
+val node = ,(x0).node()
+val loc_t = (,(x0).loc())
+val loc = // TODO : convert to jsonval
+val tag = nameof_tag(node)
+val args = argsof_tag(node)
 val tks = jsonize_listize(args)
-val res = jsval3(name, JSONstring(tag), tks)
+val res = jsval4(name, loc, args, tks)
 end
+*)
 
 macdef make_notag(x0) = res
 where
@@ -43,6 +49,15 @@ val name = nameof(,(x0))
 val args = argsof(,(x0))
 val tks = jsonize_listize(args)
 val res = jsval3(name, jnul(), tks)
+end
+
+macdef make_untagged_list(x0, lst) = res
+where
+val name = nameof(,(x0))
+val tag = nameof_tag(,(x0))
+val args = ,(lst)
+val tks = jsonize_listize(args)
+val res = jsval3(name, JSONstring(tag), tks)
 end
 
 macdef make_notag2(x0) = res

@@ -3,6 +3,7 @@
 #include "./../HATS/libxatsopt.hats"
 #staload "{$x}/SATS/staexp0.sats"
 #staload "{$x}/SATS/staexp1.sats"
+//#staload "{$x}/DATS/gmacro1_define.dats"
 
 #staload "./../SATS/json.sats"
 #staload "./../SATS/symbol.sats"
@@ -150,3 +151,27 @@ implement jsonize_effs1expopt(x0) = make_untagged(x0)
 implement jsonize_d1atype(x0) = make_tagged(x0)
 
 implement jsonize_d1atcon(x0) = make_tagged(x0)
+
+//
+
+implement jsonize_val<g1nam> = jsonize_g1nam
+implement totype_g1namlst<> = jsonize_g1namlst
+implement totype_g1namopt<> = jsonize_g1namopt
+
+implement totype_g1nam<> = jsonize_g1nam
+
+implement jsonize_g1nam(x1) = make_untagged(x1)
+
+implement jsonize_g1namlst(x) = jsonize_list<g1nam>(x)
+implement jsonize_g1namopt(x) = jsonize_option<g1nam>(x)
+
+
+implement jsonize_val<g1mac> = jsonize_g1mac
+implement totype_g1mac<> = jsonize_g1mac
+implement jsonize_g1mac(x1) = tagged_string("ERR", "G1MAC NOT IMPLEMENTED")
+//let
+  //val _ = $showtype(x1)
+//in
+//  make_untagged(x1)
+//end
+//implement jsonize_g1maclst(x) = jsonize_list<g1mac>(x)

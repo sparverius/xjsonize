@@ -52,7 +52,7 @@ implement totype_tokenlst<> = $LEXING.jsonize_tokenlst
 end
 
 local
-#staload BAS = "{$x}/SATS/basics.sats"
+#staload BAS = "{$x}/SATS/xbasics.sats"
 #staload BAS_JSON = "./../SATS/basics.sats"
 in
 implement totype_funkind<> = $BAS_JSON.jsonize_funkind

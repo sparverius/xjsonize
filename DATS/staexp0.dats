@@ -49,6 +49,10 @@ implement totype_i0dnt<> = jsonize_i0dnt
 implement totype_l0abl<> = jsonize_l0abl
 implement totype_s0ymb<> = jsonize_s0ymb
 implement totype_g0exp<> = jsonize_g0exp
+implement totype_g0exp_THEN<> = jsonize_g0exp_THEN
+implement totype_g0exp_ELSE<> = jsonize_g0exp_ELSE
+implement totype_g0nam<> = jsonize_g0nam
+
 implement totype_sq0eid<> = jsonize_sq0eid
 implement totype_dq0eid<> = jsonize_dq0eid
 implement totype_g0marg<> = jsonize_g0marg
@@ -100,6 +104,8 @@ implement jsonize_val<t0int> = jsonize_t0int
 implement jsonize_val<d0tsort> = jsonize_d0tsort
 implement jsonize_val<d0atype> = jsonize_d0atype
 implement jsonize_val<g0exp> = jsonize_g0exp
+implement jsonize_val<g0exp_THEN> = jsonize_g0exp_THEN
+implement jsonize_val<g0exp_ELSE> = jsonize_g0exp_ELSE
 
 in
 
@@ -150,6 +156,9 @@ implement jsonize_dq0eid(x0) = make_untagged(x0)
 
 implement jsonize_g0exp(x0) = make_tagged(x0)
 
+//implement jsonize_g0exp_THEN(x0) = make_tagged(x0)
+//implement jsonize_g0exp_ELSE(x0) = make_tagged(x0)
+
 implement jsonize_g0marg(x0) = make_tagged(x0)
 
 implement jsonize_sort0(x0) = make_tagged(x0)
@@ -197,3 +206,22 @@ implement jsonize_effs0expopt(x0) = make_untagged(x0)
 implement jsonize_d0atype(x0) = make_tagged(x0)
 
 implement jsonize_d0atcon(x0) = make_tagged(x0)
+
+//
+
+
+implement jsonize_val<g0nam> = jsonize_g0nam
+implement jsonize_val<g0exp_THEN> = jsonize_g0exp_THEN
+implement jsonize_val<g0exp_ELSE> = jsonize_g0exp_ELSE
+
+implement totype_g0namlst<> = jsonize_g0namlst
+
+implement totype_g0nam<> = jsonize_g0nam
+implement totype_g0exp_THEN<> = jsonize_g0exp_THEN
+implement totype_g0exp_ELSE<> = jsonize_g0exp_ELSE
+
+implement jsonize_g0nam(x0) = make_tagged(x0)
+implement jsonize_g0exp_THEN(x0) = make_untagged(x0)
+implement jsonize_g0exp_ELSE(x0) = make_untagged(x0)
+
+implement jsonize_g0namlst(x) = jsonize_list<g0nam>(x)

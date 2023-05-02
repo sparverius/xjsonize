@@ -1,5 +1,5 @@
 #include "./../HATS/x.hats"
-#staload STM = "{$x}/SATS/stamp0.sats"
+#staload STM = "{$x}/SATS/xstamp0.sats"
 
 #staload "./json.sats"
 

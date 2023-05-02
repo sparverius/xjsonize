@@ -1,7 +1,7 @@
 #include "./../HATS/prelude.hats"
 
 #include "./../HATS/libxatsopt.hats"
-#staload "{$x}/SATS/basics.sats"
+#staload "{$x}/SATS/xbasics.sats"
 
 #staload "./../SATS/json.sats"
 #staload "./../SATS/basics.sats"

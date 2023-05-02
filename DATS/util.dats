@@ -30,6 +30,20 @@ in
   @("node", res) : labjsonval
 end
 
+(*
+macdef jsval4(knd, loc, tag, arg) =
+let
+  val the_knd = JSONstring(,(knd)) : jsonval
+  val the_loc = ,(loc) : jsonval
+  val the_tag = ,(tag) : jsonval
+  val the_arg = ,(arg) : jsonval
+
+  val res = jsonval_labval4("knd", the_knd, "loc", the_loc, "tag", the_tag, "arg", the_arg)
+in
+  @("node", res) : labjsonval
+end
+*)
+
 
 macdef kndat(x, y) =
 @(

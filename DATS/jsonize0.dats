@@ -158,6 +158,24 @@ val out_ref = $UN.castvwtp0{FILEref}(out_ptr)
 val err_ref = $UN.castvwtp0{FILEref}(err_ptr)
 *)
 
+ staload STDLIB = "libats/libc/SATS/stdlib.sats"
+
+ extern
+ fun
+ do_system
+ (str: string): void
+
+ implement
+ do_system
+   (str) =
+ let
+  val x =  $STDLIB.system(str)
+ in
+   if x != 0
+     then println!("error: 'system(", str, ") failed")
+ end
+
+
 (* ****** ****** *)
 //
 datatype
@@ -661,6 +679,8 @@ end // end of [auxmain]
 
 (* ****** ****** *)
 //
+#include "./macro.dats"
+
 extern
 fun
 xatsopt_commarg_warning
@@ -681,6 +701,8 @@ fprintln!
 } (* end of [xatsopt_commarg_warning] *)
 //
 (* ****** ****** *)
+
+
 
 macdef output_json(name, lst) =
 {
@@ -838,6 +860,7 @@ val () = (st0.inpfil0 := fp0)
 val
 (pf0 | ()) =
 $FP0.the_filpathlst_push(fp0)
+(*
 val
 d0cs =
 let
@@ -849,6 +872,27 @@ case+ opt of
 | ~Some_vt(d0cs) => d0cs
 | ~None_vt((*void*)) => list_nil()
 end : d0eclist // end-of-val
+*)
+(*
+  val d0cs = let
+    val opt = fileref_open_opt(fp0.full1(), file_mode_r)
+  in
+    case+ opt of
+    | ~None_vt() => list_nil()
+    | ~Some_vt(filr) => d0cs where
+      {
+        val d0cs = parse_from_fileref_toplevel
+        (
+          0(*static*), filr(*input*)
+        )
+        val ((*void*)) = fileref_close(filr)
+      }
+   end : d0eclist // end of [val]
+*)
+val
+p0kg =
+parse_from_filpath_toplevel
+  (stadyn, fp0)
 //
 prval () = $UN.castview0{void}(pf0)
 (*
@@ -874,6 +918,8 @@ val is_stdin = $FP0.filpath_is_stdin(fp0)
 val fname = $FP0.filpath_get_given(fp0)
 
 val outp_path = "./out/"
+val _ = do_system(str_app("mkdir -p ", outp_path))
+
 val file_name =
 (
   if is_stdin then "json"
@@ -891,8 +937,10 @@ val name33 = str_app(out_name, "33.json")
 val name3t = str_app(out_name, "3t.json")
 
 
+//val () = the_preludes_load("../../xanadu")
+
 (* val () = output_json("./out/json0.json", d0cs) *)
-val () = output_json(name00, d0cs)
+//val () = output_json(name00, d0cs)
 (*
 val j0 = jsonize(d0cs)
 val json = jsonval_labval1(j0.0, j0.1)
@@ -900,12 +948,71 @@ val () = println!("jsonized(0)", "\n", json)
 *)
 
 //
-val () = synread_program(d0cs)
+//val () = $showtype(d0cs)
+//val () = synread_program(d0cs)
+//val _ = $showtype(d0cs)
+
+(*
+val d0parsed =
+D0PARSED(@{
+  stadyn=stadyn,
+  source=fp0,
+  parsed=Some(d0cs)
+})
+*)
+val+
+D0PARSED(rcd) = p0kg
+//
+val
+d0csopt =
+rcd.parsed where
+{
+  val () = output_json(name00, p0) where {
+    local
+    val+D0PARSED(rcd) = p0kg
+    in
+    val stadyn = rcd.stadyn
+    val source = rcd.source
+    val d0csopt = rcd.parsed
+    end // end of [local]
+//    val+D0PARSED(rcd) = p0kg
+//    val d0csopt = rcd.transd
+    val-Some(p0) = d0csopt
+  }
+  val () = synread_package(p0kg)
+}
+(*
+val tmp_parsed = d0cs.parsed
+
+val () = output_json(name00, d0p) where {
+  val-Some(d0p) = tmp_parsed
+}
+*)
+
+//val () = synread_package(d0cs)
 //
 (*
 val
 d1cs = trans01_declist(d0cs)
 *)
+val
+d1csopt =
+(
+case+
+d0csopt of
+| None() =>
+  None(*void*)
+| Some(d0cs) =>
+  Some(trans01_declist(d0cs))
+) : Option(d1eclist) // end-val
+
+val p1kg =
+D1TRANSD@{
+  stadyn= rcd.stadyn
+, source= rcd.source, transd= d1csopt
+}
+val () = tread01_package(p1kg)
+(*
 val
 d1cs =
 let
@@ -914,9 +1021,17 @@ d1cs = trans01_declist(d0cs)
 in
 d1cs where
 {
-  val () = tread01_program(d1cs)
+val d1transd = D1TRANSD(@{
+    stadyn=stadyn,
+    source=fp0,
+    transd=Some(d1cs)
+}) : d1transd
+
+//  val () = tread01_program(d1cs)
+  val () = tread01_package(d1transd)
 }
 end // end of [val]
+*)
 (*
 val () =
 println!
@@ -924,7 +1039,9 @@ println!
 *)
 //
 (* val () = output_json("./out/json01.json", d1cs) *)
-val () = output_json(name01, d1cs)
+//val () = output_json(name01, d1cs)
+val-Some(d1cs0) = d1csopt
+val () = output_json(name01, d1cs0)
 (*
 val j1 = jsonize(d1cs)
 val json = jsonval_labval1(j1.0, j1.1)
@@ -938,6 +1055,7 @@ val
 d2cs = trans12_declist(d1cs)
 *)
 //
+(*
 val
 d2cs =
 let
@@ -946,12 +1064,46 @@ d2cs = trans12_declist(d1cs)
 in
 d2cs where
 {
-  val () = tread12_program(d2cs)
+
+val d2t =
+$D2E.D2TRANSD(
+@{
+  stadyn=stadyn,
+  source=fp0,
+  transd=Some(d2cs)
+})
+
+
+  val () = tread12_package(d2t)
 }
 end // end of [val]
+*)
+val+D1TRANSD(rcd) = p1kg
+val
+d2csopt =
+(
+case+
+rcd.transd of
+| None() =>
+  None(*void*)
+| Some(d1cs) =>
+  Some(trans12_declist(d1cs))
+) : Option(d2eclist) // end-val
+//
+val p2kg =
+D2TRANSD@{
+  stadyn= rcd.stadyn
+, source= rcd.source, transd= d2csopt
+}
+val () = tread12_package(p2kg)
 //
 (* val () = output_json("./out/json12.json", d2cs) *)
-val () = output_json(name12, d2cs)
+//val () = assertloc(option_is_some(d2csopt))
+
+val-Some(d2cs0) = d2csopt
+val d2cs01 = d2cs0 : d2eclist
+val () = output_json(name12, d2cs01)
+//val () = output_json(name12, d2cs)
 (*
 val j0 = jsonize(d2cs)
 val json = jsonval_labval1(j0.0, j0.1)
@@ -971,6 +1123,35 @@ val
 d3cs = trans23_declist(d2cs)
 *)
 //
+
+
+local
+val+D2TRANSD(rcd) = p2kg
+in
+val stadyn = rcd.stadyn
+val source = rcd.source
+val d2csopt = rcd.transd
+end // end of [local]
+//
+val
+d3csopt =
+(
+case+
+d2csopt of
+| None() =>
+  None(*void*)
+| Some(d2cs) =>
+  Some
+  (trans23_declist(d2cs))
+) : Option(d3eclist) // end-val
+//
+val p3kg =
+D3TRANSD(@{stadyn= stadyn, source= source, transd= d3csopt})
+
+val () =
+tread23_package(p3kg)
+
+(*
 val
 d3cs =
 let
@@ -984,9 +1165,12 @@ d3cs where
 *)
 }
 end // end of [val]
+*)
 //
 (* val () = output_json("./out/json23.json", d3cs) *)
-val () = output_json(name23, d3cs)
+//val () = output_json(name23, d3cs)
+val-Some(d3cs0) = d3csopt
+val () = output_json(name23, d3cs0)
 (*
 val j23 = jsonize(d3cs)
 val json = jsonval_labval1(j23.0, j23.1)
@@ -1003,6 +1187,26 @@ val
 d3cs = trans33_declist(d3cs)
 *)
 //
+
+val env33 = abstenv_make_nil()
+val
+d3csopt =
+(
+case+
+d3csopt of
+| None() =>
+  None(*void*)
+| Some(d3cs) =>
+  Some
+  (trans33_declist(env33, d3cs))
+) : Option(d3eclist) // end-val
+
+val p3kg =
+D3TRANSD(@{stadyn= stadyn, source= source, transd= d3csopt})
+
+
+  val () = tread33_package(p3kg)
+(*
 val env33 = abstenv_make_nil()
 val
 d3cs =
@@ -1012,12 +1216,26 @@ d3cs = trans33_declist(env33, d3cs)
 in
 d3cs where
 {
-  val () = tread33_program(d3cs)
+val d3t = $D3E.D3TRANSD(
+@{
+  stadyn=stadyn,
+  source=fp0,
+  transd=Some(d3cs)
+})
+  val () = tread33_package(d3t)
 }
 end // end of [val]
+*)
+
 //
 (* val () = output_json("./out/json33.json", d3cs) *)
-val () = output_json(name33, d3cs)
+
+// TODO: trans33
+
+
+val-Some(d33cs0) = d3csopt
+val () = output_json(name33, d33cs0)
+
 (*
 val j33 = jsonize(d3cs)
 val json = jsonval_labval1(j33.0, j33.1)
@@ -1031,11 +1249,18 @@ println!
 *)
 (* val () = t3xread_main(d3cs) *)
 //
+(*
 val
-d3cs = trans3t_program(d3cs)
+d3cs = trans3t_envless(d3cs)
+*)
 //
 (* val () = output_json("./out/json3t.json", d3cs) *)
-val () = output_json(name3t, d3cs)
+
+
+
+// TODO: trans3t
+
+//val () = output_json(name3t, p3kg)
 
 
 (*

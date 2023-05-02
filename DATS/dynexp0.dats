@@ -40,9 +40,9 @@ implement totype_sq0arglst<> = jsonize_sq0arglst
 implement totype_ti0arglst<> = jsonize_ti0arglst
 implement totype_labd0explst<> = jsonize_labd0explst
 implement totype_labd0patlst<> = jsonize_labd0patlst
-implement totype_f0undeclist<> = jsonize_f0undeclist
-implement totype_v0aldeclist<> = jsonize_v0aldeclist
-implement totype_v0ardeclist<> = jsonize_v0ardeclist
+implement totype_d0fundeclist<> = jsonize_d0fundeclist
+implement totype_d0valdeclist<> = jsonize_d0valdeclist
+implement totype_d0vardeclist<> = jsonize_d0vardeclist
 implement totype_d0expopt<> = jsonize_d0expopt
 (* implement totype_labd0pat<> = jsonize_labd0pat *)
 (* implement totype_labd0exp<> = jsonize_labd0exp *)
@@ -81,10 +81,11 @@ implement totype_abstdf0<> = jsonize_abstdf0
 implement totype_g0expdef<> = jsonize_g0expdef
 implement totype_d0macdef<> = jsonize_d0macdef
 implement totype_wd0eclseq<> = jsonize_wd0eclseq
-implement totype_v0aldecl<> = jsonize_v0aldecl
-implement totype_v0ardecl<> = jsonize_v0ardecl
-implement totype_f0undecl<> = jsonize_f0undecl
+implement totype_d0valdecl<> = jsonize_d0valdecl
+implement totype_d0vardecl<> = jsonize_d0vardecl
+implement totype_d0fundecl<> = jsonize_d0fundecl
 implement totype_d0cstdecl<> = jsonize_d0cstdecl
+implement totype_st0inv<> = jsonize_st0inv
 
 
 
@@ -109,6 +110,7 @@ implement jsonize_val<q0arg> = jsonize_q0arg
 implement jsonize_val<d0gua> = jsonize_d0gua
 implement jsonize_val<d0ecl> = jsonize_d0ecl
 implement jsonize_val<s0exp> = jsonize_s0exp
+implement jsonize_val<st0inv> = jsonize_st0inv
 
 implement jsonize_val<d0exp> = jsonize_d0exp
 implement jsonize_val<i0dnt> = jsonize_i0dnt
@@ -118,9 +120,9 @@ implement jsonize_val<d0arg> = jsonize_d0arg
 implement jsonize_val<a0typ> = jsonize_a0typ
 implement jsonize_val<d0pat> = jsonize_d0pat
 implement jsonize_val<d0clau> = jsonize_d0clau
-implement jsonize_val<f0undecl> = jsonize_f0undecl
-implement jsonize_val<v0aldecl> = jsonize_v0aldecl
-implement jsonize_val<v0ardecl> = jsonize_v0ardecl
+implement jsonize_val<d0fundecl> = jsonize_d0fundecl
+implement jsonize_val<d0valdecl> = jsonize_d0valdecl
+implement jsonize_val<d0vardecl> = jsonize_d0vardecl
 
 implement jsonize_val<d0cstdecl> = jsonize_d0cstdecl
 
@@ -156,9 +158,9 @@ implement jsonize_f0arglst(x) = jsonize_list<f0arg>(x)
 implement jsonize_tq0arglst(x) = jsonize_list<tq0arg>(x)
 implement jsonize_sq0arglst(x) = jsonize_list<sq0arg>(x)
 implement jsonize_ti0arglst(x) = jsonize_list<ti0arg>(x)
-implement jsonize_f0undeclist(x) = jsonize_list<f0undecl>(x)
-implement jsonize_v0aldeclist(x) = jsonize_list<v0aldecl>(x)
-implement jsonize_v0ardeclist(x) = jsonize_list<v0ardecl>(x)
+implement jsonize_d0fundeclist(x) = jsonize_list<d0fundecl>(x)
+implement jsonize_d0valdeclist(x) = jsonize_list<d0valdecl>(x)
+implement jsonize_d0vardeclist(x) = jsonize_list<d0vardecl>(x)
 implement jsonize_d0expopt(x) = jsonize_option<d0exp>(x)
 
 implement(a:type) jsonize_val<dl0abeled(a)> = jsonize_dl0abeled<a>
@@ -267,10 +269,30 @@ implement jsonize_d0macdef(x0) = make_untagged(x0)
 
 implement jsonize_wd0eclseq(x0) = make_untagged(x0)
 
-implement jsonize_v0aldecl(x0) = make_untagged(x0)
+implement jsonize_d0valdecl(x0) = make_untagged(x0)
 
-implement jsonize_v0ardecl(x0) = make_untagged(x0)
+implement jsonize_d0vardecl(x0) = make_untagged(x0)
 
-implement jsonize_f0undecl(x0) = make_untagged(x0)
+implement jsonize_d0fundecl(x0) = make_untagged(x0)
 
 implement jsonize_d0cstdecl(x0) = make_untagged(x0)
+
+//
+
+implement jsonize_val<d0typ> = jsonize_d0typ
+implement jsonize_val<st0qua> = jsonize_st0qua
+implement jsonize_val<st0inv> = jsonize_st0inv
+
+implement totype_d0typlst<> = jsonize_d0typlst
+implement totype_st0qualst<> = jsonize_st0qualst
+
+implement totype_d0typ<> = jsonize_d0typ
+implement totype_st0qua<> = jsonize_st0qua
+implement totype_st0inv<> = jsonize_st0inv
+
+implement jsonize_d0typ(x0) = make_tagged(x0)
+implement jsonize_st0inv(x0) = make_untagged(x0)
+implement jsonize_st0qua(x0) = make_untagged(x0)
+
+implement jsonize_d0typlst(x) = jsonize_list<d0typ>(x)
+implement jsonize_st0qualst(x) = jsonize_list<st0qua>(x)

@@ -49,6 +49,16 @@ fun jsonize_g0explst : jsonize_type(g0explst)
 overload jsonize with jsonize_g0exp
 overload jsonize with jsonize_g0explst
 
+fun jsonize_g0exp_THEN : jsonize_type(g0exp_THEN)
+overload jsonize with jsonize_g0exp_THEN
+
+fun jsonize_g0exp_ELSE : jsonize_type(g0exp_ELSE)
+overload jsonize with jsonize_g0exp_ELSE
+
+fun jsonize_g0nam : jsonize_type(g0nam)
+fun jsonize_g0namlst : jsonize_type(g0namlst)
+overload jsonize with jsonize_g0nam
+overload jsonize with jsonize_g0namlst
 
 fun jsonize_g0marg : jsonize_type(g0marg)
 fun jsonize_g0marglst : jsonize_type(g0marglst)

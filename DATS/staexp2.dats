@@ -66,6 +66,11 @@ implement totype_fmodenv<> = jsonize_fmodenv
 implement totype_fmodenvopt<> = jsonize_fmodenvopt
 implement totype_s2xtv<> = jsonize_s2xtv
 
+  implement jsonize_val<sort2> = jsonize_sort2
+  implement jsonize_val<s2exp> = jsonize_s2exp
+  implement jsonize_val<s2var> = jsonize_s2var
+  implement jsonize_val<s2cst> = jsonize_s2cst
+
 local
 
   implement jsonize_val<sort2> = jsonize_sort2
@@ -86,7 +91,7 @@ implement jsonize_s2cstlst(x) = jsonize_list<s2cst>(x)
 implement jsonize_s2cstopt(x) = jsonize_option<s2cst>(x)
 implement jsonize_s2expopt(x) = jsonize_option<s2exp>(x)
 
-implement jsonize_val<s2exp> = jsonize_s2exp
+//implement jsonize_val<s2exp> = jsonize_s2exp
 implement jsonize_val<labs2exp> = jsonize_labs2exp
 implement jsonize_labs2explst(x) = jsonize_list<labs2exp>(x)
 

@@ -117,20 +117,20 @@ overload jsonize with jsonize_teqd0expopt
 fun jsonize_wths0expopt : jsonize_type(wths0expopt)
 overload jsonize with jsonize_wths0expopt
 
-fun jsonize_v0aldecl : jsonize_type(v0aldecl)
-fun jsonize_v0aldeclist : jsonize_type(v0aldeclist)
-overload jsonize with jsonize_v0aldecl
-overload jsonize with jsonize_v0aldeclist
+fun jsonize_d0valdecl : jsonize_type(d0valdecl)
+fun jsonize_d0valdeclist : jsonize_type(d0valdeclist)
+overload jsonize with jsonize_d0valdecl
+overload jsonize with jsonize_d0valdeclist
 
-fun jsonize_v0ardecl : jsonize_type(v0ardecl)
-fun jsonize_v0ardeclist : jsonize_type(v0ardeclist)
-overload jsonize with jsonize_v0ardecl
-overload jsonize with jsonize_v0ardeclist
+fun jsonize_d0vardecl : jsonize_type(d0vardecl)
+fun jsonize_d0vardeclist : jsonize_type(d0vardeclist)
+overload jsonize with jsonize_d0vardecl
+overload jsonize with jsonize_d0vardeclist
 
-fun jsonize_f0undecl : jsonize_type(f0undecl)
-fun jsonize_f0undeclist : jsonize_type(f0undeclist)
-overload jsonize with jsonize_f0undecl
-overload jsonize with jsonize_f0undeclist
+fun jsonize_d0fundecl : jsonize_type(d0fundecl)
+fun jsonize_d0fundeclist : jsonize_type(d0fundeclist)
+overload jsonize with jsonize_d0fundecl
+overload jsonize with jsonize_d0fundeclist
 
 fun jsonize_d0cstdecl : jsonize_type(d0cstdecl)
 fun jsonize_d0cstdeclist : jsonize_type(d0cstdeclist)
@@ -162,3 +162,16 @@ overload jsonize with jsonize_d0macdef
 
 fun jsonize_wd0eclseq : jsonize_type(wd0eclseq)
 overload jsonize with jsonize_wd0eclseq
+
+
+fun jsonize_st0inv : jsonize_type(st0inv)
+fun jsonize_st0qua : jsonize_type(st0qua)
+fun jsonize_st0qualst : jsonize_type(st0qualst)
+overload jsonize with jsonize_st0inv
+overload jsonize with jsonize_st0qua
+overload jsonize with jsonize_st0qualst
+
+fun jsonize_d0typ : jsonize_type(d0typ)
+fun jsonize_d0typlst : jsonize_type(d0typlst)
+overload jsonize with jsonize_d0typ
+overload jsonize with jsonize_d0typlst
